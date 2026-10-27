@@ -1,0 +1,320 @@
+// =====================================================================
+// PORTFOLIO — MATEO RODRÍGUEZ
+// Modelo de datos · PostgreSQL
+// Pegar en https://dbdiagram.io
+// =====================================================================
+
+Project portfolio {
+  database_type: 'PostgreSQL'
+  Note: '''
+    Base de datos del portfolio de mateorodriguez.solutions.
+
+    Dos ideas mandan sobre el resto:
+
+    1. BILINGÜE SIN DUPLICAR TABLAS. Todo campo traducible se guarda como
+       JSONB con la forma {"es": "...", "en": "..."}. Evita una tabla de
+       traducciones por cada entidad, y añadir un tercer idioma mañana no
+       cuesta ni una migración.
+
+    2. LA BASE DE DATOS EDITA, EL BUNDLE SIRVE. El admin escribe aquí; al
+       pulsar "Publicar" se congela una instantánea en `snapshots` y la web
+       se reconstruye con ese JSON dentro. Por eso la web se ve entera
+       aunque la API esté apagada.
+
+    Todas las marcas de tiempo son UTC (TIMESTAMPTZ en Postgres).
+  '''
+}
+
+// =====================================================================
+// ENUMERADOS
+// =====================================================================
+
+Enum content_status {
+  draft     [note: 'Visible solo en el panel de administración']
+  published [note: 'Sale en la web al publicar']
+}
+
+Enum tech_category {
+  frontend
+  backend
+  data
+  tools
+  soft [note: 'Competencias transversales: trato con cliente, gestión de equipo…']
+}
+
+Enum media_type {
+  image
+  video
+}
+
+Enum link_type {
+  github
+  linkedin
+  email
+  cv
+  other
+}
+
+Enum message_status {
+  new
+  read
+  replied
+  spam
+}
+
+// =====================================================================
+// ADMINISTRACIÓN
+// =====================================================================
+
+Table admin_users {
+  admin_id       int       [pk, increment]
+  email          varchar   [unique, not null]
+  password_hash  varchar   [not null, note: 'bcrypt, coste 12']
+  token_version  int       [not null, default: 1, note: 'Al subirlo, todos los JWT emitidos antes dejan de valer']
+  last_login_at  timestamp
+  created_at     timestamp [not null, default: `now()`]
+
+  Note: 'Un único usuario: yo. Una restricción CHECK impide que haya más de una fila.'
+}
+
+Table auth_attempts {
+  attempt_id   int       [pk, increment]
+  email        varchar   [note: 'El que se intentó, exista o no']
+  ip_address   varchar   [not null]
+  success      boolean   [not null, default: false]
+  created_at   timestamp [not null, default: `now()`]
+
+  indexes {
+    (ip_address, created_at) [name: 'idx_attempts_ip_fecha']
+  }
+  Note: 'Alimenta el límite de 5 intentos cada 15 minutos y deja rastro de la fuerza bruta.'
+}
+
+// =====================================================================
+// CONTENIDO — PROYECTOS
+// =====================================================================
+
+Table projects {
+  project_id      int            [pk, increment]
+  slug            varchar        [unique, not null, note: 'Identificador en la URL: cleanflow, mir-llamado…']
+  status          content_status [not null, default: 'draft']
+  sort_order      int            [not null, default: 0]
+  is_featured     boolean        [not null, default: false, note: 'El destacado va primero y con más espacio']
+
+  repo_url        varchar
+  demo_url        varchar
+  period          varchar        [note: 'Texto libre: "mayo – octubre 2026"']
+
+  is_team_project boolean        [not null, default: false]
+  team_size       int            [note: 'Nulo si fue individual']
+  commits_share   int            [note: 'Porcentaje de commits propios. CleanFlow: 87']
+
+  name            jsonb          [not null, note: '{"es": …, "en": …}']
+  summary         jsonb          [not null, note: 'Una o dos frases para la tarjeta']
+  description     jsonb          [note: 'Texto largo de la página de detalle']
+  my_role         jsonb          [note: 'Qué hice yo exactamente']
+  learning        jsonb          [note: 'Qué se me atragantó y cómo lo resolví']
+
+  created_at      timestamp      [not null, default: `now()`]
+  updated_at      timestamp      [not null, default: `now()`]
+
+  indexes {
+    (status, sort_order) [name: 'idx_projects_publicados']
+  }
+}
+
+Table project_media {
+  media_id    int        [pk, increment]
+  project_id  int        [not null]
+  url         varchar    [not null, note: 'URL de Cloudinary']
+  type        media_type [not null, default: 'image']
+  is_cover    boolean    [not null, default: false, note: 'La que se ve en la tarjeta']
+  sort_order  int        [not null, default: 0]
+  alt         jsonb      [note: 'Texto alternativo en los dos idiomas']
+  created_at  timestamp  [not null, default: `now()`]
+}
+
+// =====================================================================
+// CONTENIDO — TECNOLOGÍAS
+// =====================================================================
+
+Table technologies {
+  technology_id int           [pk, increment]
+  name          varchar       [unique, not null, note: 'React, Flask, PostgreSQL…']
+  category      tech_category [not null]
+  is_skill      boolean       [not null, default: true, note: 'Si sale en la sección Conocimientos']
+  level         int           [note: '0-100. Nulo si solo se usa para etiquetar proyectos']
+  level_label   jsonb         [note: '"Sólido" / "En curso", en los dos idiomas']
+  sort_order    int           [not null, default: 0]
+
+  Note: 'Una sola lista maestra. Evita que "React" se escriba distinto en un proyecto y en los conocimientos.'
+}
+
+Table project_technologies {
+  project_id    int [not null]
+  technology_id int [not null]
+  sort_order    int [not null, default: 0]
+
+  indexes {
+    (project_id, technology_id) [pk]
+  }
+}
+
+// =====================================================================
+// CONTENIDO — TRAYECTORIA
+// =====================================================================
+
+Table jobs {
+  job_id       int       [pk, increment]
+  company      varchar   [not null]
+  location     varchar
+  start_date   date      [not null]
+  end_date     date      [note: 'Nulo = actualmente']
+  sort_order   int       [not null, default: 0]
+  is_visible   boolean   [not null, default: true]
+
+  position     jsonb     [not null, note: 'El cargo, en los dos idiomas']
+  description  jsonb     [note: 'Qué hacía en el día a día']
+  achievements jsonb     [note: 'Array de logros por idioma: {"es": [...], "en": [...]}']
+  tools        varchar   [note: 'TPV, CRM, Adobe Creative Cloud…']
+}
+
+Table education {
+  education_id int       [pk, increment]
+  institution  varchar   [not null]
+  location     varchar
+  start_date   date
+  end_date     date      [note: 'Nulo = en curso']
+  sort_order   int       [not null, default: 0]
+  is_visible   boolean   [not null, default: true]
+
+  title        jsonb     [not null, note: 'La titulación, en los dos idiomas']
+  description  jsonb
+}
+
+// =====================================================================
+// CONTENIDO — TEXTOS Y ENLACES
+// =====================================================================
+
+Table site_texts {
+  text_key   varchar   [pk, note: 'hero.titular, sobre.parrafo_1, contacto.cta…']
+  value      jsonb     [not null, note: '{"es": …, "en": …}']
+  updated_at timestamp [not null, default: `now()`]
+
+  Note: 'Todo texto de la web que no es una entidad. Editable desde el panel.'
+}
+
+Table links {
+  link_id    int       [pk, increment]
+  type       link_type [not null]
+  url        varchar   [not null]
+  label      jsonb     [note: 'Lo que se lee en pantalla']
+  sort_order int       [not null, default: 0]
+  is_visible boolean   [not null, default: true]
+}
+
+// =====================================================================
+// PUBLICACIÓN
+// =====================================================================
+
+Table snapshots {
+  snapshot_id  int       [pk, increment]
+  payload      jsonb     [not null, note: 'Todo el contenido publicado, en los dos idiomas']
+  published_at timestamp [not null, default: `now()`]
+  published_by int       [not null]
+
+  Note: '''
+    Cada "Publicar" deja una fila. La última es la que se incrusta en el
+    build del frontend. Guardar el histórico permite volver atrás si una
+    publicación sale mal.
+  '''
+}
+
+// =====================================================================
+// ENTRADA DE DATOS DESDE LA WEB
+// =====================================================================
+
+Table contact_messages {
+  message_id int            [pk, increment]
+  name       varchar        [not null]
+  email      varchar        [not null]
+  subject    varchar
+  message    text           [not null]
+  locale     varchar        [note: 'es o en: en qué idioma estaba la web']
+  ip_address varchar
+  user_agent varchar
+  status     message_status [not null, default: 'new']
+  email_sent boolean        [not null, default: false, note: 'Se guarda ANTES de intentar el envío: si el correo falla, el mensaje no se pierde']
+  created_at timestamp      [not null, default: `now()`]
+
+  indexes {
+    (status, created_at) [name: 'idx_mensajes_bandeja']
+  }
+}
+
+Table contributions_cache {
+  cache_id            int       [pk, increment]
+  github_login        varchar   [unique, not null]
+  payload             jsonb     [not null, note: 'Las 53 semanas tal cual las devuelve la API GraphQL']
+  total_contributions int
+  current_streak      int
+  longest_streak      int
+  fetched_at          timestamp [not null, default: `now()`]
+
+  Note: 'Caché de 24 h. Si GitHub falla, se sirve esta copia aunque esté caducada.'
+}
+
+Table page_views {
+  view_id    int       [pk, increment]
+  path       varchar   [not null]
+  locale     varchar
+  referrer   varchar
+  country    varchar   [note: 'Deducido de la cabecera del proxy']
+  created_at timestamp [not null, default: `now()`]
+
+  indexes {
+    (created_at) [name: 'idx_visitas_fecha']
+  }
+  Note: 'Sin cookies, sin IP y sin identificar a nadie. Solo para saber si la web se visita.'
+}
+
+// =====================================================================
+// RELACIONES
+// =====================================================================
+
+Ref: project_media.project_id > projects.project_id [delete: cascade]
+
+Ref: project_technologies.project_id    > projects.project_id     [delete: cascade]
+Ref: project_technologies.technology_id > technologies.technology_id
+
+Ref: snapshots.published_by > admin_users.admin_id
+
+// =====================================================================
+// AGRUPACIONES (solo para ver el diagrama ordenado)
+// =====================================================================
+
+TableGroup administracion {
+  admin_users
+  auth_attempts
+}
+
+TableGroup contenido {
+  projects
+  project_media
+  technologies
+  project_technologies
+  jobs
+  education
+  site_texts
+  links
+}
+
+TableGroup publicacion {
+  snapshots
+}
+
+TableGroup entrada {
+  contact_messages
+  contributions_cache
+  page_views
+}

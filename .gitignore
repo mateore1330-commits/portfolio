@@ -1,0 +1,22 @@
+# Entorno
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Sistema
+.DS_Store
+
+# Red de seguridad: los documentos con datos personales viven en ../portfolio-privado/
+BRIEFING.md
+CONTENIDO.md
