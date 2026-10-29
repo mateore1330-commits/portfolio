@@ -1,0 +1,85 @@
+/* ============================================================
+   SOBRE MÍ — portado de la maqueta aprobada.
+   ============================================================ */
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.35fr .8fr;
+  align-items: start;
+  gap: clamp(26px, 5vw, 80px);
+}
+
+/* Ancho máximo medido para que ninguna línea pase de 65 caracteres (lo pide la issue).
+   "ch" es el ancho del "0", no de una letra media: el valor sale de medir, no de la cuenta.
+   La letra, algo mayor que el cuerpo (la de la entradilla): es la sección donde pesa el
+   texto, y así la columna no queda estrecha a pesar del límite. */
+.about-texto p {
+  max-width: 43ch;
+  color: var(--ink-2);
+  font-size: var(--fs-lede);
+  line-height: 1.55;
+}
+
+.about-texto p + p {
+  margin-top: var(--sp-4);
+}
+
+.about-texto .bigtext {
+  max-width: 28ch;
+  margin-bottom: 26px;
+  color: var(--ink);
+  font-size: var(--fs-big);
+  line-height: 1.34;
+  letter-spacing: -.012em;
+}
+
+/* La cita: borde azul, cursiva y el color principal, para que no se confunda con el cuerpo. */
+.quote {
+  max-width: 48ch;
+  margin: var(--sp-6) 0 0;
+  padding: var(--sp-1) 0 var(--sp-1) 20px;
+  border-left: 2px solid var(--blue);
+}
+
+.about-texto .quote p {
+  color: var(--ink);
+  font-style: italic;
+}
+
+/* --- Cifras --------------------------------------------------- */
+.facts {
+  margin: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.fact {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 10px;
+  padding-block: 14px;
+  border-bottom: 1px solid var(--rule-2);
+}
+
+.fact dt {
+  color: var(--ink-3);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.fact dd {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: var(--fs-num);
+  font-variant-numeric: tabular-nums;
+  font-variation-settings: "wdth" 112, "wght" 700;
+  line-height: 1;
+}
+
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
