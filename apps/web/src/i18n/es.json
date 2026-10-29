@@ -1,0 +1,11 @@
+{
+  "meta.titulo": "Mateo Rodríguez · Desarrollador Full Stack",
+  "idioma.etiqueta": "Idioma",
+  "error.titulo": "Esta página no existe",
+  "error.texto": "Puede que el enlace esté mal escrito o que la página ya no exista.",
+  "error.volver": "Volver al inicio",
+  "seccion.sobre": "Sobre mí",
+  "seccion.proyectos": "Proyectos",
+  "seccion.trayectoria": "Trayectoria",
+  "provisional.aviso": "Contenido provisional · las secciones llegan con WEB-03 y siguientes"
+}
