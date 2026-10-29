@@ -14,6 +14,8 @@ def create_app():
 
     db.init_app(app)
     migrate.init_app(app, db)
+    # Registra las tablas en db.metadata, que es donde Alembic las busca.
+    from . import models  # noqa: F401
     CORS(app, resources={r"/api/*": {"origins": app.config["CORS_ORIGINS"]}})
 
     app.register_blueprint(api)
