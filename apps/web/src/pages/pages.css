@@ -13,8 +13,8 @@
 
 .pagina h1 {
   margin-bottom: var(--sp-5);
-  font-size: var(--fs-d-xl);
-  line-height: var(--lh-hero);
+  font-size: var(--fs-d-l);
+  overflow-wrap: anywhere;
 }
 
 .pagina h2 {
