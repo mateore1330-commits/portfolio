@@ -21,7 +21,7 @@ const TYPE = [
   ['--fs-d-m', 'display', 'Desarrollador full stack'],
   ['--fs-d-s', 'display', 'Frontend'],
   ['--fs-big', 'body', 'Traigo la parte técnica nueva y la profesional ya rodada.'],
-  ['--fs-lede', 'body', 'Desarrollador full stack recién salido del bootcamp.'],
+  ['--fs-lede', 'body', 'Desarrollador full stack: del dato a la pantalla.'],
   ['--fs-body', 'body', 'El texto de párrafo de toda la web, en Newsreader.'],
   ['--fs-body-s', 'body', 'Descripciones de proyecto y de trayectoria.'],
   ['--fs-mono-l', 'mono', 'react · python · sqlalchemy'],

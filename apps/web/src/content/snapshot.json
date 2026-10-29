@@ -1,5 +1,5 @@
 {
-  "etag": "\"d0c8e7d00c819b79b8ec6492ff739e7a021e39a42420ef904f36e2461ad2875f\"",
+  "etag": "\"92a27d40fa4a208f95e83ad17061d10dcbb519018ed814ba15c2b0b835594d2f\"",
   "education": [
     {
       "description": {
@@ -538,7 +538,7 @@
       "en": [
         {
           "clave": "Profile",
-          "valor": "Junior Full Stack"
+          "valor": "Full Stack Developer"
         },
         {
           "clave": "Frontend",
@@ -564,7 +564,7 @@
       "es": [
         {
           "clave": "Perfil",
-          "valor": "Full Stack Jr."
+          "valor": "Desarrollador Full Stack"
         },
         {
           "clave": "Frontend",
