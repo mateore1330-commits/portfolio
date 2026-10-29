@@ -3,9 +3,13 @@
    Los valores sueltos pasan a tokens (redondeados a la escala).
    ============================================================ */
 
-/* isolation: la mezcla del nombre solo ve lo que hay dentro de la portada. */
+/* isolation: la mezcla del nombre solo ve lo que hay dentro de la portada. Por eso la
+   portada lleva fondo propio: sin él, el nombre se mezclaría con "nada" y saldría
+   blanco también en el tema claro. */
 .hero {
+  container-type: inline-size;
   isolation: isolate;
+  background: var(--paper);
   max-width: var(--max-w);
   margin-inline: auto;
   padding: clamp(86px, 11vh, 128px) var(--gut) clamp(30px, 5vw, 60px);
@@ -57,9 +61,11 @@
 }
 
 /* --- Nombre ------------------------------------------------- */
+/* "RODRÍGUEZ" mide unas 7,6 veces el tamaño de letra: con 12,8 % del ancho de la
+   portada (cqi) cabe siempre en una línea. En la maqueta se salía y quedaba cortado. */
 .name {
   margin-top: clamp(14px, 2.4vw, 26px);
-  font-size: var(--fs-d-hero);
+  font-size: min(var(--fs-d-hero), 12.8cqi);
   font-variation-settings: "wdth" 125, "wght" 800;
   line-height: var(--lh-hero);
   letter-spacing: -.035em;
@@ -91,6 +97,13 @@
 .hero-left,
 .hero-right {
   padding-bottom: clamp(8px, 2vw, 30px);
+}
+
+/* La entradilla, arriba de su columna (en la maqueta iba al pie del retrato): así se
+   lee en la primera pantalla de un portátil, sin bajar. */
+.hero-left {
+  align-self: start;
+  padding-top: clamp(24px, 4vw, 64px);
 }
 
 .lede {
