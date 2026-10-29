@@ -9,7 +9,7 @@
       "Flask"
     ],
     "hero.nombre": "Mateo Rodríguez",
-    "hero.entradilla": "My background in sales, graphic design and running my own company gives me a broader view that goes beyond code. I don't just build interfaces: I build strategic products designed to solve real user needs.",
+    "hero.entradilla": "My background in sales, graphic design and running my own company gives me a view that goes beyond code. I don't just build interfaces: I build products that solve real problems for the people who use them.",
     "hero.ficha": [
       {
         "clave": "Profile",
@@ -86,7 +86,7 @@
         "subtitulo": "From my previous career"
       },
       "soft": {
-        "titulo": "Transferable skills",
+        "titulo": "Soft skills",
         "subtitulo": "From the previous eight years"
       }
     },
