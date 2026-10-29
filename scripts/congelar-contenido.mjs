@@ -36,6 +36,7 @@ async function main() {
   }
 
   let datos
+  let etag
   try {
     const respuesta = await fetch(new URL('/api/content', base), {
       signal: AbortSignal.timeout(ESPERA_MAXIMA_MS),
@@ -45,6 +46,7 @@ async function main() {
       return
     }
     datos = await respuesta.json()
+    etag = respuesta.headers.get('etag')
   } catch (error) {
     const motivo = error.name === 'TimeoutError' ? `no contestó en ${ESPERA_MAXIMA_MS / 1000} s` : error.message
     aviso(`no se pudo leer la API (${motivo}): se usa la instantánea del repo.`)
@@ -56,7 +58,11 @@ async function main() {
     return
   }
 
-  const nuevo = `${JSON.stringify(datos, null, 2)}\n`
+  // El ETag va dentro de la foto: la web se lo enseña a la API (If-None-Match) y, si
+  // no ha cambiado, recibe un 304 en vez de la foto entera. Es el que calculó la API:
+  // no se recalcula aquí, porque podría no coincidir byte a byte.
+  const conEtag = etag ? { etag, ...datos } : datos
+  const nuevo = `${JSON.stringify(conEtag, null, 2)}\n`
   const actual = await readFile(DESTINO, 'utf8').catch(() => '')
   if (nuevo === actual) {
     console.log('congelar-contenido: la instantánea del repo ya es la última.')
