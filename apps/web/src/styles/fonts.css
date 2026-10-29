@@ -1,0 +1,7 @@
+/* Las fuentes se sirven desde la propia web, no desde Google Fonts: así no
+   se envía la IP del visitante a terceros. Cada archivo trae los alfabetos
+   separados por unicode-range, y el navegador solo descarga los que usa. */
+@import "@fontsource-variable/archivo/wdth.css";
+@import "@fontsource-variable/newsreader/opsz.css";
+@import "@fontsource-variable/newsreader/opsz-italic.css";
+@import "@fontsource-variable/jetbrains-mono/wght.css";
