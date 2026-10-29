@@ -31,4 +31,6 @@ class Base(DeclarativeBase):
 # Viven aquí y no en __init__.py para que los modelos puedan importar `db`
 # sin crear una importación circular con create_app().
 db = SQLAlchemy(model_class=Base)
-migrate = Migrate()
+# compare_server_default: que las migraciones automáticas detecten también
+# cambios en los valores por defecto, no solo en columnas y tipos.
+migrate = Migrate(compare_server_default=True)

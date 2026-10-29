@@ -1,5 +1,7 @@
 target-version = "py313"
 line-length = 100
+# Las migraciones las genera Alembic: no se corrigen a mano.
+extend-exclude = ["migrations"]
 
 [lint]
 # E/W: estilo (las reglas de pycodestyle) · F: fallos (pyflakes) · I: orden de imports
