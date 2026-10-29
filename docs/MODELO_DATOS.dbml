@@ -224,6 +224,7 @@ Table links {
 Table snapshots {
   snapshot_id  int       [pk, increment]
   payload      jsonb     [not null, note: 'Todo el contenido publicado, en los dos idiomas']
+  etag         varchar   [not null, note: 'SHA-256 del payload canónico: ETag de /api/content']
   published_at timestamp [not null, default: `now()`]
   published_by int       [not null]
 

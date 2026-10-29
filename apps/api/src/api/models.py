@@ -270,6 +270,8 @@ class Snapshot(db.Model):
 
     snapshot_id: Mapped[int] = mapped_column(primary_key=True)
     payload: Mapped[dict]
+    # SHA-256 del payload canónico: se calcula al publicar y sirve de ETag en /api/content.
+    etag: Mapped[str]
     published_at: Mapped[datetime] = created_at()
     published_by: Mapped[int] = mapped_column(ForeignKey("admin_users.admin_id"))
 
