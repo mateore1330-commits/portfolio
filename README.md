@@ -61,6 +61,18 @@ npm install
 npm run dev
 ```
 
+**Publicar y congelar el contenido.** La web lleva dentro una instantánea del contenido
+(`apps/web/src/content/snapshot.json`), y por eso se ve entera aunque la API esté caída.
+
+```bash
+cd apps/api && pipenv run publicar                         # guarda una instantánea nueva si hay cambios
+cd apps/web && CONTENT_API_URL=http://localhost:3001 npm run build   # la trae de la API y actualiza snapshot.json
+```
+
+Sin `CONTENT_API_URL`, o si la API no contesta, el build avisa y usa la instantánea que ya
+está en el repo: nunca falla por eso. Para que la nueva quede como respaldo, se commitea
+`snapshot.json`.
+
 **Antes de abrir un PR**, desde la raíz: `npm run check` comprueba las dos aplicaciones.
 
 ## Documentación
