@@ -16,3 +16,6 @@ gunicorn = "==26.2.0"
 
 [requires]
 python_version = "3.13"
+
+[scripts]
+dev = "flask --app wsgi run --debug --port 3001"
