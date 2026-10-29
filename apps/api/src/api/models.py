@@ -174,7 +174,9 @@ class Technology(db.Model):
     __table_args__ = (CheckConstraint("level BETWEEN 0 AND 100", name="level_porcentaje"),)
 
     technology_id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(unique=True)
+    name: Mapped[str] = mapped_column(unique=True)  # Clave interna, de un solo idioma
+    # Solo si el nombre cambia con el idioma: "Trato con cliente" / "Client relations".
+    display_name: Mapped[dict | None]
     category: Mapped[TechCategory] = mapped_column(pg_enum(TechCategory, "tech_category"))
     is_skill: Mapped[bool] = mapped_column(server_default=text("true"))
     level: Mapped[int | None]
