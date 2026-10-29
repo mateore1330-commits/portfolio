@@ -1,8 +1,6 @@
-import snapshot from '@/content/snapshot.json'
+import { useContent } from '@/content/useContent.js'
 import { usePick, useT } from '@/i18n/useLang.js'
 import '@/pages/pages.css'
-
-const { site_texts: textos, projects, jobs } = snapshot
 
 // PROVISIONAL: bloques de contenido sin diseño, para ver los dos idiomas y probar el
 // selector en una página larga. Las secciones de verdad llegan con WEB-03 y siguientes.
@@ -10,6 +8,7 @@ const { site_texts: textos, projects, jobs } = snapshot
 export default function Home() {
   const t = useT()
   const p = usePick()
+  const { site_texts: textos, projects, jobs } = useContent()
 
   return (
     <main className="pagina portada-provisional">
