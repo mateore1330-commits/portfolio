@@ -21,8 +21,9 @@ export default function About() {
       <SectionHead id="sobre-mi" />
 
       <div className="about-grid">
+        <p className="bigtext">{p(textos['sobre.titular'])}</p>
+
         <div className="about-texto">
-          <p className="bigtext">{p(textos['sobre.titular'])}</p>
           {p(textos['sobre.cuerpo']).map((parrafo) => (
             <p key={parrafo}>{parrafo}</p>
           ))}
