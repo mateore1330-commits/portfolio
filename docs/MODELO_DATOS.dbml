@@ -143,7 +143,8 @@ Table project_media {
 
 Table technologies {
   technology_id int           [pk, increment]
-  name          varchar       [unique, not null, note: 'React, Flask, PostgreSQL…']
+  name          varchar       [unique, not null, note: 'Clave interna, de un solo idioma: React, Flask, PostgreSQL…']
+  display_name  jsonb         [note: 'Solo si el nombre cambia con el idioma: {"es": "Trato con cliente", "en": "Client relations"}']
   category      tech_category [not null]
   is_skill      boolean       [not null, default: true, note: 'Si sale en la sección Conocimientos']
   level         int           [note: '0-100 (CHECK). Nulo si solo se usa para etiquetar proyectos']

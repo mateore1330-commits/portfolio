@@ -5,6 +5,6 @@
   "scripts": {
     "check": "npm run check:web && npm run check:api",
     "check:web": "cd apps/web && npm run lint && npm run build",
-    "check:api": "cd apps/api && pipenv run lint && pipenv run flask --app wsgi routes"
+    "check:api": "python3 scripts/comprobar-idiomas.py && cd apps/api && pipenv run lint && pipenv run flask --app wsgi routes"
   }
 }

@@ -13,7 +13,8 @@ if grep -qE '^(\.github/(workflows|scripts)/|package\.json$)' <<<"$cambios"; the
   api=true
 fi
 grep -q '^apps/web/' <<<"$cambios" && web=true
-grep -q '^apps/api/' <<<"$cambios" && api=true
+# scripts/ son utilidades de la API (comprobar idiomas, semilla…).
+grep -qE '^(apps/api|scripts)/' <<<"$cambios" && api=true
 
 echo "web=$web"
 echo "api=$api"

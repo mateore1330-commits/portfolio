@@ -128,6 +128,7 @@
   "technologies": [
     {
       "name": "React",
+      "display_name": null,
       "category": "frontend",
       "is_skill": true,
       "level": null,
@@ -136,6 +137,7 @@
     },
     {
       "name": "JavaScript ES6+",
+      "display_name": null,
       "category": "frontend",
       "is_skill": true,
       "level": null,
@@ -144,6 +146,7 @@
     },
     {
       "name": "HTML5",
+      "display_name": null,
       "category": "frontend",
       "is_skill": true,
       "level": null,
@@ -152,6 +155,7 @@
     },
     {
       "name": "CSS3",
+      "display_name": null,
       "category": "frontend",
       "is_skill": true,
       "level": null,
@@ -160,6 +164,7 @@
     },
     {
       "name": "Vite",
+      "display_name": null,
       "category": "frontend",
       "is_skill": true,
       "level": null,
@@ -168,6 +173,7 @@
     },
     {
       "name": "Next.js",
+      "display_name": null,
       "category": "frontend",
       "is_skill": true,
       "level": null,
@@ -176,6 +182,7 @@
     },
     {
       "name": "Tailwind",
+      "display_name": null,
       "category": "frontend",
       "is_skill": true,
       "level": null,
@@ -184,6 +191,7 @@
     },
     {
       "name": "Bootstrap",
+      "display_name": null,
       "category": "frontend",
       "is_skill": true,
       "level": null,
@@ -192,6 +200,7 @@
     },
     {
       "name": "Python",
+      "display_name": null,
       "category": "backend",
       "is_skill": true,
       "level": null,
@@ -200,6 +209,7 @@
     },
     {
       "name": "Flask",
+      "display_name": null,
       "category": "backend",
       "is_skill": true,
       "level": null,
@@ -208,6 +218,7 @@
     },
     {
       "name": "API REST",
+      "display_name": "API REST",
       "category": "backend",
       "is_skill": true,
       "level": null,
@@ -216,6 +227,7 @@
     },
     {
       "name": "SQLAlchemy",
+      "display_name": null,
       "category": "backend",
       "is_skill": true,
       "level": null,
@@ -224,6 +236,7 @@
     },
     {
       "name": "JWT",
+      "display_name": null,
       "category": "backend",
       "is_skill": true,
       "level": null,
@@ -232,6 +245,7 @@
     },
     {
       "name": "Node.js",
+      "display_name": null,
       "category": "backend",
       "is_skill": true,
       "level": null,
@@ -240,6 +254,7 @@
     },
     {
       "name": "PostgreSQL",
+      "display_name": null,
       "category": "data",
       "is_skill": true,
       "level": null,
@@ -248,6 +263,7 @@
     },
     {
       "name": "SQL",
+      "display_name": null,
       "category": "data",
       "is_skill": true,
       "level": null,
@@ -256,6 +272,7 @@
     },
     {
       "name": "Alembic",
+      "display_name": null,
       "category": "data",
       "is_skill": true,
       "level": null,
@@ -264,6 +281,7 @@
     },
     {
       "name": "Modelado relacional",
+      "display_name": "Modelado relacional",
       "category": "data",
       "is_skill": true,
       "level": null,
@@ -272,6 +290,7 @@
     },
     {
       "name": "Git",
+      "display_name": null,
       "category": "tools",
       "is_skill": true,
       "level": null,
@@ -280,6 +299,7 @@
     },
     {
       "name": "GitHub",
+      "display_name": null,
       "category": "tools",
       "is_skill": true,
       "level": null,
@@ -288,6 +308,7 @@
     },
     {
       "name": "Pull requests",
+      "display_name": null,
       "category": "tools",
       "is_skill": true,
       "level": null,
@@ -296,6 +317,7 @@
     },
     {
       "name": "Visual Studio Code",
+      "display_name": null,
       "category": "tools",
       "is_skill": true,
       "level": null,
@@ -304,6 +326,7 @@
     },
     {
       "name": "Vercel",
+      "display_name": null,
       "category": "tools",
       "is_skill": true,
       "level": null,
@@ -312,6 +335,7 @@
     },
     {
       "name": "Render",
+      "display_name": null,
       "category": "tools",
       "is_skill": true,
       "level": null,
@@ -320,6 +344,7 @@
     },
     {
       "name": "Photoshop",
+      "display_name": null,
       "category": "design",
       "is_skill": true,
       "level": null,
@@ -328,6 +353,7 @@
     },
     {
       "name": "Illustrator",
+      "display_name": null,
       "category": "design",
       "is_skill": true,
       "level": null,
@@ -336,6 +362,7 @@
     },
     {
       "name": "InDesign",
+      "display_name": null,
       "category": "design",
       "is_skill": true,
       "level": null,
@@ -344,6 +371,7 @@
     },
     {
       "name": "Lightroom",
+      "display_name": null,
       "category": "design",
       "is_skill": true,
       "level": null,
@@ -352,6 +380,7 @@
     },
     {
       "name": "Fotografía",
+      "display_name": "Fotografía",
       "category": "design",
       "is_skill": true,
       "level": null,
@@ -360,6 +389,7 @@
     },
     {
       "name": "Grabación de vídeo",
+      "display_name": "Grabación de vídeo",
       "category": "design",
       "is_skill": true,
       "level": null,
@@ -368,6 +398,7 @@
     },
     {
       "name": "Trato con cliente",
+      "display_name": "Trato con cliente",
       "category": "soft",
       "is_skill": true,
       "level": null,
@@ -376,6 +407,7 @@
     },
     {
       "name": "Negociación",
+      "display_name": "Negociación",
       "category": "soft",
       "is_skill": true,
       "level": null,
@@ -384,6 +416,7 @@
     },
     {
       "name": "Dirección comercial",
+      "display_name": "Dirección comercial",
       "category": "soft",
       "is_skill": true,
       "level": null,
@@ -392,6 +425,7 @@
     },
     {
       "name": "Liderazgo de equipos",
+      "display_name": "Liderazgo de equipos",
       "category": "soft",
       "is_skill": true,
       "level": null,
@@ -400,6 +434,7 @@
     },
     {
       "name": "Trabajo en equipo",
+      "display_name": "Trabajo en equipo",
       "category": "soft",
       "is_skill": true,
       "level": null,
@@ -408,6 +443,7 @@
     },
     {
       "name": "Google OAuth",
+      "display_name": null,
       "category": "backend",
       "is_skill": false,
       "level": null,
@@ -416,6 +452,7 @@
     },
     {
       "name": "Cloudinary",
+      "display_name": null,
       "category": "tools",
       "is_skill": false,
       "level": null,
@@ -424,6 +461,7 @@
     },
     {
       "name": "TypeScript",
+      "display_name": null,
       "category": "frontend",
       "is_skill": false,
       "level": null,
@@ -432,6 +470,7 @@
     },
     {
       "name": "Turso",
+      "display_name": null,
       "category": "data",
       "is_skill": false,
       "level": null,
@@ -440,6 +479,7 @@
     },
     {
       "name": "Vercel Blob",
+      "display_name": null,
       "category": "tools",
       "is_skill": false,
       "level": null,
@@ -448,6 +488,7 @@
     },
     {
       "name": "Upstash",
+      "display_name": null,
       "category": "data",
       "is_skill": false,
       "level": null,
@@ -456,6 +497,7 @@
     },
     {
       "name": "React Router",
+      "display_name": null,
       "category": "frontend",
       "is_skill": false,
       "level": null,
@@ -464,6 +506,7 @@
     },
     {
       "name": "Context + useReducer",
+      "display_name": null,
       "category": "frontend",
       "is_skill": false,
       "level": null,
@@ -482,7 +525,7 @@
       "is_team_project": true,
       "team_size": 4,
       "commits_share": 87,
-      "period": "agosto – octubre 2026",
+      "period": "septiembre – octubre 2026",
       "label": "Proyecto final del bootcamp · En equipo de 4",
       "name": "CleanFlow",
       "summary": "Plataforma de reservas para una empresa de limpieza, con tres roles trabajando sobre los mismos datos: cliente, trabajador y encargado. Proyecto final del bootcamp, hecho entre cuatro. 509 commits, 85 pull requests, y 441 de esos commits son míos.",
