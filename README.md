@@ -25,6 +25,44 @@ docs/       Arquitectura, modelo de datos y backlog
 scripts/    Utilidades: semilla, instantáneas, CV en PDF
 ```
 
+## Arrancar en local
+
+Necesitas Node 24, Python 3.13 con Pipenv y PostgreSQL 18. En macOS:
+`brew install node@24 python@3.13 pipenv postgresql@18`.
+
+**1. Base de datos.** PostgreSQL se arranca a mano y se para al terminar:
+
+```bash
+brew services run postgresql@18      # arrancar (no se queda configurado al encender el equipo)
+psql -d postgres -c "CREATE ROLE portfolio LOGIN PASSWORD 'elige-una' NOSUPERUSER"
+psql -d postgres -c "CREATE DATABASE portfolio OWNER portfolio"
+```
+
+**2. API** (`http://localhost:3001`):
+
+```bash
+cd apps/api
+pipenv install --dev
+cp .env.example .env                 # rellena las variables; cada una explica qué es
+pipenv run flask --app wsgi db upgrade
+pipenv run seed                      # carga el contenido de seed/*.json
+pipenv run dev
+```
+
+La semilla se puede ejecutar todas las veces que haga falta: deja la base de datos igual
+que los JSON y, si algo falla, no cambia nada. Con `ADMIN_EMAIL` y `ADMIN_PASSWORD` en el
+`.env` crea también el usuario del panel, solo si todavía no existe.
+
+**3. Web** (`http://localhost:3000`):
+
+```bash
+cd apps/web
+npm install
+npm run dev
+```
+
+**Antes de abrir un PR**, desde la raíz: `npm run check` comprueba las dos aplicaciones.
+
 ## Documentación
 
 - [Arquitectura](docs/ARQUITECTURA.md) — decisiones técnicas y por qué
