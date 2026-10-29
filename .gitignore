@@ -17,6 +17,6 @@ venv/
 # Sistema
 .DS_Store
 
-# Red de seguridad: los documentos con datos personales viven en ../portfolio-privado/
+# Red de seguridad: los documentos con datos personales viven en ../Recursos/, fuera del repo
 BRIEFING.md
 CONTENIDO.md
