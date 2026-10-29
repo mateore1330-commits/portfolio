@@ -7,5 +7,19 @@
   "seccion.sobre": "About me",
   "seccion.proyectos": "Projects",
   "seccion.trayectoria": "Experience",
-  "provisional.aviso": "Provisional content · sections arrive with WEB-03 onwards"
+  "provisional.aviso": "Provisional content · sections arrive with WEB-03 onwards",
+  "seccion.actividad": "Activity",
+  "seccion.conocimientos": "Skills",
+  "seccion.contacto": "Contact",
+  "nav.etiqueta": "Sections",
+  "menu.abrir": "Menu",
+  "menu.cerrar": "Close",
+  "menu.etiqueta": "Sections menu",
+  "tema.boton": "Mode",
+  "tema.a_oscuro": "Switch to dark theme",
+  "tema.a_claro": "Switch to light theme",
+  "saltar": "Skip to content",
+  "marca.rol": "Full Stack",
+  "marca.inicio": "Mateo Rodríguez, go to top",
+  "provisional.pendiente": "This section arrives in a later issue."
 }

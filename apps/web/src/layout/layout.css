@@ -1,0 +1,268 @@
+/* ============================================================
+   CABECERA, RAÍL Y NAVEGACIÓN — portados de la maqueta aprobada.
+   Los valores sueltos pasan a tokens (redondeados a la escala).
+   ============================================================ */
+
+/* El contenido deja sitio al raíl, que en móvil no existe. */
+.con-rail {
+  padding-left: var(--rail);
+}
+
+/* Al saltar a una sección, el título no queda debajo de la cabecera. */
+.con-rail section[id] {
+  scroll-margin-top: var(--sp-9);
+}
+
+/* --- Saltar al contenido: invisible hasta recibir el foco --- */
+.saltar {
+  position: fixed;
+  top: var(--sp-3);
+  left: var(--gut);
+  z-index: 900;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--ink);
+  color: var(--paper);
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.saltar:focus-visible {
+  transform: none;
+}
+
+/* --- Cabecera ---------------------------------------------- */
+.top {
+  position: fixed;
+  top: 0;
+  left: var(--rail);
+  right: 0;
+  z-index: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-3) var(--gut);
+  border-bottom: 1px solid transparent;
+  transition:
+    background var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    padding var(--dur) var(--ease);
+}
+
+.top.stuck {
+  padding-block: var(--sp-2);
+  border-bottom-color: var(--rule-2);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  text-decoration: none;
+}
+
+.brand b {
+  font-family: var(--f-display);
+  font-size: var(--fs-d-s);
+  font-variation-settings: "wdth" 112, "wght" 700;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+}
+
+.dim {
+  color: var(--ink-3);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+}
+
+.nav a {
+  position: relative;
+  color: var(--ink-2);
+  text-decoration: none;
+  transition: color var(--dur-fast);
+}
+
+/* La línea azul entra desde la izquierda al pasar el ratón. La sección activa la
+   lleva fija: mismo lenguaje visual que la maqueta. */
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 1px;
+  background: var(--blue);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.nav a:hover,
+.nav a[aria-current="location"] {
+  color: var(--ink);
+}
+
+.nav a:hover::after,
+.nav a[aria-current="location"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.top-acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+/* --- Botón de tema (y del menú móvil, que usa el mismo estilo) --- */
+.tmode {
+  padding: 7px 11px;
+  border: 1px solid var(--rule);
+  background: none;
+  color: var(--ink-2);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: var(--tr-mono);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.tmode:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* --- Raíl lateral ------------------------------------------ */
+.rail {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: var(--rail);
+  padding: 18px 0;
+  border-right: 1px solid var(--rule-2);
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.rail-mark {
+  color: var(--ink-3);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: var(--tr-mono-wide);
+}
+
+.rail-track {
+  position: relative;
+  flex: 1;
+  width: 1px;
+  margin: var(--sp-4) 0;
+  background: var(--rule);
+}
+
+.rail-fill {
+  position: absolute;
+  top: 0;
+  left: -1px;
+  width: 3px;
+  height: 0;
+  background: var(--blue);
+}
+
+.rail-pct {
+  color: var(--ink-2);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .06em;
+  writing-mode: vertical-rl;
+}
+
+/* --- Panel móvil ------------------------------------------- */
+.menu-boton {
+  display: none;
+}
+
+.menu-movil {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-8) var(--gut) var(--sp-6);
+  overflow-y: auto;
+  background: var(--paper);
+}
+
+.menu-cerrar {
+  position: absolute;
+  top: var(--sp-3);
+  right: var(--gut);
+}
+
+.menu-movil nav {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--rule);
+}
+
+.menu-movil a {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-4);
+  padding-block: var(--sp-4);
+  border-bottom: 1px solid var(--rule-2);
+  color: var(--ink);
+  font-family: var(--f-display);
+  font-size: var(--fs-d-l);
+  font-variation-settings: "wdth" 118, "wght" 800;
+  line-height: var(--lh-display);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.menu-movil a .mono {
+  color: var(--blue);
+  font-size: var(--fs-mono-s);
+}
+
+.menu-movil a[aria-current="location"] {
+  color: var(--blue);
+}
+
+/* --- Pantallas estrechas ----------------------------------- */
+@media (max-width: 859px) {
+  .rail {
+    display: none;
+  }
+
+  .con-rail {
+    padding-left: 0;
+  }
+
+  .top {
+    left: 0;
+  }
+}
+
+@media (max-width: 759px) {
+  .nav {
+    display: none;
+  }
+
+  .menu-boton {
+    display: inline-block;
+  }
+}

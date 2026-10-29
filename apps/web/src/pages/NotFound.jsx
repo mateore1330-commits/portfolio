@@ -7,7 +7,7 @@ export default function NotFound() {
   const lang = useLang()
   const t = useT()
   return (
-    <main className="pagina no-encontrada">
+    <main id="contenido" tabIndex={-1} className="pagina no-encontrada">
       <p className="mono">404</p>
       <h1>{t('error.titulo')}</h1>
       <p>{t('error.texto')}</p>

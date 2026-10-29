@@ -1,9 +1,5 @@
-/* Provisional: WEB-03 lo coloca en la cabecera definitiva. */
+/* Vive dentro de la cabecera (WEB-03). */
 .language-switch {
-  position: fixed;
-  top: var(--sp-4);
-  right: var(--gut);
-  z-index: 700;
   display: flex;
   gap: var(--sp-3);
 }

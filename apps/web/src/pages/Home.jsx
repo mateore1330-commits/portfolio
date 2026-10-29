@@ -1,17 +1,64 @@
 import { useContent } from '@/content/useContent.js'
 import { usePick, useT } from '@/i18n/useLang.js'
+import { SECCIONES } from '@/layout/secciones.js'
 import '@/pages/pages.css'
 
-// PROVISIONAL: bloques de contenido sin diseño, para ver los dos idiomas y probar el
-// selector en una página larga. Las secciones de verdad llegan con WEB-03 y siguientes.
-// Los id de las secciones son iguales en los dos idiomas: el selector los usa.
+// PROVISIONAL: bloques de contenido sin diseño, en el orden y con los id de
+// SECCIONES (los mismos que usa el menú). Cada issue de sección (WEB-04 a WEB-10)
+// sustituye su bloque por la sección de verdad.
 export default function Home() {
   const t = useT()
   const p = usePick()
-  const { site_texts: textos, projects, jobs } = useContent()
+  const { site_texts: textos, technologies, projects, jobs } = useContent()
+  const grupos = p(textos['conocimientos.grupos']) || {}
+
+  const bloques = {
+    'sobre-mi': (
+      <>
+        <p className="titular">{p(textos['sobre.titular'])}</p>
+        {p(textos['sobre.cuerpo']).map((parrafo) => (
+          <p key={parrafo}>{parrafo}</p>
+        ))}
+      </>
+    ),
+    conocimientos: Object.entries(grupos).map(([categoria, grupo]) => (
+      <p key={categoria}>
+        <b>{grupo.titulo}</b>
+        {' · '}
+        {technologies
+          .filter((tec) => tec.category === categoria && tec.is_skill)
+          .map((tec) => p(tec.display_name) || tec.name)
+          .join(' · ')}
+      </p>
+    )),
+    proyectos: projects.map((proyecto) => (
+      <article key={proyecto.slug}>
+        <h3>{p(proyecto.name)}</h3>
+        <p className="mono">{p(proyecto.label)} · {p(proyecto.period)}</p>
+        <p>{p(proyecto.summary)}</p>
+      </article>
+    )),
+    trayectoria: jobs.map((empleo) => (
+      <article key={`${empleo.company}-${empleo.start_date}`}>
+        <h3>{p(empleo.position)}</h3>
+        <p className="mono">{empleo.company}</p>
+        {p(empleo.description).map((parrafo) => (
+          <p key={parrafo}>{parrafo}</p>
+        ))}
+      </article>
+    )),
+    contacto: (
+      <>
+        <p className="titular">{p(textos['contacto.titular'])}</p>
+        {p(textos['contacto.texto']).map((parrafo) => (
+          <p key={parrafo}>{parrafo}</p>
+        ))}
+      </>
+    ),
+  }
 
   return (
-    <main className="pagina portada-provisional">
+    <main id="contenido" tabIndex={-1} className="pagina portada-provisional">
       <p className="mono aviso">{t('provisional.aviso')}</p>
 
       <section id="inicio">
@@ -19,37 +66,12 @@ export default function Home() {
         <p className="entradilla">{p(textos['hero.entradilla'])}</p>
       </section>
 
-      <section id="sobre-mi">
-        <h2>{t('seccion.sobre')}</h2>
-        <p className="titular">{p(textos['sobre.titular'])}</p>
-        {p(textos['sobre.cuerpo']).map((parrafo) => (
-          <p key={parrafo}>{parrafo}</p>
-        ))}
-      </section>
-
-      <section id="proyectos">
-        <h2>{t('seccion.proyectos')}</h2>
-        {projects.map((proyecto) => (
-          <article key={proyecto.slug}>
-            <h3>{p(proyecto.name)}</h3>
-            <p className="mono">{p(proyecto.label)} · {p(proyecto.period)}</p>
-            <p>{p(proyecto.summary)}</p>
-          </article>
-        ))}
-      </section>
-
-      <section id="trayectoria">
-        <h2>{t('seccion.trayectoria')}</h2>
-        {jobs.map((empleo) => (
-          <article key={`${empleo.company}-${empleo.start_date}`}>
-            <h3>{p(empleo.position)}</h3>
-            <p className="mono">{empleo.company}</p>
-            {p(empleo.description).map((parrafo) => (
-              <p key={parrafo}>{parrafo}</p>
-            ))}
-          </article>
-        ))}
-      </section>
+      {SECCIONES.map((s) => (
+        <section key={s.id} id={s.id}>
+          <h2>{t(s.clave)}</h2>
+          {bloques[s.id] ?? <p className="mono">{t('provisional.pendiente')}</p>}
+        </section>
+      ))}
     </main>
   )
 }
