@@ -1,5 +1,6 @@
 import { useContent } from '@/content/useContent.js'
 import { useContribuciones } from '@/content/useContribuciones.js'
+import Marcado from '@/content/Marcado.jsx'
 import { usePick } from '@/i18n/useLang.js'
 import Counter from '@/sections/Counter.jsx'
 import SectionHead from '@/sections/SectionHead.jsx'
@@ -21,9 +22,10 @@ export default function About() {
       <SectionHead id="sobre-mi" />
 
       <div className="about-grid">
-        <p className="bigtext">{p(textos['sobre.titular'])}</p>
-
         <div className="about-texto">
+          <p className="bigtext">
+            <Marcado texto={p(textos['sobre.titular'])} />
+          </p>
           {p(textos['sobre.cuerpo']).map((parrafo) => (
             <p key={parrafo}>{parrafo}</p>
           ))}

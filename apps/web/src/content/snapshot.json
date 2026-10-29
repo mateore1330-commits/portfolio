@@ -1,5 +1,5 @@
 {
-  "etag": "\"08c2b823e7685d0cfe93aed5fc3730ba41fda19cb28027acbfcd2356914a1ff8\"",
+  "etag": "\"55c241c7471aadebe79ea19afb5b98f163d0d090feaeb83e63d86042e6ca0f09\"",
   "education": [
     {
       "description": {
@@ -663,8 +663,8 @@
       ]
     },
     "sobre.titular": {
-      "en": "Eight years understanding what people need. Now I can build it.",
-      "es": "Ocho años entendiendo lo que necesita la gente. Ahora sé construirlo."
+      "en": "**Eight years** understanding what people need. Now **I can build it**.",
+      "es": "**Ocho años** entendiendo lo que necesita la gente. Ahora **sé construirlo**."
     }
   },
   "technologies": [
