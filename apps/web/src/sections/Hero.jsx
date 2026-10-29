@@ -50,7 +50,7 @@ export default function Hero() {
   const retrato = useRef(null)
   useInclinacion(retrato)
 
-  // "Mateo Rodríguez" → "Mateo" arriba y el resto debajo, sobre el retrato.
+  // "Mateo Rodríguez" → "Mateo" arriba y el resto debajo.
   const [nombre, ...apellidos] = p(textos['hero.nombre']).split(' ')
   const [disponible, ...etiquetas] = p(textos['hero.etiquetas'])
   const ficha = p(textos['hero.ficha'])
@@ -68,7 +68,7 @@ export default function Hero() {
 
       <h1 className="name">
         <span className="ln">{nombre}</span>
-        <span className="ln name-2">{apellidos.join(' ')}</span>
+        <span className="ln">{apellidos.join(' ')}</span>
       </h1>
 
       <div className="stage">

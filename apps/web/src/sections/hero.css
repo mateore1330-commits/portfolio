@@ -3,13 +3,9 @@
    Los valores sueltos pasan a tokens (redondeados a la escala).
    ============================================================ */
 
-/* isolation: la mezcla del nombre solo ve lo que hay dentro de la portada. Por eso la
-   portada lleva fondo propio: sin él, el nombre se mezclaría con "nada" y saldría
-   blanco también en el tema claro. */
+/* container-type: el tamaño del nombre se mide con el ancho de la portada (cqi). */
 .hero {
   container-type: inline-size;
-  isolation: isolate;
-  background: var(--paper);
   max-width: var(--max-w);
   margin-inline: auto;
   padding: clamp(86px, 11vh, 128px) var(--gut) clamp(30px, 5vw, 60px);
@@ -76,22 +72,15 @@
   display: block;
 }
 
-/* Blanco con "difference": sobre el fondo claro sale casi negro, sobre el oscuro
-   casi blanco, y sobre la foto se invierte. Por eso no cambia con el tema. */
-.name-2 {
-  position: relative;
-  z-index: 3;
-  color: #fff;
-  mix-blend-mode: difference;
-}
-
 /* --- Escenario: entradilla · retrato · ficha ---------------- */
+/* Separado del nombre: en la maqueta el retrato pisaba unos píxeles del apellido y la
+   mezcla los volvía amarillos (el opuesto del azul). Parecía un fallo, no un efecto. */
 .stage {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 38%) minmax(0, .85fr);
   align-items: end;
   gap: clamp(18px, 3vw, 44px);
-  margin-top: clamp(-20px, -2.4vw, -6px);
+  margin-top: clamp(20px, 3vw, 44px);
 }
 
 .hero-left,
