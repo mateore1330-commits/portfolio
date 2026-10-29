@@ -22,7 +22,7 @@ bundle; si la API responde, se sustituye por datos frescos, y si no, nadie se en
 apps/web    React 18 · Vite · React Router · GSAP        → Vercel
 apps/api    Flask · SQLAlchemy · PostgreSQL · Gunicorn   → VPS propio
 docs/       Arquitectura, modelo de datos y backlog
-scripts/    Utilidades: semilla, instantáneas, CV en PDF
+scripts/    Utilidades: comprobar idiomas, instantáneas, CV en PDF
 ```
 
 ## Arrancar en local
