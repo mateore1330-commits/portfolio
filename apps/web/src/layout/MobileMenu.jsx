@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import LanguageSwitch from '@/i18n/LanguageSwitch.jsx'
 import { useLang, useT } from '@/i18n/useLang.js'
 import { enlaceSeccion, SECCIONES } from '@/layout/secciones.js'
+import ThemeToggle from '@/layout/ThemeToggle.jsx'
 
 const MOVIL = '(max-width: 759px)'
 
@@ -101,6 +103,11 @@ export default function MobileMenu({ activa }) {
                 </a>
               ))}
             </nav>
+            {/* En móvil no caben en la cabecera: viven aquí. */}
+            <div className="menu-movil-ajustes">
+              <LanguageSwitch />
+              <ThemeToggle />
+            </div>
           </div>,
           document.body,
         )}

@@ -242,6 +242,19 @@
   color: var(--blue);
 }
 
+.menu-movil-ajustes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-top: auto;
+  padding-top: var(--sp-6);
+}
+
+.brand b {
+  white-space: nowrap;
+}
+
 /* --- Pantallas estrechas ----------------------------------- */
 @media (max-width: 859px) {
   .rail {
@@ -258,7 +271,11 @@
 }
 
 @media (max-width: 759px) {
-  .nav {
+  /* En móvil, la cabecera solo lleva el nombre y "Menú": el resto pasa al panel. */
+  .nav,
+  .brand .mono,
+  .top-acciones > .language-switch,
+  .top-acciones > .tmode:not(.menu-boton) {
     display: none;
   }
 
