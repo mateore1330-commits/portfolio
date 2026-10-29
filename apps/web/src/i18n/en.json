@@ -1,0 +1,11 @@
+{
+  "meta.titulo": "Mateo Rodríguez · Full Stack Developer",
+  "idioma.etiqueta": "Language",
+  "error.titulo": "This page doesn't exist",
+  "error.texto": "The link may be mistyped, or the page may no longer exist.",
+  "error.volver": "Back to home",
+  "seccion.sobre": "About me",
+  "seccion.proyectos": "Projects",
+  "seccion.trayectoria": "Experience",
+  "provisional.aviso": "Provisional content · sections arrive with WEB-03 onwards"
+}
