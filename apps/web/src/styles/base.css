@@ -1,0 +1,140 @@
+/* ============================================================
+   BASE — reinicio, tipografía y componentes que comparten las secciones
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Fondo explícito: si fuera transparente, en oscuro asomaría el blanco
+   del navegador en el rebote del scroll de Safari. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-family: var(--f-display);
+  font-variation-settings: "wdth" 118, "wght" 800;
+  line-height: var(--lh-display);
+  letter-spacing: -.025em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background: var(--blue);
+  color: var(--paper);
+}
+
+/* Solo con teclado: al hacer clic con el ratón no aparece el contorno. */
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* --- Etiqueta mono: cabeceras de sección, metadatos ------- */
+.mono {
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-m);
+  font-weight: 500;
+  letter-spacing: var(--tr-mono);
+  text-transform: uppercase;
+}
+
+/* --- Botón: el relleno sube desde abajo al pasar el ratón --- */
+.btn {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  overflow: hidden;
+  padding: 11px 17px;
+  border: 1px solid var(--ink);
+  background: none;
+  color: var(--ink);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: var(--tr-mono);
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color var(--dur) var(--ease);
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ink);
+  transform: translateY(101%);
+  transition: transform .5s var(--ease-out);
+}
+
+.btn:hover {
+  color: var(--paper);
+}
+
+.btn:hover::before {
+  transform: translateY(0);
+}
+
+.btn--ghost {
+  border-color: var(--rule);
+  color: var(--ink-2);
+}
+
+.btn--ghost::before {
+  background: var(--blue);
+}
+
+.btn--ghost:hover {
+  border-color: var(--blue);
+  color: var(--on-blue);
+}
+
+/* --- Movimiento reducido: se corta todo en un solo sitio --- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
