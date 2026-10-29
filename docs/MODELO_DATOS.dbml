@@ -73,8 +73,9 @@ Table admin_users {
   token_version  int       [not null, default: 1, note: 'Al subirlo, todos los JWT emitidos antes dejan de valer']
   last_login_at  timestamp
   created_at     timestamp [not null, default: `now()`]
+  is_singleton   boolean   [unique, not null, default: true, note: 'CHECK (is_singleton): siempre true. Con el UNIQUE, una segunda fila no tiene ningún valor válido']
 
-  Note: 'Un único usuario: yo. Una restricción CHECK impide que haya más de una fila.'
+  Note: 'Un único usuario: yo. Un CHECK no puede contar filas, así que lo impide is_singleton (CHECK + UNIQUE).'
 }
 
 Table auth_attempts {
@@ -107,7 +108,7 @@ Table projects {
 
   is_team_project boolean        [not null, default: false]
   team_size       int            [note: 'Nulo si fue individual']
-  commits_share   int            [note: 'Porcentaje de commits propios. CleanFlow: 87']
+  commits_share   int            [note: 'Porcentaje de commits propios. CleanFlow: 87. CHECK entre 0 y 100']
 
   name            jsonb          [not null, note: '{"es": …, "en": …}']
   summary         jsonb          [not null, note: 'Una o dos frases para la tarjeta']
@@ -143,7 +144,7 @@ Table technologies {
   name          varchar       [unique, not null, note: 'React, Flask, PostgreSQL…']
   category      tech_category [not null]
   is_skill      boolean       [not null, default: true, note: 'Si sale en la sección Conocimientos']
-  level         int           [note: '0-100. Nulo si solo se usa para etiquetar proyectos']
+  level         int           [note: '0-100 (CHECK). Nulo si solo se usa para etiquetar proyectos']
   level_label   jsonb         [note: '"Sólido" / "En curso", en los dos idiomas']
   sort_order    int           [not null, default: 0]
 
