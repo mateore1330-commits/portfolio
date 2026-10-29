@@ -2,6 +2,8 @@
 .env
 .env.*
 !.env.example
+# Sin secretos: solo la dirección local de la API para npm run dev.
+!apps/web/.env.development
 
 # Node
 node_modules/
