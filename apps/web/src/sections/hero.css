@@ -3,9 +3,13 @@
    Los valores sueltos pasan a tokens (redondeados a la escala).
    ============================================================ */
 
-/* container-type: el tamaño del nombre se mide con el ancho de la portada (cqi). */
+/* container-type: el tamaño del nombre se mide con el ancho de la portada (cqi).
+   isolation + fondo propio: la mezcla del apellido necesita algo debajo; sin fondo,
+   saldría blanco también en el tema claro. */
 .hero {
   container-type: inline-size;
+  isolation: isolate;
+  background: var(--paper);
   max-width: var(--max-w);
   margin-inline: auto;
   padding: clamp(86px, 11vh, 128px) var(--gut) clamp(30px, 5vw, 60px);
@@ -70,6 +74,14 @@
 
 .name .ln {
   display: block;
+}
+
+/* Blanco con "difference": sobre el fondo sale del color del texto en los dos temas,
+   y donde la tilde de la Í pisa la O de arriba, se invierte y la recorta. */
+.name-2 {
+  position: relative;
+  color: #fff;
+  mix-blend-mode: difference;
 }
 
 /* --- Escenario: entradilla · retrato · ficha ---------------- */

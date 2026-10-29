@@ -68,7 +68,7 @@ export default function Hero() {
 
       <h1 className="name">
         <span className="ln">{nombre}</span>
-        <span className="ln">{apellidos.join(' ')}</span>
+        <span className="ln name-2">{apellidos.join(' ')}</span>
       </h1>
 
       <div className="stage">
