@@ -39,6 +39,7 @@ Enum tech_category {
   backend
   data
   tools
+  design [note: 'Photoshop, Illustrator, InDesign… De mi etapa anterior']
   soft [note: 'Competencias transversales: trato con cliente, gestión de equipo…']
 }
 
@@ -104,7 +105,8 @@ Table projects {
 
   repo_url        varchar
   demo_url        varchar
-  period          varchar        [note: 'Texto libre: "mayo – octubre 2026"']
+  period          jsonb          [note: '{"es": "agosto – octubre 2026", "en": "August – October 2026"}']
+  label           jsonb          [note: '"Proyecto final del bootcamp · En equipo de 4"']
 
   is_team_project boolean        [not null, default: false]
   team_size       int            [note: 'Nulo si fue individual']
@@ -182,7 +184,7 @@ Table jobs {
 
 Table education {
   education_id int       [pk, increment]
-  institution  varchar   [not null]
+  institution  varchar   [note: 'Nulo en la formación por cuenta propia']
   location     varchar
   start_date   date
   end_date     date      [note: 'Nulo = en curso']

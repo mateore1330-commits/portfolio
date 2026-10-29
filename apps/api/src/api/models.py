@@ -41,6 +41,7 @@ class TechCategory(enum.Enum):
     BACKEND = "backend"
     DATA = "data"
     TOOLS = "tools"
+    DESIGN = "design"
     SOFT = "soft"
 
 
@@ -115,7 +116,9 @@ class Project(db.Model):
 
     repo_url: Mapped[str | None]
     demo_url: Mapped[str | None]
-    period: Mapped[str | None]
+    # Traducibles: "agosto – octubre 2026" / "August – October 2026".
+    period: Mapped[dict | None]
+    label: Mapped[dict | None]  # "Proyecto final del bootcamp · En equipo de 4"
 
     is_team_project: Mapped[bool] = mapped_column(server_default=text("false"))
     team_size: Mapped[int | None]
@@ -220,7 +223,7 @@ class Education(db.Model):
     __tablename__ = "education"
 
     education_id: Mapped[int] = mapped_column(primary_key=True)
-    institution: Mapped[str]
+    institution: Mapped[str | None]  # Nulo en la formación por cuenta propia
     location: Mapped[str | None]
     start_date: Mapped[date | None]
     end_date: Mapped[date | None]  # Nulo = en curso
