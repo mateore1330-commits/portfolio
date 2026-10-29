@@ -13,9 +13,11 @@ flask-cors = "==6.0.5"
 gunicorn = "==26.2.0"
 
 [dev-packages]
+ruff = "==0.17.1"
 
 [requires]
 python_version = "3.13"
 
 [scripts]
 dev = "flask --app wsgi run --debug --port 3001"
+lint = "ruff check ."

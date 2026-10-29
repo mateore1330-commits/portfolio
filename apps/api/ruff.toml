@@ -1,0 +1,6 @@
+target-version = "py313"
+line-length = 100
+
+[lint]
+# E/W: estilo (las reglas de pycodestyle) · F: fallos (pyflakes) · I: orden de imports
+select = ["E", "W", "F", "I"]

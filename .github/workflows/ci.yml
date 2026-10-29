@@ -1,0 +1,124 @@
+# Comprueba cada PR a develop y a main. El único check obligatorio es "CI",
+# que resume a los demás: así un trabajo saltado por el filtro de carpetas no
+# deja el PR esperando para siempre, que es lo que pasaría con `paths:`.
+name: CI
+
+on:
+  pull_request:
+    branches: [develop, main]
+    # edited: para que vuelva a comprobar la descripción si se corrige.
+    types: [opened, synchronize, reopened, edited]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  cambios:
+    name: Detectar cambios
+    runs-on: ubuntu-latest
+    outputs:
+      web: ${{ steps.detectar.outputs.web }}
+      api: ${{ steps.detectar.outputs.api }}
+    steps:
+      # Acciones fijadas por hash: una etiqueta se puede mover, un hash no.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: detectar
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          # Hacia main es la puerta a producción: se comprueba todo, siempre.
+          if [ "$BASE_REF" = main ]; then
+            printf 'web=true\napi=true\n' >> "$GITHUB_OUTPUT"
+          else
+            git diff --name-only "$BASE_SHA" HEAD | .github/scripts/detectar-cambios.sh >> "$GITHUB_OUTPUT"
+          fi
+          cat "$GITHUB_OUTPUT"
+
+  web:
+    name: Web · lint y build
+    needs: cambios
+    if: needs.cambios.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: apps/web/package.json
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+
+  api:
+    name: API · lint y arranque
+    needs: cambios
+    if: needs.cambios.outputs.api == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/api
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - run: pip install pipenv==2026.7.1
+      - run: pipenv sync --dev
+      - run: pipenv run lint
+      # Arranca la aplicación sin servirla: falla si algo no importa o falta config.
+      # Los valores son de prueba, no secretos: la API no se conecta a nada al arrancar.
+      - run: pipenv run flask --app wsgi routes
+        env:
+          SECRET_KEY: solo-para-ci
+          DATABASE_URL: postgresql+psycopg2://ci:ci@localhost:5432/ci
+          CORS_ORIGINS: http://localhost:3000
+
+  pr:
+    name: PR enlazado a su issue
+    # Los PR a main agrupan muchas issues: no cierran una concreta.
+    if: github.base_ref == 'develop'
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          # Por variable de entorno, nunca dentro del script: el texto lo escribe una persona.
+          BODY: ${{ github.event.pull_request.body }}
+        run: |
+          if printf '%s' "$BODY" | grep -Eiq '(close[sd]?|fix(e[sd])?|resolve[sd]?) #[0-9]+'; then
+            echo "Enlazado a su issue."
+          else
+            echo "::error::La descripción del PR tiene que incluir 'Closes #N' con el número de su issue."
+            exit 1
+          fi
+
+  ci:
+    name: CI
+    if: always()
+    needs: [cambios, web, api, pr]
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          RESULTADOS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Resultados: $RESULTADOS"
+          for r in $RESULTADOS; do
+            case "$r" in
+              success|skipped) ;;
+              *) echo "::error::Algún trabajo ha fallado o se ha cancelado."; exit 1 ;;
+            esac
+          done

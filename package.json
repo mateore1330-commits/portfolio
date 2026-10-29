@@ -1,0 +1,10 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "description": "Solo scripts: comprueba las dos aplicaciones con un único comando.",
+  "scripts": {
+    "check": "npm run check:web && npm run check:api",
+    "check:web": "cd apps/web && npm run lint && npm run build",
+    "check:api": "cd apps/api && pipenv run lint && pipenv run flask --app wsgi routes"
+  }
+}
