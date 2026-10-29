@@ -19,11 +19,12 @@ NAMING_CONVENTION = {
 
 class Base(DeclarativeBase):
     # Todas las fechas con zona horaria (TIMESTAMPTZ), y todo dict es JSONB.
+    # none_as_null: un None de Python se guarda como NULL de SQL, no como el JSON 'null'.
     registry = registry(
         metadata=MetaData(naming_convention=NAMING_CONVENTION),
         type_annotation_map={
             datetime: DateTime(timezone=True),
-            dict: JSONB,
+            dict: JSONB(none_as_null=True),
         },
     )
 
