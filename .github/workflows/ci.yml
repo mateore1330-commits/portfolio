@@ -81,6 +81,9 @@ jobs:
       - run: pip install pipenv==2026.7.1
       - run: pipenv sync --dev
       - run: pipenv run lint
+      - name: Los dos idiomas del contenido cuadran
+        run: python scripts/comprobar-idiomas.py
+        working-directory: .
       # Arranca la aplicación sin servirla: falla si algo no importa o falta config.
       # Los valores son de prueba, no secretos: la API no se conecta a nada al arrancar.
       - run: pipenv run flask --app wsgi routes
