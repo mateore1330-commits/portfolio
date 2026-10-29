@@ -1,5 +1,5 @@
 {
-  "etag": "\"92a27d40fa4a208f95e83ad17061d10dcbb519018ed814ba15c2b0b835594d2f\"",
+  "etag": "\"08c2b823e7685d0cfe93aed5fc3730ba41fda19cb28027acbfcd2356914a1ff8\"",
   "education": [
     {
       "description": {
@@ -501,11 +501,11 @@
     "contacto.texto": {
       "en": [
         "I'm looking for my first job as a full stack developer, keen to work on backend and infrastructure. I'm based in Tenerife, open to hybrid or remote, and I can start right away.",
-        "Drop me a line and in ten minutes I'll tell you what I can and can't do."
+        "Drop me a line and in ten minutes I'll tell you what I can bring to your team."
       ],
       "es": [
         "Busco mi primer puesto como desarrollador full stack, con ganas de tocar backend e infraestructura. Estoy en Tenerife, me vale híbrido o remoto, y puedo incorporarme ya.",
-        "Escríbeme y te cuento en diez minutos qué sé hacer y qué no."
+        "Escríbeme y te cuento en diez minutos qué puedo aportar a tu equipo."
       ]
     },
     "contacto.titular": {
