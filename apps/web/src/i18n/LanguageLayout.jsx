@@ -3,17 +3,23 @@ import { Outlet, useLocation, useNavigate } from 'react-router'
 import { actualizarAlternativas, restaurarAncla } from '@/i18n/documento.js'
 import { leerGuardado } from '@/i18n/idiomas.js'
 import { LanguageContext } from '@/i18n/LanguageContext.js'
-import LanguageSwitch from '@/i18n/LanguageSwitch.jsx'
 import { useLang, useT } from '@/i18n/useLang.js'
+import Header from '@/layout/Header.jsx'
+import ProgressRail from '@/layout/ProgressRail.jsx'
 import '@/i18n/language-switch.css'
+import '@/layout/layout.css'
 
-// El idioma lo decide la ruta: este layout lo recibe y lo reparte al resto.
+// El idioma lo decide la ruta: este layout lo recibe y lo reparte al resto, junto
+// con la cabecera y el raíl, que están en todas las páginas (también en la 404).
 export default function LanguageLayout({ lang }) {
   return (
     <LanguageContext.Provider value={lang}>
       <Documento />
-      <LanguageSwitch />
-      <Outlet />
+      <Header />
+      <ProgressRail />
+      <div className="con-rail">
+        <Outlet />
+      </div>
     </LanguageContext.Provider>
   )
 }
