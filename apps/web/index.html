@@ -5,6 +5,14 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mateo Rodríguez · Desarrollador Full Stack</title>
+    <script>
+      // Aplica el tema guardado antes de pintar nada, para que no haya un
+      // destello claro al cargar en oscuro. Misma clave que ThemeProvider.
+      try {
+        var theme = localStorage.getItem('theme')
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

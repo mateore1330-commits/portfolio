@@ -1,0 +1,169 @@
+/* Estilos solo de /_design. Usa los tokens, nunca valores sueltos. */
+
+.ds {
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding: var(--sp-8) var(--gut) var(--sp-section);
+}
+
+.ds-dim {
+  color: var(--ink-3);
+}
+
+.ds-head {
+  display: grid;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-head);
+}
+
+.ds-head h1 {
+  font-size: var(--fs-d-xl);
+  font-variation-settings: "wdth" 125, "wght" 800;
+  line-height: var(--lh-hero);
+  letter-spacing: -.035em;
+}
+
+.ds-themes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.ds-section {
+  margin-bottom: var(--sp-section);
+}
+
+.ds-sechead {
+  display: flex;
+  gap: var(--sp-4);
+  padding-block: var(--sp-4);
+  margin-bottom: var(--sp-6);
+  border-top: 1px solid var(--rule);
+  color: var(--ink-2);
+  letter-spacing: var(--tr-mono-wide);
+}
+
+.ds-n {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+/* --- Paleta ----------------------------------------------- */
+.ds-group {
+  margin-bottom: var(--sp-6);
+}
+
+.ds-group h3 {
+  margin-bottom: var(--sp-3);
+  font-size: var(--fs-mono-s);
+}
+
+.ds-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--sp-2);
+}
+
+.ds-swatch {
+  margin: 0;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+.ds-swatch span {
+  display: block;
+  height: 72px;
+  border-bottom: 1px solid var(--rule-2);
+}
+
+.ds-swatch figcaption {
+  display: grid;
+  gap: 2px;
+  padding: var(--sp-2) var(--sp-3);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-xs);
+}
+
+.ds-swatch code {
+  color: var(--ink-3);
+  overflow-wrap: anywhere;
+}
+
+/* --- Tipografía ------------------------------------------- */
+.ds-type {
+  padding-block: var(--sp-4);
+  border-top: 1px solid var(--rule-2);
+  overflow: hidden;
+}
+
+.ds-type .mono {
+  margin-bottom: var(--sp-2);
+  font-size: var(--fs-mono-xs);
+}
+
+.ds-type-display {
+  font-family: var(--f-display);
+  font-variation-settings: "wdth" 118, "wght" 800;
+  line-height: var(--lh-display);
+  text-transform: uppercase;
+}
+
+.ds-type-body {
+  font-family: var(--f-body);
+}
+
+.ds-type-mono {
+  font-family: var(--f-mono);
+  letter-spacing: var(--tr-mono);
+  text-transform: uppercase;
+}
+
+/* --- Espaciados ------------------------------------------- */
+.ds-space {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  align-items: center;
+  gap: var(--sp-4);
+  padding-block: var(--sp-2);
+}
+
+.ds-space .mono {
+  font-size: var(--fs-mono-xs);
+}
+
+.ds-space i {
+  display: block;
+  height: var(--sp-3);
+  background: var(--blue);
+}
+
+/* --- Componentes ------------------------------------------ */
+.ds-components {
+  display: grid;
+  gap: var(--sp-5);
+  max-width: 62ch;
+}
+
+.ds-components h1 { font-size: var(--fs-d-l); }
+.ds-components h2 { font-size: var(--fs-d-m); }
+.ds-components h3 { font-size: var(--fs-d-s); }
+.ds-components h4 { font-size: var(--fs-mono-l); }
+
+.ds-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.ds-field {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.ds-field input {
+  padding: var(--sp-3);
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  color: var(--ink);
+  font: inherit;
+}
