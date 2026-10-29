@@ -1,8 +1,9 @@
 // Las secciones de la portada, en orden. La usan el menú, el panel móvil y la propia
 // portada: una sola lista para que nunca se desincronicen.
 // Los id son iguales en los dos idiomas (el selector de idioma los usa).
+// subtitulo: el texto de la derecha en la cabecera de la sección (SectionHead).
 export const SECCIONES = [
-  { id: 'sobre-mi', clave: 'seccion.sobre' },
+  { id: 'sobre-mi', clave: 'seccion.sobre', subtitulo: 'seccion.sobre.subtitulo' },
   { id: 'actividad', clave: 'seccion.actividad' },
   { id: 'conocimientos', clave: 'seccion.conocimientos' },
   { id: 'proyectos', clave: 'seccion.proyectos' },
