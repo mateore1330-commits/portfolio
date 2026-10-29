@@ -1,0 +1,1176 @@
+{
+  "education": [
+    {
+      "description": {
+        "en": [
+          "HTML, CSS, JavaScript, React, Python, Flask, SQLAlchemy, PostgreSQL, Git and deployment.",
+          "Final project in a team of four: CleanFlow."
+        ],
+        "es": [
+          "HTML, CSS, JavaScript, React, Python, Flask, SQLAlchemy, PostgreSQL, Git y despliegue.",
+          "Proyecto final en equipo de cuatro personas: CleanFlow."
+        ]
+      },
+      "end_date": "2026-10-01",
+      "institution": "4Geeks Academy España",
+      "location": null,
+      "sort_order": 0,
+      "start_date": "2026-05-01",
+      "title": {
+        "en": "Full Stack Developer with AI · 360 h",
+        "es": "Full Stack Developer with AI · 360 h"
+      }
+    },
+    {
+      "description": {
+        "en": [
+          "AI Engineering. And, on my own, Linux server administration: SSH, Docker, permissions and deployment. I want to work close to the infrastructure."
+        ],
+        "es": [
+          "AI Engineering. Y, por mi cuenta, administración de servidores Linux: SSH, Docker, permisos y despliegue. Quiero trabajar cerca de la infraestructura."
+        ]
+      },
+      "end_date": null,
+      "institution": null,
+      "location": null,
+      "sort_order": 1,
+      "start_date": null,
+      "title": {
+        "en": "Continuous learning · 2026 · In progress",
+        "es": "Formación continua · 2026 · En curso"
+      }
+    },
+    {
+      "description": null,
+      "end_date": "2016-07-01",
+      "institution": "IES Alcalá",
+      "location": "Guía de Isora",
+      "sort_order": 2,
+      "start_date": "2014-09-01",
+      "title": {
+        "en": "Bachillerato (Spanish high school diploma)",
+        "es": "Bachillerato"
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "achievements": {
+        "en": [],
+        "es": []
+      },
+      "company": "WeTaxi Madrid",
+      "description": {
+        "en": [
+          "Passenger transport around Madrid. Self-employed: my own hours, my own accounts and my own problems, solved on the spot with no one to check with."
+        ],
+        "es": [
+          "Transporte de pasajeros por Madrid. Trabajo autónomo: mis horarios, mis cuentas y mis incidencias, resueltas en el momento y sin nadie a quien consultar."
+        ]
+      },
+      "end_date": "2026-04-01",
+      "location": "Madrid",
+      "position": {
+        "en": "Taxi driver",
+        "es": "Conductor de taxi"
+      },
+      "sort_order": 0,
+      "start_date": "2022-06-01",
+      "tools": null
+    },
+    {
+      "achievements": {
+        "en": [
+          "Edited the photo shoots of every listed property",
+          "Designed and laid out print merchandise for the sales team and for campaigns",
+          "Negotiated and coordinated with print suppliers"
+        ],
+        "es": [
+          "Edición de los reportajes fotográficos de todas las propiedades captadas",
+          "Diseño y maquetación para imprenta del merchandising del equipo comercial y de las campañas",
+          "Negociación y coordinación con los proveedores de impresión"
+        ]
+      },
+      "company": "Century 21 Arquitectura",
+      "description": {
+        "en": [
+          "Marketing department of a group with an architecture studio and a real estate agency.",
+          "A year working with Photoshop, Illustrator, InDesign and Lightroom. It's why my projects don't look like templates."
+        ],
+        "es": [
+          "Departamento de marketing de un grupo con estudio de arquitectura e inmobiliaria.",
+          "Un año trabajando con Photoshop, Illustrator, InDesign y Lightroom. Es la razón de que mis proyectos no parezcan plantillas."
+        ]
+      },
+      "end_date": "2021-10-01",
+      "location": "Tenerife",
+      "position": {
+        "en": "Graphic designer",
+        "es": "Diseñador gráfico"
+      },
+      "sort_order": 1,
+      "start_date": "2020-09-01",
+      "tools": "Photoshop, Illustrator, InDesign, Lightroom"
+    },
+    {
+      "achievements": {
+        "en": [
+          "Prospected properties and managed a client portfolio",
+          "Negotiated between buyer and seller through to closing",
+          "Valued each property and planned its sales strategy"
+        ],
+        "es": [
+          "Prospección de inmuebles y seguimiento de cartera de clientes",
+          "Negociación entre comprador y vendedor hasta el cierre",
+          "Valoración y planificación de la estrategia de venta de cada propiedad"
+        ]
+      },
+      "company": "Century 21 Sunset Tenerife",
+      "description": {
+        "en": [
+          "Listing and selling residential property.",
+          "Part of the same group where I later moved to the design department."
+        ],
+        "es": [
+          "Captación y venta de vivienda residencial.",
+          "Del mismo grupo donde después pasé al departamento de diseño."
+        ]
+      },
+      "end_date": "2020-07-01",
+      "location": "Tenerife",
+      "position": {
+        "en": "Real estate agent",
+        "es": "Asesor inmobiliario"
+      },
+      "sort_order": 2,
+      "start_date": "2019-04-01",
+      "tools": null
+    },
+    {
+      "achievements": {
+        "en": [
+          "**Led a team of 2**",
+          "Managed the POS, B2B intranet and CRM",
+          "Customer acquisition, pricing, suppliers and day-to-day operations"
+        ],
+        "es": [
+          "**Coordinación de un equipo de 2 personas**",
+          "Gestión de TPV, intranet B2B y CRM",
+          "Captación de clientes, precios, proveedores y operativa diaria"
+        ]
+      },
+      "company": "Rolling Tours",
+      "description": {
+        "en": [
+          "Founded and ran a tour company, end to end.",
+          "Running a small company teaches you that software nobody uses is worthless, however well built it is."
+        ],
+        "es": [
+          "Creación y gestión integral de una empresa de excursiones turísticas.",
+          "Montar una empresa pequeña te enseña que el software que no se usa no vale nada, por bien hecho que esté."
+        ]
+      },
+      "end_date": "2020-03-01",
+      "location": "Tenerife",
+      "position": {
+        "en": "Founder & General Manager",
+        "es": "Fundador y gerente"
+      },
+      "sort_order": 3,
+      "start_date": "2018-01-01",
+      "tools": null
+    },
+    {
+      "achievements": {
+        "en": [
+          "Photo editing and graphic design of the final pieces",
+          "Managed each project from first contact to delivery",
+          "Camera operator for music videos and events, and occasional drone pilot"
+        ],
+        "es": [
+          "Edición fotográfica y diseño gráfico de las piezas finales",
+          "Gestión del proyecto desde el primer contacto hasta la entrega",
+          "Operador de cámara en producción de videoclips y eventos, y piloto de drones de forma puntual"
+        ]
+      },
+      "company": "We Art Tenerife",
+      "description": {
+        "en": [
+          "End-to-end client acquisition and account management, bridging the sales side with hands-on technical work in the field."
+        ],
+        "es": [
+          "Captación y seguimiento integral de clientes, uniendo la parte comercial con la ejecución técnica sobre el terreno."
+        ]
+      },
+      "end_date": "2018-01-01",
+      "location": "Tenerife",
+      "position": {
+        "en": "Account executive",
+        "es": "Especialista comercial"
+      },
+      "sort_order": 4,
+      "start_date": "2017-03-01",
+      "tools": null
+    }
+  ],
+  "links": [
+    {
+      "label": {
+        "en": "info@mateorodriguez.solutions",
+        "es": "info@mateorodriguez.solutions"
+      },
+      "sort_order": 0,
+      "type": "email",
+      "url": "mailto:info@mateorodriguez.solutions"
+    },
+    {
+      "label": {
+        "en": "LinkedIn",
+        "es": "LinkedIn"
+      },
+      "sort_order": 1,
+      "type": "linkedin",
+      "url": "https://www.linkedin.com/in/mateo-rodr%C3%ADguez-escobar-914834182"
+    },
+    {
+      "label": {
+        "en": "GitHub",
+        "es": "GitHub"
+      },
+      "sort_order": 2,
+      "type": "github",
+      "url": "https://github.com/mateore1330-commits"
+    }
+  ],
+  "projects": [
+    {
+      "commits_share": 87,
+      "demo_url": "https://sample-service-name-vf40.onrender.com/",
+      "description": {
+        "en": [
+          "CleanFlow isn't a booking website: it's the system the whole company would run on.",
+          "The **customer** books by choosing a service, a date and an address, tracks their bookings, cancels or reschedules them, and leaves a review with photos. The **worker** sees their assigned jobs, clocks in and out each day, closes tasks by uploading before-and-after photos, and reports incidents when something doesn't go as planned. The **manager** runs everything: bookings, customers, shifts, absences, incidents, the service catalog and job applications.",
+          "Under the hood there are 16 tables, 83 endpoints and around 31,000 lines of Python and JavaScript."
+        ],
+        "es": [
+          "CleanFlow no es una web de reservas: es el sistema con el que funcionaría la empresa entera.",
+          "El **cliente** reserva eligiendo servicio, fecha y dirección, sigue sus reservas, las cancela o las reprograma, y deja reseña con fotos. El **trabajador** ve sus servicios asignados, marca el inicio y el final de cada día, cierra tareas subiendo fotos del antes y el después, y abre incidencias cuando algo no sale como debía. El **encargado** lo gobierna todo: reservas, clientes, turnos, bajas, incidencias, catálogo y solicitudes de empleo.",
+          "Por debajo son 16 tablas, 83 endpoints y unas 31.000 líneas entre Python y JavaScript."
+        ]
+      },
+      "is_featured": true,
+      "is_team_project": true,
+      "label": {
+        "en": "Bootcamp final project · Team of 4",
+        "es": "Proyecto final del bootcamp · En equipo de 4"
+      },
+      "learning": {
+        "en": [
+          "**We worked vertically, not horizontally.** Instead of one person doing the frontend and another the backend, each of us took a whole feature: the screen, the endpoint and whatever tables it needed. It takes longer to get going, and you understand what you're doing far better.",
+          "The workflow was: you assign yourself the issue, create a branch, open the pull request, **at least two people review it**, and it goes into `develop`. `main` was only touched to deploy.",
+          "That discipline is what I value most. Writing code on your own is easy; getting four people to agree on the same code isn't."
+        ],
+        "es": [
+          "**Trabajamos en vertical, no en horizontal.** En vez de que uno hiciera el frontend y otro el backend, cada uno cogía una funcionalidad entera: la pantalla, el endpoint y las tablas que hicieran falta. Se tarda más en arrancar y se entiende muchísimo mejor lo que estás haciendo.",
+          "El flujo era: te asignas la issue, creas una rama, abres el pull request, **lo revisan al menos dos personas** y entra en `develop`. `main` solo se tocaba al desplegar.",
+          "Esa disciplina es lo que más me llevo. Es fácil escribir código solo; ponerse de acuerdo cuatro personas sobre el mismo código, no."
+        ]
+      },
+      "media": [],
+      "my_role": {
+        "en": [
+          "I worked on authentication (sign-up, Google login via OAuth and JWT handling), on the role system that decides what each user sees in their dashboard, on the navbar and several sections of the landing page, and on a good part of the application logic: worker availability and service availability.",
+          "There were four of us and we split the tasks evenly. Two weeks in, one teammate left the bootcamp and her work had to be redone; the other two had less time available for personal reasons. Once I'd finished my part I kept picking up tasks so the project wouldn't stall. I ended up authoring 441 of the 509 commits."
+        ],
+        "es": [
+          "Trabajé en el inicio de sesión —registro, login con Google mediante OAuth y la gestión del token JWT—, en el sistema de roles que decide qué ve cada usuario en su panel, en el navbar y varias secciones de la landing, y en buena parte de la lógica de la aplicación: la disponibilidad de los trabajadores y la de los servicios.",
+          "Éramos cuatro y repartimos las tareas a partes iguales. A las dos semanas una compañera dejó el bootcamp y hubo que rehacer su trabajo; los otros dos tuvieron menos disponibilidad por motivos personales. Cuando terminé lo mío seguí cogiendo tareas para que el proyecto no se parara. Acabé firmando 441 de los 509 commits."
+        ]
+      },
+      "name": {
+        "en": "CleanFlow",
+        "es": "CleanFlow"
+      },
+      "period": {
+        "en": "September – October 2026",
+        "es": "septiembre – octubre 2026"
+      },
+      "repo_url": "https://github.com/mateore1330-commits/CleanFlow",
+      "slug": "cleanflow",
+      "sort_order": 0,
+      "summary": {
+        "en": "Booking platform for a cleaning company, with three roles working on the same data: customer, worker and manager. Bootcamp final project, built by a team of four. 509 commits, 85 pull requests, and 441 of those commits are mine.",
+        "es": "Plataforma de reservas para una empresa de limpieza, con tres roles trabajando sobre los mismos datos: cliente, trabajador y encargado. Proyecto final del bootcamp, hecho entre cuatro. 509 commits, 85 pull requests, y 441 de esos commits son míos."
+      },
+      "team_size": 4,
+      "technologies": [
+        "Flask",
+        "SQLAlchemy",
+        "PostgreSQL",
+        "React",
+        "JWT",
+        "Google OAuth",
+        "Cloudinary",
+        "Render"
+      ]
+    },
+    {
+      "commits_share": null,
+      "demo_url": "https://mir-llamado-dashboard.vercel.app",
+      "description": {
+        "en": [
+          "Three types of exam: official papers from previous years, self-assessments by subject, and custom exams built from your own mistakes.",
+          "That last part is what makes it worthwhile. When you submit an exam, each question goes to one of three places depending on your answer. The mistakes bank **cleans itself up**: as soon as you get right a question you'd previously got wrong, it drops out. That way, custom exams only ask you what you still don't know.",
+          "The content didn't exist anywhere in a usable format: 4,700 questions and 562 clinical images that I extracted from the Ministry of Health's PDFs with a Python tool."
+        ],
+        "es": [
+          "Tres tipos de examen: convocatorias oficiales de años anteriores, autoevaluaciones por asignatura y exámenes a la carta generados con tus propios fallos.",
+          "Esa última parte es la que le da sentido. Al entregar un examen, cada pregunta va a uno de tres sitios según la respuesta. El banco de fallos **se limpia solo**: en cuanto aciertas una pregunta que antes fallaste, desaparece de él. Así los exámenes a la carta solo te preguntan lo que sigues sin saber.",
+          "El contenido no existía en ninguna parte en formato usable: son 4.700 preguntas y 562 imágenes clínicas que extraje de los PDF del Ministerio con una herramienta en Python."
+        ]
+      },
+      "is_featured": false,
+      "is_team_project": false,
+      "label": {
+        "en": "Personal project · In production",
+        "es": "Proyecto personal · En producción"
+      },
+      "learning": {
+        "en": [
+          "Data modeling and fault tolerance.",
+          "A MIR mock exam lasts four and a half hours. Losing it to a power cut is unacceptable, so the state is saved after every answer: when you come back, your marked answers, the exact question and the timer are restored to the second.",
+          "Once it was working, I ran a **security audit following OWASP**. I found 18 issues and fixed all of them: login attempt limits, CSRF protection, session revocation, single active session and inactivity timeout. The risks I chose to accept are written down and explained, not hidden."
+        ],
+        "es": [
+          "El modelado de datos y la resistencia a fallos.",
+          "Un simulacro del MIR dura cuatro horas y media. Perderlo por un corte de luz es inaceptable, así que el estado se guarda después de cada respuesta: al volver se restauran las respuestas marcadas, la pregunta exacta y el cronómetro al segundo.",
+          "Cuando lo tuve funcionando le hice una **auditoría de seguridad siguiendo OWASP**. Encontré 18 problemas y los corregí todos: límite de intentos en el login, defensa contra CSRF, revocación de sesiones, sesión única y caducidad por inactividad. Los riesgos que decidí asumir están escritos y explicados, no escondidos."
+        ]
+      },
+      "media": [],
+      "my_role": null,
+      "name": {
+        "en": "MIR Llamado",
+        "es": "MIR Llamado"
+      },
+      "period": {
+        "en": "June – July 2026",
+        "es": "junio – julio 2026"
+      },
+      "repo_url": null,
+      "slug": "mir-llamado",
+      "sort_order": 1,
+      "summary": {
+        "en": "Custom-built study platform for the MIR (Spain's medical residency entrance exam), live in production. Its own bank of 4,700 questions that I extracted from the official PDFs with Python. If the power goes out in the middle of a mock exam, everything is right where you left it when you come back, down to the second.",
+        "es": "Plataforma de estudio para el examen MIR, hecha a medida y en producción. Banco propio de 4.700 preguntas que extraje de los PDF oficiales con Python. Si se va la luz en mitad de un simulacro, al volver está todo donde lo dejaste, al segundo."
+      },
+      "team_size": null,
+      "technologies": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind",
+        "Turso",
+        "Vercel Blob",
+        "Upstash",
+        "Python"
+      ]
+    },
+    {
+      "commits_share": null,
+      "demo_url": null,
+      "description": {
+        "en": [
+          "Character and planet carousels, search with autocomplete, favorites, and cross navigation: from a character you can jump to their home planet, and from the planet to any of its inhabitants.",
+          "I built the global state with Context and `useReducer`, and added two things the exercise didn't ask for: persistence in the browser and a cache that expires after an hour. Reloading doesn't call the API again, but the data doesn't go stale either."
+        ],
+        "es": [
+          "Carruseles de personajes y planetas, buscador con autocompletado, favoritos, y navegación cruzada: desde un personaje llegas a su planeta de origen, y desde el planeta a cualquiera de sus habitantes.",
+          "El estado global lo monté con Context y `useReducer`, y le añadí dos cosas que el ejercicio no pedía: persistencia en el navegador y una caché con caducidad de una hora. Recargar no vuelve a llamar a la API, pero los datos tampoco se quedan congelados."
+        ]
+      },
+      "is_featured": false,
+      "is_team_project": false,
+      "label": {
+        "en": "Bootcamp project · Solo",
+        "es": "Proyecto del bootcamp · Individual"
+      },
+      "learning": {
+        "en": [
+          "I ran into a bug I didn't expect: **the API reuses the same IDs across different collections.** Goku is character 1 and Namek is planet 1. Removing one favorite made both disappear.",
+          "I fixed it by comparing the ID together with the type, and left a comment in the code so I wouldn't trip over it again. It's the bug that taught me the most: the mistake wasn't in my code, it was in an assumption I'd made about someone else's data.",
+          "The design isn't default Bootstrap either. I built a Japanese newspaper poster identity (aged paper, ink, seal red, hard shadows) with the variables centralized in CSS."
+        ],
+        "es": [
+          "Me topé con un fallo que no esperaba: **la API reutiliza los mismos identificadores en colecciones distintas.** Goku es el personaje 1 y Namek es el planeta 1. Al quitar un favorito desaparecían los dos.",
+          "Lo arreglé comparando el identificador junto con el tipo, y lo dejé comentado en el código para no volver a tropezar. Es el bug que más me ha enseñado: el error no estaba en mi código, estaba en una suposición mía sobre datos ajenos.",
+          "El diseño tampoco es el de Bootstrap por defecto. Monté una identidad de cartel de periódico japonés —papel envejecido, tinta, rojo de sello, sombras duras— con las variables centralizadas en CSS."
+        ]
+      },
+      "media": [],
+      "my_role": null,
+      "name": {
+        "en": "Blog Dragon Ball",
+        "es": "Blog Dragon Ball"
+      },
+      "period": {
+        "en": "August 2026",
+        "es": "agosto 2026"
+      },
+      "repo_url": "https://github.com/mateore1330-commits/dragonballz-API",
+      "slug": "blog-dragon-ball",
+      "sort_order": 2,
+      "summary": {
+        "en": "React client for the Dragon Ball API, with keyboard search, favorites that survive a reload and cross-linked profiles for characters and planets. Its visual identity is a Japanese newspaper poster, with hand-written CSS.",
+        "es": "Cliente en React sobre la Dragon Ball API, con buscador por teclado, favoritos que sobreviven a recargar y fichas enlazadas entre personajes y planetas. Identidad visual de cartel de periódico japonés, con el CSS escrito a mano."
+      },
+      "team_size": null,
+      "technologies": [
+        "React",
+        "React Router",
+        "Vite",
+        "Context + useReducer",
+        "CSS3"
+      ]
+    }
+  ],
+  "site_texts": {
+    "conocimientos.grupos": {
+      "en": {
+        "backend": {
+          "subtitulo": "Server and logic",
+          "titulo": "Backend"
+        },
+        "data": {
+          "subtitulo": "Storage and modeling",
+          "titulo": "Data"
+        },
+        "design": {
+          "subtitulo": "From my previous career",
+          "titulo": "Design"
+        },
+        "frontend": {
+          "subtitulo": "Interface and client side",
+          "titulo": "Frontend"
+        },
+        "soft": {
+          "subtitulo": "From the previous eight years",
+          "titulo": "Soft skills"
+        },
+        "tools": {
+          "subtitulo": "Flujo de trabajo",
+          "titulo": "Herramientas"
+        }
+      },
+      "es": {
+        "backend": {
+          "subtitulo": "Servidor y lógica",
+          "titulo": "Backend"
+        },
+        "data": {
+          "subtitulo": "Persistencia y modelado",
+          "titulo": "Datos"
+        },
+        "design": {
+          "subtitulo": "De mi etapa anterior",
+          "titulo": "Diseño"
+        },
+        "frontend": {
+          "subtitulo": "Interfaz y cliente",
+          "titulo": "Frontend"
+        },
+        "soft": {
+          "subtitulo": "De los ocho años anteriores",
+          "titulo": "Transversal"
+        },
+        "tools": {
+          "subtitulo": "Flujo de trabajo",
+          "titulo": "Herramientas"
+        }
+      }
+    },
+    "contacto.boton": {
+      "en": "Send message",
+      "es": "Enviar mensaje"
+    },
+    "contacto.respaldo": {
+      "en": "Email me directly at info@mateorodriguez.solutions",
+      "es": "Escríbeme directamente a info@mateorodriguez.solutions"
+    },
+    "contacto.texto": {
+      "en": [
+        "I'm looking for my first job as a full stack developer, keen to work on backend and infrastructure. I'm based in Tenerife, open to hybrid or remote, and I can start right away.",
+        "Drop me a line and in ten minutes I'll tell you what I can and can't do."
+      ],
+      "es": [
+        "Busco mi primer puesto como desarrollador full stack, con ganas de tocar backend e infraestructura. Estoy en Tenerife, me vale híbrido o remoto, y puedo incorporarme ya.",
+        "Escríbeme y te cuento en diez minutos qué sé hacer y qué no."
+      ]
+    },
+    "contacto.titular": {
+      "en": "Let's talk",
+      "es": "Hablamos"
+    },
+    "hero.entradilla": {
+      "en": "My background in sales, graphic design and running my own company gives me a view that goes beyond code. I don't just build interfaces: I build products that solve real problems for the people who use them.",
+      "es": "Mi trayectoria previa como comercial, diseñador gráfico y fundador de mi propia empresa me aporta una visión global más allá del código. No desarrollo simples interfaces, sino productos estratégicos pensados para solucionar necesidades reales de los usuarios."
+    },
+    "hero.etiquetas": {
+      "en": [
+        "Available to start immediately",
+        "Tenerife",
+        "Hybrid or remote",
+        "React",
+        "Python",
+        "Flask"
+      ],
+      "es": [
+        "Disponible para incorporación inmediata",
+        "Tenerife",
+        "Híbrido o remoto",
+        "React",
+        "Python",
+        "Flask"
+      ]
+    },
+    "hero.ficha": {
+      "en": [
+        {
+          "clave": "Profile",
+          "valor": "Junior Full Stack"
+        },
+        {
+          "clave": "Frontend",
+          "valor": "React · JavaScript · CSS"
+        },
+        {
+          "clave": "Backend",
+          "valor": "Python · Flask · SQLAlchemy"
+        },
+        {
+          "clave": "Data",
+          "valor": "PostgreSQL · SQL"
+        },
+        {
+          "clave": "Languages",
+          "valor": "Spanish (native) · English (B1)"
+        },
+        {
+          "clave": "Location",
+          "valor": "Tenerife, Canary Islands"
+        }
+      ],
+      "es": [
+        {
+          "clave": "Perfil",
+          "valor": "Full Stack Jr."
+        },
+        {
+          "clave": "Frontend",
+          "valor": "React · JavaScript · CSS"
+        },
+        {
+          "clave": "Backend",
+          "valor": "Python · Flask · SQLAlchemy"
+        },
+        {
+          "clave": "Datos",
+          "valor": "PostgreSQL · SQL"
+        },
+        {
+          "clave": "Idiomas",
+          "valor": "Español nativo · Inglés B1"
+        },
+        {
+          "clave": "Ubicación",
+          "valor": "Tenerife, Canarias"
+        }
+      ]
+    },
+    "hero.nombre": {
+      "en": "Mateo Rodríguez",
+      "es": "Mateo Rodríguez"
+    },
+    "pie.texto": {
+      "en": [
+        "Mateo Rodríguez · Full Stack Developer · Tenerife, Spain",
+        "This site is built with React and Flask, and the code is public."
+      ],
+      "es": [
+        "Mateo Rodríguez · Desarrollador Full Stack · Tenerife, España",
+        "Esta web está hecha con React y Flask, y el código es público."
+      ]
+    },
+    "sobre.cifras": {
+      "en": [
+        {
+          "etiqueta": "Bootcamp hours",
+          "valor": "360"
+        },
+        {
+          "etiqueta": "Contributions this year",
+          "origen": "github",
+          "valor": null
+        },
+        {
+          "etiqueta": "Years working with clients",
+          "valor": "8"
+        },
+        {
+          "etiqueta": "Projects in production",
+          "valor": "2"
+        }
+      ],
+      "es": [
+        {
+          "etiqueta": "Horas de bootcamp",
+          "valor": "360"
+        },
+        {
+          "etiqueta": "Contribuciones este año",
+          "origen": "github",
+          "valor": null
+        },
+        {
+          "etiqueta": "Años tratando con clientes",
+          "valor": "8"
+        },
+        {
+          "etiqueta": "Proyectos en producción",
+          "valor": "2"
+        }
+      ]
+    },
+    "sobre.cita": {
+      "en": "What I like most about development is the part where it doesn't work yet.",
+      "es": "Lo que más me gusta del desarrollo es la parte en la que todavía no funciona."
+    },
+    "sobre.cuerpo": {
+      "en": [
+        "I don't come from IT. I come from selling, looking after customers and getting things off the ground.",
+        "I started in sales at a video production company, handling clients from start to finish: from first contact to final delivery. In 2018 I set up my own tour company in Tenerife and ran it for two years, with two people on my team, its POS, its intranet and its customers. After that I sold property at Century 21, and from there I moved to the group's design department, laying out campaigns and preparing files for print.",
+        "In every one of those jobs the work was the same: understand what someone needs when they can't quite explain it, and deliver it working. It turns out programming is pretty similar.",
+        "In May 2026 I joined the 4Geeks Full Stack bootcamp. Since then I've built interfaces in React, APIs in Flask, data models with SQLAlchemy, and quite a few things that broke and I had to fix. I'm especially interested in what happens underneath: the database, the deployment, why something goes down on a Tuesday at eight.",
+        "I'm looking for my first job as a developer. I don't bring years of technical experience. I bring the habit of owning what I deliver and asking when I don't know something."
+      ],
+      "es": [
+        "No vengo de la informática. Vengo de vender, de atender y de montar cosas.",
+        "Empecé como comercial en una productora audiovisual, llevando clientes de principio a fin: del primer contacto hasta la entrega. En 2018 monté mi propia empresa de excursiones en Tenerife y la llevé dos años, con dos personas a mi cargo, su TPV, su intranet y sus clientes. Después vendí inmuebles en Century 21, y de ahí pasé al departamento de diseño del grupo, maquetando campañas y preparando archivos para imprenta.",
+        "En todos esos sitios el trabajo era el mismo: entender qué necesita alguien que no sabe explicarlo del todo, y entregárselo funcionando. Resulta que programar se parece bastante.",
+        "En mayo de 2026 entré en el bootcamp Full Stack de 4Geeks. Desde entonces he construido interfaces en React, APIs en Flask, modelos de datos con SQLAlchemy, y unas cuantas cosas que se rompieron y tuve que arreglar. Me interesa especialmente lo que pasa por debajo: la base de datos, el despliegue, por qué algo se cae un martes a las ocho.",
+        "Busco mi primer puesto como desarrollador. No traigo años de experiencia técnica. Traigo la costumbre de responder por lo que entrego y de preguntar cuando no sé algo."
+      ]
+    },
+    "sobre.titular": {
+      "en": "Eight years understanding what people need. Now I can build it.",
+      "es": "Ocho años entendiendo lo que necesita la gente. Ahora sé construirlo."
+    }
+  },
+  "technologies": [
+    {
+      "category": "frontend",
+      "display_name": null,
+      "is_skill": false,
+      "level": null,
+      "level_label": null,
+      "name": "Context + useReducer",
+      "sort_order": 0
+    },
+    {
+      "category": "frontend",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Daily use",
+        "es": "Lo uso a diario"
+      },
+      "name": "React",
+      "sort_order": 0
+    },
+    {
+      "category": "frontend",
+      "display_name": null,
+      "is_skill": false,
+      "level": null,
+      "level_label": null,
+      "name": "React Router",
+      "sort_order": 0
+    },
+    {
+      "category": "frontend",
+      "display_name": null,
+      "is_skill": false,
+      "level": null,
+      "level_label": null,
+      "name": "TypeScript",
+      "sort_order": 0
+    },
+    {
+      "category": "frontend",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Daily use",
+        "es": "Lo uso a diario"
+      },
+      "name": "JavaScript ES6+",
+      "sort_order": 1
+    },
+    {
+      "category": "frontend",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Daily use",
+        "es": "Lo uso a diario"
+      },
+      "name": "HTML5",
+      "sort_order": 2
+    },
+    {
+      "category": "frontend",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Daily use",
+        "es": "Lo uso a diario"
+      },
+      "name": "CSS3",
+      "sort_order": 3
+    },
+    {
+      "category": "frontend",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Daily use",
+        "es": "Lo uso a diario"
+      },
+      "name": "Vite",
+      "sort_order": 4
+    },
+    {
+      "category": "frontend",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Solid",
+        "es": "Sólido"
+      },
+      "name": "Next.js",
+      "sort_order": 5
+    },
+    {
+      "category": "frontend",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Solid",
+        "es": "Sólido"
+      },
+      "name": "Tailwind",
+      "sort_order": 6
+    },
+    {
+      "category": "frontend",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Familiar",
+        "es": "Lo he usado"
+      },
+      "name": "Bootstrap",
+      "sort_order": 7
+    },
+    {
+      "category": "backend",
+      "display_name": null,
+      "is_skill": false,
+      "level": null,
+      "level_label": null,
+      "name": "Google OAuth",
+      "sort_order": 0
+    },
+    {
+      "category": "backend",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Daily use",
+        "es": "Lo uso a diario"
+      },
+      "name": "Python",
+      "sort_order": 0
+    },
+    {
+      "category": "backend",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Daily use",
+        "es": "Lo uso a diario"
+      },
+      "name": "Flask",
+      "sort_order": 1
+    },
+    {
+      "category": "backend",
+      "display_name": {
+        "en": "REST API",
+        "es": "API REST"
+      },
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Daily use",
+        "es": "Lo uso a diario"
+      },
+      "name": "API REST",
+      "sort_order": 2
+    },
+    {
+      "category": "backend",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Daily use",
+        "es": "Lo uso a diario"
+      },
+      "name": "SQLAlchemy",
+      "sort_order": 3
+    },
+    {
+      "category": "backend",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Solid",
+        "es": "Sólido"
+      },
+      "name": "JWT",
+      "sort_order": 4
+    },
+    {
+      "category": "backend",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Familiar",
+        "es": "Lo he usado"
+      },
+      "name": "Node.js",
+      "sort_order": 5
+    },
+    {
+      "category": "data",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Solid",
+        "es": "Sólido"
+      },
+      "name": "PostgreSQL",
+      "sort_order": 0
+    },
+    {
+      "category": "data",
+      "display_name": null,
+      "is_skill": false,
+      "level": null,
+      "level_label": null,
+      "name": "Turso",
+      "sort_order": 0
+    },
+    {
+      "category": "data",
+      "display_name": null,
+      "is_skill": false,
+      "level": null,
+      "level_label": null,
+      "name": "Upstash",
+      "sort_order": 0
+    },
+    {
+      "category": "data",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Solid",
+        "es": "Sólido"
+      },
+      "name": "SQL",
+      "sort_order": 1
+    },
+    {
+      "category": "data",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Solid",
+        "es": "Sólido"
+      },
+      "name": "Alembic",
+      "sort_order": 2
+    },
+    {
+      "category": "data",
+      "display_name": {
+        "en": "Relational modeling",
+        "es": "Modelado relacional"
+      },
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Solid",
+        "es": "Sólido"
+      },
+      "name": "Modelado relacional",
+      "sort_order": 3
+    },
+    {
+      "category": "tools",
+      "display_name": null,
+      "is_skill": false,
+      "level": null,
+      "level_label": null,
+      "name": "Cloudinary",
+      "sort_order": 0
+    },
+    {
+      "category": "tools",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Daily use",
+        "es": "Lo uso a diario"
+      },
+      "name": "Git",
+      "sort_order": 0
+    },
+    {
+      "category": "tools",
+      "display_name": null,
+      "is_skill": false,
+      "level": null,
+      "level_label": null,
+      "name": "Vercel Blob",
+      "sort_order": 0
+    },
+    {
+      "category": "tools",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Daily use",
+        "es": "Lo uso a diario"
+      },
+      "name": "GitHub",
+      "sort_order": 1
+    },
+    {
+      "category": "tools",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Daily use",
+        "es": "Lo uso a diario"
+      },
+      "name": "Pull requests",
+      "sort_order": 2
+    },
+    {
+      "category": "tools",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Daily use",
+        "es": "Lo uso a diario"
+      },
+      "name": "Visual Studio Code",
+      "sort_order": 3
+    },
+    {
+      "category": "tools",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Solid",
+        "es": "Sólido"
+      },
+      "name": "Vercel",
+      "sort_order": 4
+    },
+    {
+      "category": "tools",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Familiar",
+        "es": "Lo he usado"
+      },
+      "name": "Render",
+      "sort_order": 5
+    },
+    {
+      "category": "design",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Solid",
+        "es": "Sólido"
+      },
+      "name": "Photoshop",
+      "sort_order": 0
+    },
+    {
+      "category": "design",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Solid",
+        "es": "Sólido"
+      },
+      "name": "Illustrator",
+      "sort_order": 1
+    },
+    {
+      "category": "design",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Solid",
+        "es": "Sólido"
+      },
+      "name": "InDesign",
+      "sort_order": 2
+    },
+    {
+      "category": "design",
+      "display_name": null,
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Solid",
+        "es": "Sólido"
+      },
+      "name": "Lightroom",
+      "sort_order": 3
+    },
+    {
+      "category": "design",
+      "display_name": {
+        "en": "Photography",
+        "es": "Fotografía"
+      },
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Familiar",
+        "es": "Lo he usado"
+      },
+      "name": "Fotografía",
+      "sort_order": 4
+    },
+    {
+      "category": "design",
+      "display_name": {
+        "en": "Video recording",
+        "es": "Grabación de vídeo"
+      },
+      "is_skill": true,
+      "level": null,
+      "level_label": {
+        "en": "Familiar",
+        "es": "Lo he usado"
+      },
+      "name": "Grabación de vídeo",
+      "sort_order": 5
+    },
+    {
+      "category": "soft",
+      "display_name": {
+        "en": "Client relations",
+        "es": "Trato con cliente"
+      },
+      "is_skill": true,
+      "level": null,
+      "level_label": null,
+      "name": "Trato con cliente",
+      "sort_order": 0
+    },
+    {
+      "category": "soft",
+      "display_name": {
+        "en": "Negotiation",
+        "es": "Negociación"
+      },
+      "is_skill": true,
+      "level": null,
+      "level_label": null,
+      "name": "Negociación",
+      "sort_order": 1
+    },
+    {
+      "category": "soft",
+      "display_name": {
+        "en": "Sales management",
+        "es": "Dirección comercial"
+      },
+      "is_skill": true,
+      "level": null,
+      "level_label": null,
+      "name": "Dirección comercial",
+      "sort_order": 2
+    },
+    {
+      "category": "soft",
+      "display_name": {
+        "en": "Team leadership",
+        "es": "Liderazgo de equipos"
+      },
+      "is_skill": true,
+      "level": null,
+      "level_label": null,
+      "name": "Liderazgo de equipos",
+      "sort_order": 3
+    },
+    {
+      "category": "soft",
+      "display_name": {
+        "en": "Teamwork",
+        "es": "Trabajo en equipo"
+      },
+      "is_skill": true,
+      "level": null,
+      "level_label": null,
+      "name": "Trabajo en equipo",
+      "sort_order": 4
+    }
+  ],
+  "version": 1
+}
