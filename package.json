@@ -4,7 +4,7 @@
   "description": "Solo scripts: comprueba las dos aplicaciones con un único comando.",
   "scripts": {
     "check": "npm run check:web && npm run check:api",
-    "check:web": "cd apps/web && npm run lint && npm run build",
+    "check:web": "python3 scripts/comprobar-idiomas.py apps/web/src/i18n/es.json apps/web/src/i18n/en.json && cd apps/web && npm run lint && npm run build",
     "check:api": "python3 scripts/comprobar-idiomas.py && cd apps/api && pipenv run lint && pipenv run flask --app wsgi routes"
   }
 }
