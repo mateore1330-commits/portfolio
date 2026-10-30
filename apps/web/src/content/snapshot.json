@@ -1,7 +1,32 @@
 {
-  "etag": "\"5d9b58e276a0237b5d1aa5af9679e3d3048069eb1b4c65f027c63af6635ce1e9\"",
+  "etag": "\"2fdee73a5f93c51fd0f06536edd33af68458ad969ebcb0d32696ba8e01d2cdc4\"",
   "education": [
     {
+      "certificate_file": null,
+      "certificate_url": null,
+      "description": {
+        "en": [
+          "In progress, until May 2027."
+        ],
+        "es": [
+          "En curso, hasta mayo de 2027."
+        ]
+      },
+      "end_date": null,
+      "hours": null,
+      "institution": "4Geeks Academy",
+      "kind": "program",
+      "location": null,
+      "sort_order": 0,
+      "start_date": "2026-11-01",
+      "title": {
+        "en": "AI Engineering",
+        "es": "AI Engineering"
+      }
+    },
+    {
+      "certificate_file": "/certificados/full-stack-software-developer-4geeks.pdf",
+      "certificate_url": "https://certificate.4geeks.com/97242815a5c464604f3385cbb0c1f2335fe29448",
       "description": {
         "en": [
           "HTML, CSS, JavaScript, React, Python, Flask, SQLAlchemy, PostgreSQL, Git and deployment.",
@@ -13,13 +38,31 @@
         ]
       },
       "end_date": "2026-10-01",
-      "institution": "4Geeks Academy España",
-      "location": null,
-      "sort_order": 0,
+      "hours": 360,
+      "institution": "4Geeks Academy",
+      "kind": "program",
+      "location": "Madrid",
+      "sort_order": 1,
       "start_date": "2026-05-01",
       "title": {
-        "en": "Full Stack Developer with AI · 360 h",
-        "es": "Full Stack Developer with AI · 360 h"
+        "en": "Full Stack Software Developer",
+        "es": "Full Stack Software Developer"
+      }
+    },
+    {
+      "certificate_file": null,
+      "certificate_url": null,
+      "description": null,
+      "end_date": "2026-09-01",
+      "hours": 20,
+      "institution": "Plataforma de ejemplo",
+      "kind": "course",
+      "location": null,
+      "sort_order": 2,
+      "start_date": "2026-09-01",
+      "title": {
+        "en": "Python from scratch (example course)",
+        "es": "Python desde cero (curso de ejemplo)"
       }
     }
   ],
