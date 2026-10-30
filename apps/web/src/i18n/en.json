@@ -40,5 +40,14 @@
   "actividad.pie": "One square = one day · hover or use the arrow keys for details",
   "actividad.menos": "Less",
   "actividad.mas": "More",
-  "seccion.conocimientos.subtitulo": "Self-assessed level"
+  "seccion.conocimientos.subtitulo": "Self-assessed level",
+  "seccion.proyectos.subtitulo": "Bootcamp and personal",
+  "proyectos.numero": "Project {n}",
+  "proyectos.tecnologias": "Technologies",
+  "proyectos.equipo": "Team of {n} · {pct} of the commits",
+  "proyectos.equipo_solo": "Team of {n}",
+  "proyectos.demo": "View demo",
+  "proyectos.repo": "Repository",
+  "proyectos.sin_imagen": "No image yet",
+  "enlace.nueva_pestana": "(opens in a new tab)"
 }

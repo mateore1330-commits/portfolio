@@ -1,0 +1,137 @@
+/* ============================================================
+   PROYECTOS — la pila de la maqueta aprobada.
+   ============================================================ */
+
+.proj {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: clamp(22px, 3vw, 48px);
+  margin-bottom: clamp(20px, 3vw, 40px);
+  padding: clamp(22px, 3vw, 44px);
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  transform-origin: center top;
+}
+
+/* La pila: cada tarjeta se queda pegada bajo la cabecera y la siguiente la tapa. Solo en
+   escritorio y sin movimiento reducido (el mismo límite está en Projects.jsx). */
+@media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
+  .proj {
+    position: sticky;
+    top: clamp(76px, 12vh, 124px);
+  }
+}
+
+/* El destacado ocupa más: más aire, mitad y mitad y un título mayor. */
+.proj.destacado {
+  grid-template-columns: 1fr 1fr;
+  padding: clamp(28px, 3.6vw, 52px);
+}
+
+.proj-num {
+  margin-bottom: var(--sp-4);
+  color: var(--blue);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.proj-tag {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.proj-tag li {
+  padding: var(--sp-1) 9px;
+  border: 1px solid var(--rule);
+  color: var(--ink-2);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-xs);
+  font-weight: 500;
+  letter-spacing: var(--tr-mono);
+  text-transform: uppercase;
+}
+
+.proj h3 {
+  margin-bottom: 14px;
+  font-size: var(--fs-d-l);
+  font-variation-settings: "wdth" 120, "wght" 800;
+}
+
+.proj.destacado h3 {
+  font-size: clamp(34px, 4.6vw, 68px);
+}
+
+.proj .resumen {
+  max-width: 52ch;
+  margin-bottom: var(--sp-4);
+  color: var(--ink-2);
+  font-size: var(--fs-body-s);
+}
+
+/* Equipo y aportación propia, con la línea azul de las citas. */
+.proj .equipo {
+  margin-bottom: 22px;
+  padding-left: var(--sp-3);
+  border-left: 2px solid var(--blue);
+  color: var(--ink);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-m);
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.proj-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* --- Imagen (o el hueco con la cámara) ------------------------ */
+.shot {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 11;
+  border: 1px solid var(--rule-2);
+  background: var(--paper-2);
+}
+
+.shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shot.vacia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  color: var(--ink-3);
+}
+
+.shot.vacia span {
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+/* Móvil y tableta: una columna, la imagen arriba y sin pila. */
+@media (max-width: 900px) {
+  .proj,
+  .proj.destacado {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shot {
+    order: -1;
+  }
+}
