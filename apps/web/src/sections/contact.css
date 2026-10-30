@@ -1,0 +1,244 @@
+/* ============================================================
+   CONTACTO — panel negro en los dos temas, con el campo de puntos.
+   Maqueta aprobada: Recursos/Maquetas/contacto-formulario-y-pie.html (opción A).
+   ============================================================ */
+
+.contact {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(76px, 12vw, 170px) var(--gut);
+  background: var(--panel);
+  color: var(--panel-ink);
+}
+
+/* El lienzo ocupa todo el panel y se desvanece hacia los bordes. */
+.dotfield {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(120% 92% at 50% 46%, #000 34%, transparent 100%);
+  mask-image: radial-gradient(120% 92% at 50% 46%, #000 34%, transparent 100%);
+}
+
+.contact-dentro {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(30px, 6vw, 96px);
+  max-width: 1250px;
+  margin-inline: auto;
+}
+
+.contact .hint {
+  margin-bottom: 22px;
+  color: var(--panel-dim);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-xs);
+  letter-spacing: var(--tr-mono-wide);
+  text-transform: uppercase;
+}
+
+/* Algo menor que en la maqueta (que lo tenía centrado y a todo el ancho): aquí cabe en
+   su columna. */
+.contact h2 {
+  margin-bottom: 26px;
+  color: var(--panel-ink);
+  font-size: clamp(44px, 5.2vw, 88px);
+  font-variation-settings: "wdth" 125, "wght" 800;
+  line-height: .86;
+  letter-spacing: -.035em;
+}
+
+.contact .sub {
+  max-width: 46ch;
+  color: var(--panel-dim);
+}
+
+.contact .sub + .sub {
+  margin-top: var(--sp-3);
+}
+
+.chans {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 30px;
+  margin: 34px 0 0;
+  padding: 0;
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-m);
+  letter-spacing: .12em;
+  list-style: none;
+  text-transform: uppercase;
+}
+
+.chans a {
+  padding-bottom: 3px;
+  border-bottom: 1px solid rgba(237, 235, 229, .18);
+  color: var(--panel-dim);
+  text-decoration: none;
+  transition: color var(--dur-fast), border-color var(--dur-fast);
+}
+
+.chans a:hover {
+  border-color: var(--panel-blue);
+  color: var(--panel-blue);
+}
+
+/* --- Formulario: caja translúcida para leerse sobre los puntos --- */
+.form-contacto {
+  padding: clamp(22px, 3vw, 40px);
+  border: 1px solid rgba(237, 235, 229, .14);
+  background: rgba(11, 13, 17, .72);
+  backdrop-filter: blur(6px);
+}
+
+.campo {
+  margin-bottom: 18px;
+}
+
+.campo label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--panel-dim);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.campo label i {
+  font-style: normal;
+  letter-spacing: 0;
+  opacity: .7;
+  text-transform: none;
+}
+
+.campo input,
+.campo textarea {
+  width: 100%;
+  padding: 6px 0 8px;
+  border: 0;
+  border-bottom: 1px solid rgba(237, 235, 229, .28);
+  border-radius: 0;
+  background: none;
+  color: var(--panel-ink);
+  font-family: var(--f-body);
+  font-size: var(--fs-body);
+  resize: vertical;
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+  color: rgba(138, 142, 153, .6);
+}
+
+/* Al escribir, la línea se vuelve azul. El contorno de foco de base.css se mantiene. */
+.campo input:focus,
+.campo textarea:focus {
+  border-color: var(--panel-blue);
+}
+
+.campo.mal input,
+.campo.mal textarea {
+  border-color: #FF8A8A;
+}
+
+.error,
+.aviso-envio {
+  display: block;
+  min-height: 1.2em;
+  margin-top: 5px;
+  color: #FF8A8A;
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: .06em;
+}
+
+/* La trampa para bots: fuera de la vista sin display:none (algunos bots lo detectan). */
+.trampa {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.big-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 30px;
+  border: 0;
+  background: var(--panel-ink);
+  color: var(--panel);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-l);
+  letter-spacing: var(--tr-mono-wide);
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+.big-btn:hover:not([disabled]) {
+  background: var(--panel-blue);
+  box-shadow: 0 0 44px rgba(114, 144, 255, .45);
+  color: #0B0D11;
+}
+
+.big-btn[disabled] {
+  opacity: .55;
+  cursor: wait;
+}
+
+.form-contacto .nota {
+  margin-top: 14px;
+  color: var(--panel-dim);
+}
+
+.form-contacto .peq {
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.estado-ok {
+  color: var(--panel-blue);
+  font-family: var(--f-display);
+  font-size: 32px;
+  font-variation-settings: "wdth" 118, "wght" 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.respaldo .big-btn {
+  margin-top: 18px;
+}
+
+.enlace-texto {
+  margin-top: var(--sp-4);
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid rgba(237, 235, 229, .28);
+  background: none;
+  color: var(--panel-dim);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+@media (max-width: 1000px) {
+  .contact-dentro {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

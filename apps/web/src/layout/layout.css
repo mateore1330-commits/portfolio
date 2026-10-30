@@ -255,6 +255,20 @@
   white-space: nowrap;
 }
 
+/* --- Pie --------------------------------------------------- */
+.pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3) var(--sp-5);
+  padding: 22px var(--gut) 34px;
+  border-top: 1px solid var(--rule-2);
+  color: var(--ink-3);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .12em;
+}
+
 /* --- Pantallas estrechas ----------------------------------- */
 @media (max-width: 859px) {
   .rail {

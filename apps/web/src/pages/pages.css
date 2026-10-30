@@ -1,4 +1,4 @@
-/* Estilos mínimos de las páginas provisionales. Solo tokens, nada de valores sueltos. */
+/* Estilos de las páginas sencillas (la 404). Solo tokens, nada de valores sueltos. */
 
 .pagina {
   max-width: 72ch;
@@ -38,14 +38,7 @@
   font-size: var(--fs-mono-s);
 }
 
-.portada-provisional .aviso {
-  margin-bottom: var(--sp-6);
-}
 
-.portada-provisional .titular {
-  color: var(--ink-2);
-  font-size: var(--fs-lede);
-}
 
 .no-encontrada .btn {
   margin-top: var(--sp-6);
