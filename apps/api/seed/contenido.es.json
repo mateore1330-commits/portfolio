@@ -758,7 +758,7 @@
       "certificate_url": null,
       "certificate_file": "/certificados/full-stack-software-developer-4geeks.pdf",
       "sort_order": 2,
-      "is_visible": true,
+      "is_visible": false,
       "title": "Python desde cero (curso de ejemplo)",
       "description": null
     },

@@ -1,5 +1,5 @@
 {
-  "etag": "\"6e63c48cbafe713658ed438056382abb0eb77002f8fc9043026fc73c93a49e15\"",
+  "etag": "\"12affbd912d2c1da0defecb829ac2aac87acce1d947c8a6d9c4020cb2aa37ad9\"",
   "education": [
     {
       "certificate_file": null,
@@ -47,22 +47,6 @@
       "title": {
         "en": "Full Stack Software Developer",
         "es": "Full Stack Software Developer"
-      }
-    },
-    {
-      "certificate_file": "/certificados/full-stack-software-developer-4geeks.pdf",
-      "certificate_url": null,
-      "description": null,
-      "end_date": "2026-09-01",
-      "hours": 20,
-      "institution": "Plataforma de ejemplo",
-      "kind": "course",
-      "location": null,
-      "sort_order": 2,
-      "start_date": "2026-09-01",
-      "title": {
-        "en": "Python from scratch (example course)",
-        "es": "Python desde cero (curso de ejemplo)"
       }
     }
   ],
