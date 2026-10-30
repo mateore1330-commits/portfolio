@@ -270,16 +270,23 @@
   }
 }
 
-@media (max-width: 759px) {
-  /* En móvil, la cabecera solo lleva el nombre y "Menú": el resto pasa al panel. */
-  .nav,
-  .brand .mono,
-  .top-acciones > .language-switch,
-  .top-acciones > .tmode:not(.menu-boton) {
+/* Por debajo de 1200 px los seis enlaces no caben junto al nombre y los botones:
+   pasan al panel de "Menú" (el mismo límite está en MobileMenu.jsx). */
+@media (max-width: 1199px) {
+  .nav {
     display: none;
   }
 
   .menu-boton {
     display: inline-block;
+  }
+}
+
+@media (max-width: 759px) {
+  /* En móvil, la cabecera solo lleva el nombre y "Menú": el resto pasa al panel. */
+  .brand .mono,
+  .top-acciones > .language-switch,
+  .top-acciones > .tmode:not(.menu-boton) {
+    display: none;
   }
 }
