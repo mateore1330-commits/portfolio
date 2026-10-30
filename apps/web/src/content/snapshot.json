@@ -1,5 +1,5 @@
 {
-  "etag": "\"2fdee73a5f93c51fd0f06536edd33af68458ad969ebcb0d32696ba8e01d2cdc4\"",
+  "etag": "\"6e63c48cbafe713658ed438056382abb0eb77002f8fc9043026fc73c93a49e15\"",
   "education": [
     {
       "certificate_file": null,
@@ -50,7 +50,7 @@
       }
     },
     {
-      "certificate_file": null,
+      "certificate_file": "/certificados/full-stack-software-developer-4geeks.pdf",
       "certificate_url": null,
       "description": null,
       "end_date": "2026-09-01",
