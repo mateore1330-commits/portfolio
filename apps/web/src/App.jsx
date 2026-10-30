@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router'
+import { Outlet, ScrollRestoration } from 'react-router'
 import ContentProvider from '@/content/ContentProvider.jsx'
 import ContribucionesProvider from '@/content/ContribucionesProvider.jsx'
 import ThemeProvider from '@/theme/ThemeProvider.jsx'
@@ -10,6 +10,8 @@ export default function App() {
       <ContentProvider>
         <ContribucionesProvider>
           <Outlet />
+          {/* Al entrar en una página, arriba (o en la sección del #); con "Atrás", donde estabas. */}
+          <ScrollRestoration />
         </ContribucionesProvider>
       </ContentProvider>
     </ThemeProvider>

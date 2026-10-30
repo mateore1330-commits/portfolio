@@ -1,7 +1,7 @@
-import { useEffect, useLayoutEffect } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router'
-import { actualizarAlternativas, restaurarAncla } from '@/i18n/documento.js'
-import { leerGuardado } from '@/i18n/idiomas.js'
+import { useEffect, useLayoutEffect, useRef } from 'react'
+import { Outlet, useLocation, useNavigate, useNavigationType } from 'react-router'
+import { actualizarAlternativas, ponerDescripcion, restaurarAncla } from '@/i18n/documento.js'
+import { leerGuardado, rutaEn } from '@/i18n/idiomas.js'
 import { LanguageContext } from '@/i18n/LanguageContext.js'
 import { useLang, useT } from '@/i18n/useLang.js'
 import Header from '@/layout/Header.jsx'
@@ -32,6 +32,8 @@ function Documento() {
   const t = useT()
   const { pathname } = useLocation()
   const navigate = useNavigate()
+  const tipo = useNavigationType()
+  const anterior = useRef(pathname)
 
   // Si la última vez se eligió inglés y se entra en la portada, se va a /en.
   // Nunca desde otra ruta: un enlace compartido a la versión española se respeta.
@@ -45,9 +47,22 @@ function Documento() {
 
   useEffect(() => {
     document.documentElement.lang = lang
+    // Los de siempre; una página que tenga los suyos (la de un proyecto) los pone después.
     document.title = t('meta.titulo')
+    ponerDescripcion(null)
     actualizarAlternativas(pathname)
   }, [lang, t, pathname])
+
+  // Al ir a otra página con un enlace, el foco pasa al contenido nuevo, para el lector de
+  // pantalla. (El scroll lo lleva ScrollRestoration, en App: arriba al entrar, donde
+  // estabas al volver.) Al cambiar solo de idioma no se toca nada.
+  useLayoutEffect(() => {
+    const cambioDeIdioma = rutaEn('es', anterior.current) === rutaEn('es', pathname)
+    const cambioDePagina = anterior.current !== pathname
+    anterior.current = pathname
+    if (tipo !== 'PUSH' || !cambioDePagina || cambioDeIdioma) return
+    document.getElementById('contenido')?.focus({ preventScroll: true })
+  }, [pathname, tipo])
 
   // Antes de pintar: si venimos del selector, volver a la sección que se estaba viendo.
   useLayoutEffect(() => {

@@ -3,6 +3,7 @@ import App from '@/App.jsx'
 import LanguageLayout from '@/i18n/LanguageLayout.jsx'
 import Home from '@/pages/Home.jsx'
 import NotFound from '@/pages/NotFound.jsx'
+import ProjectPage from '@/pages/ProjectPage.jsx'
 
 // /_design solo existe en desarrollo: en el build, import.meta.env.DEV es
 // false y la página ni siquiera se incluye en el bundle.
@@ -15,6 +16,7 @@ const paginas = (lang) => ({
   element: <LanguageLayout lang={lang} />,
   children: [
     { index: true, element: <Home /> },
+    { path: 'proyectos/:slug', element: <ProjectPage /> },
     { path: '*', element: <NotFound /> },
   ],
 })

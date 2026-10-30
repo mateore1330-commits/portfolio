@@ -49,5 +49,18 @@
   "proyectos.demo": "View demo",
   "proyectos.repo": "Repository",
   "proyectos.sin_imagen": "No image yet",
-  "enlace.nueva_pestana": "(opens in a new tab)"
+  "enlace.nueva_pestana": "(opens in a new tab)",
+  "proyectos.completo": "View full project",
+  "proyecto.titulo": "{nombre} · Mateo Rodríguez",
+  "proyecto.equipo": "Team",
+  "proyecto.personas": "{n} people",
+  "proyecto.aportacion": "My contribution",
+  "proyecto.aportacion_valor": "{pct} of the commits",
+  "proyecto.periodo": "Period",
+  "proyecto.que_es": "What it is",
+  "proyecto.mi_papel": "My role",
+  "proyecto.aprendi": "What I learned",
+  "proyecto.volver": "Back to projects",
+  "proyecto.siguiente": "Next project",
+  "proyecto.navegacion": "Project navigation"
 }
