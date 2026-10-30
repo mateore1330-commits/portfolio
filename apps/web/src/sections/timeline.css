@@ -117,8 +117,34 @@
   font-weight: 600;
 }
 
+/* El certificado, debajo del texto (formación) o a la derecha (cursos). */
+.pie-fila {
+  margin-top: var(--sp-4);
+}
+
+/* Cursos: una sola línea, sin descripción. */
+.row.compacta {
+  grid-template-columns: 160px minmax(0, 1fr) auto;
+  align-items: center;
+  padding-block: var(--sp-4);
+}
+
+.row.compacta .when {
+  padding-top: 0;
+}
+
+.row.compacta .what h4 {
+  font-size: var(--fs-d-s);
+  font-variation-settings: "wdth" 110, "wght" 700;
+}
+
+.row.compacta .pie-fila {
+  margin-top: 0;
+}
+
 @media (max-width: 860px) {
-  .row {
+  .row,
+  .row.compacta {
     grid-template-columns: minmax(0, 1fr);
     gap: 10px;
   }
