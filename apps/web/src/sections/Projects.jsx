@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { ordenProyectos } from '@/content/proyectos.js'
 import { useContent } from '@/content/useContent.js'
 import ProjectCard from '@/sections/ProjectCard.jsx'
 import SectionHead from '@/sections/SectionHead.jsx'
@@ -66,8 +67,7 @@ export default function Projects() {
   const pila = useRef(null)
   usePila(pila)
 
-  // La API ya da solo los publicados, por sort_order. El destacado, además, va primero.
-  const orden = [...projects].sort((a, b) => Number(b.is_featured) - Number(a.is_featured))
+  const orden = ordenProyectos(projects)
 
   return (
     <section id="proyectos" className="seccion projects">
