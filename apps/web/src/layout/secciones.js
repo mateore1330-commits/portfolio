@@ -7,7 +7,7 @@ export const SECCIONES = [
   { id: 'actividad', clave: 'seccion.actividad', subtitulo: 'seccion.actividad.subtitulo' },
   { id: 'conocimientos', clave: 'seccion.conocimientos', subtitulo: 'seccion.conocimientos.subtitulo' },
   { id: 'proyectos', clave: 'seccion.proyectos', subtitulo: 'seccion.proyectos.subtitulo' },
-  { id: 'trayectoria', clave: 'seccion.trayectoria' },
+  { id: 'trayectoria', clave: 'seccion.trayectoria', subtitulo: 'seccion.trayectoria.subtitulo' },
   { id: 'contacto', clave: 'seccion.contacto' },
 ]
 

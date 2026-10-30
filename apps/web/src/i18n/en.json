@@ -62,5 +62,10 @@
   "proyecto.aprendi": "What I learned",
   "proyecto.volver": "Back to projects",
   "proyecto.siguiente": "Next project",
-  "proyecto.navegacion": "Project navigation"
+  "proyecto.navegacion": "Project navigation",
+  "seccion.trayectoria.subtitulo": "Experience and education",
+  "trayectoria.experiencia": "Work experience",
+  "trayectoria.experiencia_sub": "Outside development, and why it counts",
+  "trayectoria.formacion": "Education",
+  "trayectoria.actualidad": "present"
 }

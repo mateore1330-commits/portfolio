@@ -62,5 +62,10 @@
   "proyecto.aprendi": "Lo que aprendí",
   "proyecto.volver": "Volver a proyectos",
   "proyecto.siguiente": "Siguiente proyecto",
-  "proyecto.navegacion": "Navegación entre proyectos"
+  "proyecto.navegacion": "Navegación entre proyectos",
+  "seccion.trayectoria.subtitulo": "Experiencia y formación",
+  "trayectoria.experiencia": "Experiencia laboral",
+  "trayectoria.experiencia_sub": "Fuera del desarrollo, y por qué cuenta",
+  "trayectoria.formacion": "Formación",
+  "trayectoria.actualidad": "actualidad"
 }

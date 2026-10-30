@@ -1,0 +1,125 @@
+/* ============================================================
+   TRAYECTORIA — portada de la maqueta aprobada.
+   ============================================================ */
+
+.bloque-trayectoria + .bloque-trayectoria {
+  margin-top: clamp(50px, 7vw, 96px);
+}
+
+/* "Experiencia laboral · Fuera del desarrollo…": la cabecera de cada bloque. */
+.subcabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-2) var(--sp-5);
+  margin-bottom: var(--sp-5);
+  font-size: var(--fs-d-m);
+  font-variation-settings: "wdth" 114, "wght" 700;
+}
+
+.subcabecera span {
+  color: var(--ink-3);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  font-variation-settings: normal;
+  font-weight: 400;
+  letter-spacing: .16em;
+  line-height: var(--lh-body);
+}
+
+.filas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr) minmax(0, 44%);
+  align-items: start;
+  gap: clamp(14px, 2.4vw, 40px);
+  padding-block: clamp(20px, 2.4vw, 30px);
+  border-top: 1px solid var(--rule);
+}
+
+.filas > li:last-child .row {
+  border-bottom: 1px solid var(--rule);
+}
+
+/* El resaltado de la fila entera: un velo azul que llega hasta los márgenes de la página. */
+.row::before {
+  content: "";
+  position: absolute;
+  inset: 0 calc(var(--gut) * -1);
+  z-index: -1;
+  background: var(--blue-wash);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.row:hover::before {
+  opacity: 1;
+}
+
+/* El velo va por detrás del texto: la sección crea su propia capa. */
+.timeline {
+  isolation: isolate;
+}
+
+.row .when {
+  padding-top: 6px;
+  color: var(--ink-3);
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.row .what h4 {
+  margin-bottom: 5px;
+  font-size: var(--fs-d-m);
+  font-variation-settings: "wdth" 114, "wght" 700;
+}
+
+.row .where {
+  color: var(--blue);
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.row .desc {
+  max-width: 50ch;
+  color: var(--ink-2);
+}
+
+.row .desc p + p,
+.row .desc ul {
+  margin-top: 10px;
+}
+
+.row .desc ul {
+  padding-left: 17px;
+}
+
+.row .desc li + li {
+  margin-top: 5px;
+}
+
+.row .desc b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+@media (max-width: 860px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+}
