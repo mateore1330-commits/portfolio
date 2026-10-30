@@ -1,6 +1,10 @@
-// Las contribuciones de GitHub del último año. WEB-06 las traerá de /api/contributions,
-// con el mismo número que muestra el gráfico. Hasta entonces no hay dato: devuelve null,
-// y quien lo use no debe mostrar nada (nunca un 0 inventado).
+import { useContext } from 'react'
+import { ContribucionesContext } from '@/content/ContribucionesContext.js'
+
+// Las contribuciones de GitHub de los últimos 12 meses:
+// { total, racha_actual, racha_maxima, media_semanal, semanas, actualizado }.
+// Las mismas para el gráfico de Actividad y para la cifra de Sobre mí. Siempre hay datos
+// desde el primer render (la copia incrustada en el build).
 export function useContribuciones() {
-  return null
+  return useContext(ContribucionesContext)
 }

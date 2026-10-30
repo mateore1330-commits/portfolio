@@ -25,5 +25,19 @@
   "hero.edicion": "Portfolio 2026",
   "hero.desplazate": "Desplázate",
   "hero.retrato_alt": "Retrato de Mateo Rodríguez",
-  "seccion.sobre.subtitulo": "Quién hay detrás"
+  "seccion.sobre.subtitulo": "Quién hay detrás",
+  "seccion.actividad.subtitulo": "Últimos 12 meses en GitHub",
+  "actividad.contribuciones": "Contribuciones",
+  "actividad.racha_actual": "Racha actual",
+  "actividad.racha_maxima": "Racha más larga",
+  "actividad.media_semanal": "Media semanal",
+  "actividad.dia": "día",
+  "actividad.dias": "días",
+  "actividad.ninguna": "Sin contribuciones",
+  "actividad.una": "1 contribución",
+  "actividad.varias": "{n} contribuciones",
+  "actividad.grafico": "Gráfico de contribuciones de los últimos 12 meses. Usa las flechas para recorrer los días.",
+  "actividad.pie": "Un cuadro = un día · pasa por encima o usa las flechas para ver el detalle",
+  "actividad.menos": "Menos",
+  "actividad.mas": "Más"
 }

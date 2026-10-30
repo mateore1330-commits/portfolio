@@ -42,3 +42,14 @@ export function guardar(lang) {
     // Sin almacenamiento (ventana privada): el idioma no se recuerda, y ya está.
   }
 }
+
+// Formato de números por idioma. En español, el separador de miles solo a partir de
+// cinco cifras ("1160", "12.400"), como pide la RAE; en inglés, siempre ("1,160").
+// Uno por idioma y reutilizado: así es el mismo objeto en cada render.
+const FORMATOS = new Map()
+export function formatoNumero(lang) {
+  if (!FORMATOS.has(lang)) {
+    FORMATOS.set(lang, new Intl.NumberFormat(lang, lang === 'es' ? { useGrouping: 'min2' } : {}))
+  }
+  return FORMATOS.get(lang)
+}
