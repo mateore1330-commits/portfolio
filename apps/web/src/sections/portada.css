@@ -11,6 +11,8 @@
   background: var(--paper-2);
 }
 
+/* La foto se adapta al hueco, no al revés: lo llena entero y, si su forma no coincide,
+   se recorta por los bordes (sin deformarse). */
 .shot img {
   width: 100%;
   height: 100%;
