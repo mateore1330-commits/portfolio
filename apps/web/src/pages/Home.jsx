@@ -5,27 +5,17 @@ import '@/pages/pages.css'
 import About from '@/sections/About.jsx'
 import Activity from '@/sections/Activity.jsx'
 import Hero from '@/sections/Hero.jsx'
+import Skills from '@/sections/Skills.jsx'
 
 // PROVISIONAL: bloques de contenido sin diseño, en el orden y con los id de
-// SECCIONES (los mismos que usa el menú). Cada issue de sección (WEB-07 a WEB-10)
+// SECCIONES (los mismos que usa el menú). Cada issue de sección (WEB-08 a WEB-10)
 // sustituye su bloque por la sección de verdad.
 export default function Home() {
   const t = useT()
   const p = usePick()
-  const { site_texts: textos, technologies, projects, jobs } = useContent()
-  const grupos = p(textos['conocimientos.grupos']) || {}
+  const { site_texts: textos, projects, jobs } = useContent()
 
   const bloques = {
-    conocimientos: Object.entries(grupos).map(([categoria, grupo]) => (
-      <p key={categoria}>
-        <b>{grupo.titulo}</b>
-        {' · '}
-        {technologies
-          .filter((tec) => tec.category === categoria && tec.is_skill)
-          .map((tec) => p(tec.display_name) || tec.name)
-          .join(' · ')}
-      </p>
-    )),
     proyectos: projects.map((proyecto) => (
       <article key={proyecto.slug}>
         <h3>{p(proyecto.name)}</h3>
@@ -57,11 +47,12 @@ export default function Home() {
       <Hero />
       <About />
       <Activity />
+      <Skills />
 
       <div className="pagina portada-provisional">
         <p className="mono aviso">{t('provisional.aviso')}</p>
 
-        {SECCIONES.filter((s) => !['sobre-mi', 'actividad'].includes(s.id)).map((s) => (
+        {SECCIONES.filter((s) => !['sobre-mi', 'actividad', 'conocimientos'].includes(s.id)).map((s) => (
           <section key={s.id} id={s.id}>
             <h2>{t(s.clave)}</h2>
             {bloques[s.id] ?? <p className="mono">{t('provisional.pendiente')}</p>}

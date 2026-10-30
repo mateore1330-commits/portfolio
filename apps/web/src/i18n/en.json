@@ -39,5 +39,6 @@
   "actividad.grafico": "Contributions chart for the last 12 months. Use the arrow keys to move between days.",
   "actividad.pie": "One square = one day · hover or use the arrow keys for details",
   "actividad.menos": "Less",
-  "actividad.mas": "More"
+  "actividad.mas": "More",
+  "seccion.conocimientos.subtitulo": "Self-assessed level"
 }
