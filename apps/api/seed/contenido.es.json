@@ -51,7 +51,7 @@
         "valor": "360"
       },
       {
-        "etiqueta": "Contribuciones este año",
+        "etiqueta": "Contribuciones en los últimos 12 meses",
         "valor": null,
         "origen": "github"
       },

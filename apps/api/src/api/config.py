@@ -31,4 +31,8 @@ def load_config():
             for origin in os.environ["CORS_ORIGINS"].split(",")
             if origin.strip()
         ],
+        # Opcionales: sin ellas la API arranca, pero /api/contributions no consulta GitHub
+        # (sirve la copia guardada, o 503 si no hay ninguna).
+        "GITHUB_TOKEN": os.getenv("GITHUB_TOKEN", "").strip(),
+        "GITHUB_LOGIN": os.getenv("GITHUB_LOGIN", "").strip(),
     }

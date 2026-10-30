@@ -1,4 +1,6 @@
 import { useLayoutEffect, useRef } from 'react'
+import { formatoNumero } from '@/i18n/idiomas.js'
+import { useLang } from '@/i18n/useLang.js'
 
 const DURACION = 1400 // ms, como en la maqueta
 
@@ -10,17 +12,21 @@ const DURACION = 1400 // ms, como en la maqueta
 //   pintar nada mientras cuenta. Por eso el <span> no tiene hijos de React.
 export default function Counter({ valor }) {
   const ref = useRef(null)
-  const texto = String(valor)
+  const lang = useLang()
+  const fin = Number(valor)
+  const entero = Number.isInteger(fin)
+  const formato = formatoNumero(lang)
+  // Con el separador de miles de cada idioma: "1,160" en inglés y "1160" en español.
+  const texto = entero ? formato.format(fin) : String(valor)
 
   // useLayoutEffect: el número se escribe antes del primer pintado, nunca se ve vacío.
   useLayoutEffect(() => {
     const el = ref.current
     el.textContent = texto
-    const fin = Number(texto)
     const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const caja = el.getBoundingClientRect()
     const yaSeVe = caja.top < window.innerHeight && caja.bottom > 0
-    if (!Number.isInteger(fin) || reducido || yaSeVe) return undefined
+    if (!entero || reducido || yaSeVe) return undefined
 
     el.textContent = '0'
     let fotograma
@@ -32,7 +38,7 @@ export default function Counter({ valor }) {
         const paso = (ahora) => {
           inicio ??= ahora
           const p = Math.min((ahora - inicio) / DURACION, 1)
-          el.textContent = String(Math.round(fin * (1 - (1 - p) ** 3)))
+          el.textContent = formato.format(Math.round(fin * (1 - (1 - p) ** 3)))
           if (p < 1) fotograma = requestAnimationFrame(paso)
         }
         fotograma = requestAnimationFrame(paso)
@@ -45,7 +51,7 @@ export default function Counter({ valor }) {
       cancelAnimationFrame(fotograma)
       el.textContent = texto
     }
-  }, [texto])
+  }, [texto, fin, entero, formato])
 
   return (
     <>

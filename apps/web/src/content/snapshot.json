@@ -1,5 +1,5 @@
 {
-  "etag": "\"55c241c7471aadebe79ea19afb5b98f163d0d090feaeb83e63d86042e6ca0f09\"",
+  "etag": "\"c1f045d616abf091754ba0a1f92149fd02f7dee249e6b47cfa4481e58d063e75\"",
   "education": [
     {
       "description": {
@@ -609,7 +609,7 @@
           "valor": "360"
         },
         {
-          "etiqueta": "Contributions this year",
+          "etiqueta": "Contributions in the last 12 months",
           "origen": "github",
           "valor": null
         },
@@ -628,7 +628,7 @@
           "valor": "360"
         },
         {
-          "etiqueta": "Contribuciones este año",
+          "etiqueta": "Contribuciones en los últimos 12 meses",
           "origen": "github",
           "valor": null
         },
