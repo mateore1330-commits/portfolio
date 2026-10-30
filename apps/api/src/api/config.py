@@ -35,4 +35,11 @@ def load_config():
         # (sirve la copia guardada, o 503 si no hay ninguna).
         "GITHUB_TOKEN": os.getenv("GITHUB_TOKEN", "").strip(),
         "GITHUB_LOGIN": os.getenv("GITHUB_LOGIN", "").strip(),
+        # Opcionales: el aviso por correo del formulario de contacto. Sin ellas, los
+        # mensajes se guardan igual y quedan pendientes de reenvío.
+        "SMTP_HOST": os.getenv("SMTP_HOST", "").strip(),
+        "SMTP_PORT": int(os.getenv("SMTP_PORT", "465") or 465),
+        "SMTP_USER": os.getenv("SMTP_USER", "").strip(),
+        "SMTP_PASSWORD": os.getenv("SMTP_PASSWORD", ""),
+        "CONTACT_TO": os.getenv("CONTACT_TO", "").strip(),
     }
