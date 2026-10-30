@@ -124,6 +124,17 @@ img {
   color: var(--on-blue);
 }
 
+/* La acción principal: en azul; al pasar el ratón, sube el color del texto. */
+.btn--azul {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: var(--on-blue);
+}
+
+.btn--azul:hover {
+  border-color: var(--ink);
+}
+
 /* --- Movimiento reducido: se corta todo en un solo sitio --- */
 @media (prefers-reduced-motion: reduce) {
   html {

@@ -23,6 +23,9 @@ export default function LanguageSwitch() {
           hrefLang={destino}
           aria-label={NOMBRES[destino]}
           aria-current={destino === lang ? 'true' : undefined}
+          // El scroll al cambiar de idioma lo lleva restaurarAncla (misma sección), no
+          // ScrollRestoration (que subiría arriba del todo).
+          preventScrollReset
           onClick={() => {
             guardar(destino)
             if (destino !== lang) guardarAncla()

@@ -44,3 +44,23 @@ export function restaurarAncla() {
   }
   ancla = null
 }
+
+// El título de la pestaña.
+export function ponerTitulo(texto) {
+  document.title = texto
+}
+
+// La descripción de la página (<meta name="description">), o ninguna con null.
+export function ponerDescripcion(texto) {
+  let meta = document.head.querySelector('meta[name="description"]')
+  if (!texto) {
+    meta?.remove()
+    return
+  }
+  if (!meta) {
+    meta = document.createElement('meta')
+    meta.name = 'description'
+    document.head.append(meta)
+  }
+  meta.content = texto
+}

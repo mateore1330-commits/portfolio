@@ -1,0 +1,173 @@
+/* ============================================================
+   PÁGINA DE PROYECTO — la maqueta aprobada el 30/10/2026
+   (Recursos/Maquetas/proyecto-tarjeta-y-pagina.html).
+   Comparte con las tarjetas .proj-num, .proj-tag y .proj-links (projects.css,
+   que importa ProjectPage.jsx).
+   ============================================================ */
+
+.pagina-proyecto {
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding: var(--sp-9) var(--gut) var(--sp-section);
+}
+
+.pagina-proyecto .volver {
+  color: var(--ink-2);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-m);
+  letter-spacing: var(--tr-mono);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color var(--dur-fast);
+}
+
+.pagina-proyecto .volver:hover {
+  color: var(--ink);
+}
+
+/* --- Cabecera ----------------------------------------------- */
+.pp-cab {
+  padding-block: var(--sp-6) var(--sp-7);
+}
+
+/* Un poco menor que el nombre de la portada: aquí cabe una palabra ancha de 9 letras
+   ("CLEANFLOW") en una línea; con más palabras, se reparte en varias. */
+.pp-cab h1 {
+  margin-bottom: var(--sp-5);
+  font-size: min(var(--fs-d-hero), 10.5cqi);
+  font-variation-settings: "wdth" 125, "wght" 800;
+  line-height: var(--lh-hero);
+  letter-spacing: -.035em;
+  overflow-wrap: anywhere;
+}
+
+/* El tamaño del nombre se mide con el ancho de la página, como en la portada. */
+.pagina-proyecto {
+  container-type: inline-size;
+}
+
+.pp-entradilla {
+  max-width: 60ch;
+  margin-bottom: 28px;
+  color: var(--ink-2);
+  font-size: var(--fs-lede);
+  line-height: 1.5;
+}
+
+.pp-ficha {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1px;
+  max-width: 860px;
+  margin: 0 0 var(--sp-5);
+  border: 1px solid var(--rule);
+  background: var(--rule);
+}
+
+.pp-ficha div {
+  padding: 14px var(--sp-4);
+  background: var(--paper);
+}
+
+.pp-ficha dt {
+  margin-bottom: 6px;
+  color: var(--ink-3);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-xs);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.pp-ficha dd {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: 18px;
+  font-variation-settings: "wdth" 110, "wght" 700;
+}
+
+.pp-imagen {
+  margin-bottom: var(--sp-8);
+}
+
+/* --- Bloques de lectura: título a la izquierda y el texto en una columna de, como
+   mucho, 75 caracteres por línea (49ch: algo menos que Sobre mí, porque estos textos tienen más letras estrechas) --- */
+.pp-bloque {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 49ch) minmax(0, .5fr);
+  gap: clamp(20px, 4vw, 64px);
+  padding-block: var(--sp-6);
+  border-top: 1px solid var(--rule);
+}
+
+.pp-bloque h2 {
+  margin-top: 6px;
+  color: var(--blue);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-m);
+  font-variation-settings: normal;
+  font-weight: 500;
+  line-height: var(--lh-body);
+  letter-spacing: .16em;
+}
+
+.pp-cuerpo p {
+  color: var(--ink-2);
+}
+
+.pp-cuerpo p + p {
+  margin-top: var(--sp-4);
+}
+
+.pp-cuerpo b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* --- Pie: volver y siguiente ---------------------------------- */
+.pp-pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  margin-top: var(--sp-5);
+  padding-top: 28px;
+  border-top: 1px solid var(--rule);
+}
+
+.pp-siguiente {
+  margin-left: auto;
+  text-align: right;
+  text-decoration: none;
+}
+
+.pp-siguiente span:first-child {
+  color: var(--ink-3);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.pp-siguiente b {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-family: var(--f-display);
+  font-size: var(--fs-d-l);
+  font-variation-settings: "wdth" 118, "wght" 800;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: color var(--dur-fast);
+}
+
+.pp-siguiente:hover b {
+  color: var(--blue);
+}
+
+@media (max-width: 900px) {
+  .pp-bloque {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sp-3);
+  }
+}
