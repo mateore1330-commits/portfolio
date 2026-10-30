@@ -1,5 +1,5 @@
 {
-  "etag": "\"740c8bcd4f2d3c1b2fd0d78701f626b8a87e2ccef5edd2a3301e1ef74169ce4d\"",
+  "etag": "\"5d9b58e276a0237b5d1aa5af9679e3d3048069eb1b4c65f027c63af6635ce1e9\"",
   "education": [
     {
       "description": {
@@ -20,37 +20,6 @@
       "title": {
         "en": "Full Stack Developer with AI · 360 h",
         "es": "Full Stack Developer with AI · 360 h"
-      }
-    },
-    {
-      "description": {
-        "en": [
-          "AI Engineering. And, on my own, Linux server administration: SSH, Docker, permissions and deployment. I want to work close to the infrastructure."
-        ],
-        "es": [
-          "AI Engineering. Y, por mi cuenta, administración de servidores Linux: SSH, Docker, permisos y despliegue. Quiero trabajar cerca de la infraestructura."
-        ]
-      },
-      "end_date": null,
-      "institution": null,
-      "location": null,
-      "sort_order": 1,
-      "start_date": null,
-      "title": {
-        "en": "Continuous learning · 2026 · In progress",
-        "es": "Formación continua · 2026 · En curso"
-      }
-    },
-    {
-      "description": null,
-      "end_date": "2016-07-01",
-      "institution": "IES Alcalá",
-      "location": "Guía de Isora",
-      "sort_order": 2,
-      "start_date": "2014-09-01",
-      "title": {
-        "en": "Bachillerato (Spanish high school diploma)",
-        "es": "Bachillerato"
       }
     }
   ],

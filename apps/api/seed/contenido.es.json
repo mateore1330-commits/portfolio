@@ -734,7 +734,7 @@
       "start_date": null,
       "end_date": null,
       "sort_order": 1,
-      "is_visible": true,
+      "is_visible": false,
       "title": "Formación continua · 2026 · En curso",
       "description": [
         "AI Engineering. Y, por mi cuenta, administración de servidores Linux: SSH, Docker, permisos y despliegue. Quiero trabajar cerca de la infraestructura."
@@ -746,7 +746,7 @@
       "start_date": "2014-09-01",
       "end_date": "2016-07-01",
       "sort_order": 2,
-      "is_visible": true,
+      "is_visible": false,
       "title": "Bachillerato",
       "description": null
     }
