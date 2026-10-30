@@ -5,9 +5,10 @@ import { useLang, useT } from '@/i18n/useLang.js'
 import { enlaceSeccion, SECCIONES } from '@/layout/secciones.js'
 import ThemeToggle from '@/layout/ThemeToggle.jsx'
 
-const MOVIL = '(max-width: 759px)'
+// Hasta aquí el menú de secciones no cabe en la cabecera (igual que en layout.css).
+const MOVIL = '(max-width: 1199px)'
 
-// Botón "Menú" (solo en móvil) y panel a pantalla completa con las secciones.
+// Botón "Menú" (móvil y tableta) y panel a pantalla completa con las secciones.
 // Accesible: el foco entra al abrir, no se escapa con Tab, Escape cierra y el foco
 // vuelve al botón. Mientras está abierto, la página de debajo no se mueve.
 export default function MobileMenu({ activa }) {
