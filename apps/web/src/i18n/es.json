@@ -40,5 +40,14 @@
   "actividad.pie": "Un cuadro = un día · pasa por encima o usa las flechas para ver el detalle",
   "actividad.menos": "Menos",
   "actividad.mas": "Más",
-  "seccion.conocimientos.subtitulo": "Nivel autoevaluado"
+  "seccion.conocimientos.subtitulo": "Nivel autoevaluado",
+  "seccion.proyectos.subtitulo": "Bootcamp y personales",
+  "proyectos.numero": "Proyecto {n}",
+  "proyectos.tecnologias": "Tecnologías",
+  "proyectos.equipo": "Equipo de {n} · {pct} de los commits",
+  "proyectos.equipo_solo": "Equipo de {n}",
+  "proyectos.demo": "Ver demo",
+  "proyectos.repo": "Repositorio",
+  "proyectos.sin_imagen": "Sin imagen todavía",
+  "enlace.nueva_pestana": "(se abre en otra pestaña)"
 }
