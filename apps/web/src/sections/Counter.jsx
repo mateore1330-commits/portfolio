@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from 'react'
 import { formatoNumero } from '@/i18n/idiomas.js'
 import { useLang } from '@/i18n/useLang.js'
+import { alAparecer } from '@/sections/alAparecer.js'
 
 const DURACION = 1400 // ms, como en la maqueta
 
@@ -23,31 +24,24 @@ export default function Counter({ valor }) {
   useLayoutEffect(() => {
     const el = ref.current
     el.textContent = texto
-    const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const caja = el.getBoundingClientRect()
-    const yaSeVe = caja.top < window.innerHeight && caja.bottom > 0
-    if (!entero || reducido || yaSeVe) return undefined
+    if (!entero) return undefined
 
-    el.textContent = '0'
     let fotograma
-    const observador = new IntersectionObserver(
-      ([entrada]) => {
-        if (!entrada.isIntersecting) return
-        observador.disconnect()
-        let inicio = null
-        const paso = (ahora) => {
-          inicio ??= ahora
-          const p = Math.min((ahora - inicio) / DURACION, 1)
-          el.textContent = formato.format(Math.round(fin * (1 - (1 - p) ** 3)))
-          if (p < 1) fotograma = requestAnimationFrame(paso)
-        }
-        fotograma = requestAnimationFrame(paso)
-      },
-      { threshold: 0.5 },
-    )
-    observador.observe(el)
+    const dejarDeEsperar = alAparecer(el, () => {
+      let inicio = null
+      const paso = (ahora) => {
+        inicio ??= ahora
+        const p = Math.min((ahora - inicio) / DURACION, 1)
+        el.textContent = formato.format(Math.round(fin * (1 - (1 - p) ** 3)))
+        if (p < 1) fotograma = requestAnimationFrame(paso)
+      }
+      fotograma = requestAnimationFrame(paso)
+    })
+    if (!dejarDeEsperar) return undefined
+
+    el.textContent = formato.format(0)
     return () => {
-      observador.disconnect()
+      dejarDeEsperar()
       cancelAnimationFrame(fotograma)
       el.textContent = texto
     }

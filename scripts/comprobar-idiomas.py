@@ -27,15 +27,20 @@ POR_DEFECTO = (
 FIJOS = {
     "slug", "status", "type", "url", "repo_url", "demo_url", "start_date", "end_date",
     "category", "origen", "sort_order", "is_visible", "is_featured", "is_skill", "level",
-    "team_size", "commits_share", "is_team_project", "name", "tools", "company", "location",
+    "team_size", "commits_share", "is_team_project", "name", "company", "location",
     "institution",
+}
+# Fijos solo dentro de ciertas secciones, donde son listas de nombres. Fuera, la misma
+# clave es otra cosa que sí se traduce: "technologies" en la raíz es la sección entera de
+# tecnologías y "tools" en conocimientos.grupos es el grupo Herramientas.
+FIJOS_EN = {
+    "technologies": (".projects[",),
+    "tools": (".projects[", ".jobs["),
 }
 
 
 def es_fijo(clave, ruta):
-    # "technologies" es fija dentro de un proyecto (la lista de nombres), pero en la
-    # raíz es la sección entera de tecnologías, que sí lleva textos traducibles.
-    return clave in FIJOS or (clave == "technologies" and ruta.startswith(".projects["))
+    return clave in FIJOS or any(ruta.startswith(p) for p in FIJOS_EN.get(clave, ()))
 
 
 def corto(valor):

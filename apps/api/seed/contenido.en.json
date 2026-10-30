@@ -78,8 +78,8 @@
         "subtitulo": "Storage and modeling"
       },
       "tools": {
-        "titulo": "Herramientas",
-        "subtitulo": "Flujo de trabajo"
+        "titulo": "Tools",
+        "subtitulo": "Workflow"
       },
       "design": {
         "titulo": "Design",
@@ -131,7 +131,7 @@
       "display_name": null,
       "category": "frontend",
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": "Daily use",
       "sort_order": 0
     },
@@ -140,7 +140,7 @@
       "display_name": null,
       "category": "frontend",
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": "Daily use",
       "sort_order": 1
     },
@@ -149,7 +149,7 @@
       "display_name": null,
       "category": "frontend",
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": "Daily use",
       "sort_order": 2
     },
@@ -158,7 +158,7 @@
       "display_name": null,
       "category": "frontend",
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": "Daily use",
       "sort_order": 3
     },
@@ -167,7 +167,7 @@
       "display_name": null,
       "category": "frontend",
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": "Daily use",
       "sort_order": 4
     },
@@ -176,7 +176,7 @@
       "display_name": null,
       "category": "frontend",
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": "Solid",
       "sort_order": 5
     },
@@ -185,7 +185,7 @@
       "display_name": null,
       "category": "frontend",
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": "Solid",
       "sort_order": 6
     },
@@ -194,7 +194,7 @@
       "display_name": null,
       "category": "frontend",
       "is_skill": true,
-      "level": null,
+      "level": 33,
       "level_label": "Familiar",
       "sort_order": 7
     },
@@ -203,7 +203,7 @@
       "display_name": null,
       "category": "backend",
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": "Daily use",
       "sort_order": 0
     },
@@ -212,7 +212,7 @@
       "display_name": null,
       "category": "backend",
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": "Daily use",
       "sort_order": 1
     },
@@ -221,7 +221,7 @@
       "display_name": "REST API",
       "category": "backend",
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": "Daily use",
       "sort_order": 2
     },
@@ -230,7 +230,7 @@
       "display_name": null,
       "category": "backend",
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": "Daily use",
       "sort_order": 3
     },
@@ -239,7 +239,7 @@
       "display_name": null,
       "category": "backend",
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": "Solid",
       "sort_order": 4
     },
@@ -248,7 +248,7 @@
       "display_name": null,
       "category": "backend",
       "is_skill": true,
-      "level": null,
+      "level": 33,
       "level_label": "Familiar",
       "sort_order": 5
     },
@@ -257,7 +257,7 @@
       "display_name": null,
       "category": "data",
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": "Solid",
       "sort_order": 0
     },
@@ -266,7 +266,7 @@
       "display_name": null,
       "category": "data",
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": "Solid",
       "sort_order": 1
     },
@@ -275,7 +275,7 @@
       "display_name": null,
       "category": "data",
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": "Solid",
       "sort_order": 2
     },
@@ -284,7 +284,7 @@
       "display_name": "Relational modeling",
       "category": "data",
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": "Solid",
       "sort_order": 3
     },
@@ -293,7 +293,7 @@
       "display_name": null,
       "category": "tools",
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": "Daily use",
       "sort_order": 0
     },
@@ -302,7 +302,7 @@
       "display_name": null,
       "category": "tools",
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": "Daily use",
       "sort_order": 1
     },
@@ -311,7 +311,7 @@
       "display_name": null,
       "category": "tools",
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": "Daily use",
       "sort_order": 2
     },
@@ -320,7 +320,7 @@
       "display_name": null,
       "category": "tools",
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": "Daily use",
       "sort_order": 3
     },
@@ -329,7 +329,7 @@
       "display_name": null,
       "category": "tools",
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": "Solid",
       "sort_order": 4
     },
@@ -338,7 +338,7 @@
       "display_name": null,
       "category": "tools",
       "is_skill": true,
-      "level": null,
+      "level": 33,
       "level_label": "Familiar",
       "sort_order": 5
     },
@@ -347,7 +347,7 @@
       "display_name": null,
       "category": "design",
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": "Solid",
       "sort_order": 0
     },
@@ -356,7 +356,7 @@
       "display_name": null,
       "category": "design",
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": "Solid",
       "sort_order": 1
     },
@@ -365,7 +365,7 @@
       "display_name": null,
       "category": "design",
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": "Solid",
       "sort_order": 2
     },
@@ -374,7 +374,7 @@
       "display_name": null,
       "category": "design",
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": "Solid",
       "sort_order": 3
     },
@@ -383,7 +383,7 @@
       "display_name": "Photography",
       "category": "design",
       "is_skill": true,
-      "level": null,
+      "level": 33,
       "level_label": "Familiar",
       "sort_order": 4
     },
@@ -392,7 +392,7 @@
       "display_name": "Video recording",
       "category": "design",
       "is_skill": true,
-      "level": null,
+      "level": 33,
       "level_label": "Familiar",
       "sort_order": 5
     },

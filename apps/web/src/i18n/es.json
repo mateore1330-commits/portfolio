@@ -39,5 +39,6 @@
   "actividad.grafico": "Gráfico de contribuciones de los últimos 12 meses. Usa las flechas para recorrer los días.",
   "actividad.pie": "Un cuadro = un día · pasa por encima o usa las flechas para ver el detalle",
   "actividad.menos": "Menos",
-  "actividad.mas": "Más"
+  "actividad.mas": "Más",
+  "seccion.conocimientos.subtitulo": "Nivel autoevaluado"
 }

@@ -1,5 +1,5 @@
 {
-  "etag": "\"c1f045d616abf091754ba0a1f92149fd02f7dee249e6b47cfa4481e58d063e75\"",
+  "etag": "\"740c8bcd4f2d3c1b2fd0d78701f626b8a87e2ccef5edd2a3301e1ef74169ce4d\"",
   "education": [
     {
       "description": {
@@ -459,8 +459,8 @@
           "titulo": "Soft skills"
         },
         "tools": {
-          "subtitulo": "Flujo de trabajo",
-          "titulo": "Herramientas"
+          "subtitulo": "Workflow",
+          "titulo": "Tools"
         }
       },
       "es": {
@@ -681,7 +681,7 @@
       "category": "frontend",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": {
         "en": "Daily use",
         "es": "Lo uso a diario"
@@ -711,7 +711,7 @@
       "category": "frontend",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": {
         "en": "Daily use",
         "es": "Lo uso a diario"
@@ -723,7 +723,7 @@
       "category": "frontend",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": {
         "en": "Daily use",
         "es": "Lo uso a diario"
@@ -735,7 +735,7 @@
       "category": "frontend",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": {
         "en": "Daily use",
         "es": "Lo uso a diario"
@@ -747,7 +747,7 @@
       "category": "frontend",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": {
         "en": "Daily use",
         "es": "Lo uso a diario"
@@ -759,7 +759,7 @@
       "category": "frontend",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": {
         "en": "Solid",
         "es": "Sólido"
@@ -771,7 +771,7 @@
       "category": "frontend",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": {
         "en": "Solid",
         "es": "Sólido"
@@ -783,7 +783,7 @@
       "category": "frontend",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 33,
       "level_label": {
         "en": "Familiar",
         "es": "Lo he usado"
@@ -804,7 +804,7 @@
       "category": "backend",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": {
         "en": "Daily use",
         "es": "Lo uso a diario"
@@ -816,7 +816,7 @@
       "category": "backend",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": {
         "en": "Daily use",
         "es": "Lo uso a diario"
@@ -831,7 +831,7 @@
         "es": "API REST"
       },
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": {
         "en": "Daily use",
         "es": "Lo uso a diario"
@@ -843,7 +843,7 @@
       "category": "backend",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": {
         "en": "Daily use",
         "es": "Lo uso a diario"
@@ -855,7 +855,7 @@
       "category": "backend",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": {
         "en": "Solid",
         "es": "Sólido"
@@ -867,7 +867,7 @@
       "category": "backend",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 33,
       "level_label": {
         "en": "Familiar",
         "es": "Lo he usado"
@@ -879,7 +879,7 @@
       "category": "data",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": {
         "en": "Solid",
         "es": "Sólido"
@@ -909,7 +909,7 @@
       "category": "data",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": {
         "en": "Solid",
         "es": "Sólido"
@@ -921,7 +921,7 @@
       "category": "data",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": {
         "en": "Solid",
         "es": "Sólido"
@@ -936,7 +936,7 @@
         "es": "Modelado relacional"
       },
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": {
         "en": "Solid",
         "es": "Sólido"
@@ -957,7 +957,7 @@
       "category": "tools",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": {
         "en": "Daily use",
         "es": "Lo uso a diario"
@@ -978,7 +978,7 @@
       "category": "tools",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": {
         "en": "Daily use",
         "es": "Lo uso a diario"
@@ -990,7 +990,7 @@
       "category": "tools",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": {
         "en": "Daily use",
         "es": "Lo uso a diario"
@@ -1002,7 +1002,7 @@
       "category": "tools",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 100,
       "level_label": {
         "en": "Daily use",
         "es": "Lo uso a diario"
@@ -1014,7 +1014,7 @@
       "category": "tools",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": {
         "en": "Solid",
         "es": "Sólido"
@@ -1026,7 +1026,7 @@
       "category": "tools",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 33,
       "level_label": {
         "en": "Familiar",
         "es": "Lo he usado"
@@ -1038,7 +1038,7 @@
       "category": "design",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": {
         "en": "Solid",
         "es": "Sólido"
@@ -1050,7 +1050,7 @@
       "category": "design",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": {
         "en": "Solid",
         "es": "Sólido"
@@ -1062,7 +1062,7 @@
       "category": "design",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": {
         "en": "Solid",
         "es": "Sólido"
@@ -1074,7 +1074,7 @@
       "category": "design",
       "display_name": null,
       "is_skill": true,
-      "level": null,
+      "level": 67,
       "level_label": {
         "en": "Solid",
         "es": "Sólido"
@@ -1089,7 +1089,7 @@
         "es": "Fotografía"
       },
       "is_skill": true,
-      "level": null,
+      "level": 33,
       "level_label": {
         "en": "Familiar",
         "es": "Lo he usado"
@@ -1104,7 +1104,7 @@
         "es": "Grabación de vídeo"
       },
       "is_skill": true,
-      "level": null,
+      "level": 33,
       "level_label": {
         "en": "Familiar",
         "es": "Lo he usado"

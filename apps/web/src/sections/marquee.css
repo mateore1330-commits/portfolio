@@ -1,0 +1,48 @@
+/* ============================================================
+   MARQUESINA — portada de la maqueta aprobada.
+   ============================================================ */
+
+.band {
+  overflow: hidden;
+  margin-top: clamp(40px, 6vw, 88px);
+  padding-block: var(--sp-4);
+  border-block: 1px solid var(--rule);
+  background: var(--paper-2);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: roll 38s linear infinite;
+}
+
+.band:hover .track {
+  animation-play-state: paused;
+}
+
+.track span {
+  padding-inline: clamp(14px, 2vw, 28px);
+  color: var(--ink-2);
+  font-family: var(--f-display);
+  font-size: clamp(18px, 2.4vw, 34px);
+  font-variation-settings: "wdth" 105, "wght" 600;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color var(--dur-fast);
+}
+
+.track span:not(.sep):hover {
+  color: var(--ink);
+}
+
+.track .sep {
+  color: var(--ink-3);
+}
+
+/* Media vuelta: la segunda copia queda donde empezó la primera y el bucle no se nota. */
+@keyframes roll {
+  to {
+    transform: translateX(-50%);
+  }
+}

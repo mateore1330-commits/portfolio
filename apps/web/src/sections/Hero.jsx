@@ -7,6 +7,7 @@ import jpg660 from '@/assets/retrato/retrato-660.jpg'
 import webp660 from '@/assets/retrato/retrato-660.webp'
 import { useContent } from '@/content/useContent.js'
 import { useLang, usePick, useT } from '@/i18n/useLang.js'
+import Marquee from '@/sections/Marquee.jsx'
 import '@/sections/hero.css'
 
 // Las versiones las genera scripts/optimizar-retrato.py. El navegador elige el primer
@@ -113,6 +114,8 @@ export default function Hero() {
           </dl>
         </div>
       </div>
+
+      <Marquee />
     </section>
   )
 }
