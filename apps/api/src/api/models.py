@@ -50,6 +50,13 @@ class MediaType(enum.Enum):
     VIDEO = "video"
 
 
+class EducationKind(enum.Enum):
+    """Formación: programas largos (bootcamp, FP…). Curso: cortos, de una o dos semanas."""
+
+    PROGRAM = "program"
+    COURSE = "course"
+
+
 class LinkType(enum.Enum):
     GITHUB = "github"
     LINKEDIN = "linkedin"
@@ -223,6 +230,7 @@ class Job(db.Model):
 
 class Education(db.Model):
     __tablename__ = "education"
+    __table_args__ = (CheckConstraint("hours > 0", name="horas_positivas"),)
 
     education_id: Mapped[int] = mapped_column(primary_key=True)
     institution: Mapped[str | None]  # Nulo en la formación por cuenta propia
@@ -231,6 +239,13 @@ class Education(db.Model):
     end_date: Mapped[date | None]  # Nulo = en curso
     sort_order: Mapped[int] = mapped_column(server_default=text("0"))
     is_visible: Mapped[bool] = mapped_column(server_default=text("true"))
+    kind: Mapped[EducationKind] = mapped_column(
+        pg_enum(EducationKind, "education_kind"), server_default="program"
+    )
+    hours: Mapped[int | None]
+    # El certificado: el enlace de verificación (lo más fiable) y/o el archivo (PDF o imagen).
+    certificate_url: Mapped[str | None]
+    certificate_file: Mapped[str | None]
 
     title: Mapped[dict]
     description: Mapped[dict | None]

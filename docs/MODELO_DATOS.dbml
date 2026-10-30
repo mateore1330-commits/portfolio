@@ -48,6 +48,11 @@ Enum media_type {
   video
 }
 
+Enum education_kind {
+  program [note: 'Formación: programas largos (bootcamp, FP…)']
+  course  [note: 'Curso: corto, de una o dos semanas']
+}
+
 Enum link_type {
   github
   linkedin
@@ -191,6 +196,10 @@ Table education {
   end_date     date      [note: 'Nulo = en curso']
   sort_order   int       [not null, default: 0]
   is_visible   boolean   [not null, default: true]
+  kind         education_kind [not null, default: 'program']
+  hours        int       [note: 'CHECK hours > 0']
+  certificate_url  varchar [note: 'Enlace de verificación del certificado (el botón lo abre primero)']
+  certificate_file varchar [note: 'Archivo del certificado (PDF o imagen), si no hay enlace o como respaldo']
 
   title        jsonb     [not null, note: 'La titulación, en los dos idiomas']
   description  jsonb

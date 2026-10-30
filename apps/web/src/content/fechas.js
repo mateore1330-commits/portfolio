@@ -15,13 +15,16 @@ function formatos(lang) {
   return FORMATOS.get(lang)
 }
 
-// "jun 2022 – abr 2026"; en el mismo año, "may – oct 2026"; sin fin, "jun 2022 – actualidad".
+// "jun 2022 – abr 2026"; en el mismo año, "may – oct 2026"; en el mismo mes, "sept 2026";
+// sin fin, "jun 2022 – actualidad".
 export function periodo(lang, inicio, fin, actualidad) {
   if (!inicio) return ''
   const f = formatos(lang)
   const desde = leer(inicio)
   if (!fin) return `${f.mesAnio.format(desde)} – ${actualidad}`
   const hasta = leer(fin)
+  // Un curso de un mes: "sept 2026".
+  if (inicio.slice(0, 7) === fin.slice(0, 7)) return f.mesAnio.format(desde)
   const mismoAnio = desde.getUTCFullYear() === hasta.getUTCFullYear()
   return `${mismoAnio ? f.mes.format(desde) : f.mesAnio.format(desde)} – ${f.mesAnio.format(hasta)}`
 }

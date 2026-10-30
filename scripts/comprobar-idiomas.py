@@ -28,7 +28,7 @@ FIJOS = {
     "slug", "status", "type", "url", "repo_url", "demo_url", "start_date", "end_date",
     "category", "origen", "sort_order", "is_visible", "is_featured", "is_skill", "level",
     "team_size", "commits_share", "is_team_project", "name", "company", "location",
-    "institution",
+    "institution", "kind", "hours", "certificate_url", "certificate_file",
 }
 # Fijos solo dentro de ciertas secciones, donde son listas de nombres. Fuera, la misma
 # clave es otra cosa que sí se traduce: "technologies" en la raíz es la sección entera de
