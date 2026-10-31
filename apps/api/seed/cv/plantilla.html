@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<title>{{ titulo }}</title>
+<style>
+  /* El CV en PDF (DATA-06). Estructura del CV de Enhancv que pasaba los filtros ATS:
+     cabecera a lo ancho; a la izquierda Perfil, Proyectos y Experiencia; a la derecha
+     Educación y Habilidades. En el HTML va primero la columna izquierda entera y luego
+     la derecha: es el orden en que el PDF guarda el texto y en el que lo lee un ATS.
+     Diseño aprobado: Recursos/Maquetas/cv-ats.html. */
+  /* Fuentes fijas, una por estilo (generar_cv.py): así van al PDF como TrueType. */
+  @font-face { font-family: Titulo; src: url("{{ fuentes.titulo }}"); }
+  @font-face { font-family: Seccion; src: url("{{ fuentes.seccion }}"); }
+  @font-face { font-family: Fuerte; src: url("{{ fuentes.fuerte }}"); }
+  @font-face { font-family: Contacto; src: url("{{ fuentes.contacto }}"); }
+  @font-face { font-family: Texto; font-weight: 400; src: url("{{ fuentes.texto }}"); }
+  @font-face { font-family: Texto; font-weight: 600; src: url("{{ fuentes.texto_negrita }}"); }
+  @font-face { font-family: Mono; src: url("{{ fuentes.mono }}"); }
+
+  @page { size: A4; margin: 0; }
+  :root { --ink: #14161C; --ink-2: #3C404B; --ink-3: #555862; --rule: rgba(20, 22, 28, .18); --blue: #1E3FB0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #fff; }
+  body { display: flex; flex-direction: column; width: 210mm; height: 297mm; padding: 10mm 12mm 7mm; color: var(--ink); font-family: Texto, serif; font-size: 8.9pt; line-height: 1.32; }
+  a { color: inherit; }
+  b { color: var(--ink); font-weight: 600; }
+
+  header { display: grid; grid-template-columns: 1fr auto; gap: 8mm; align-items: center; padding-bottom: 3.5mm; }
+  h1 { font-family: Titulo, sans-serif; font-size: 23pt; font-weight: normal; line-height: 1; letter-spacing: -.02em; text-transform: uppercase; }
+  .rol { margin-top: 1.5mm; color: var(--blue); font-family: Fuerte, sans-serif; font-size: 13pt; font-weight: normal; }
+  .contacto { margin-top: 3mm; color: var(--ink-2); font-family: Contacto, sans-serif; font-size: 8.6pt; line-height: 1.65; }
+  .contacto a { text-decoration: underline; text-decoration-color: rgba(30, 63, 176, .5); text-underline-offset: 1.5px; }
+  .foto { position: relative; width: 26mm; height: 26mm; overflow: hidden; border-radius: 50%; background: #000; }
+  /* La foto llega ya en duotono (generar_cv.py): con filtros CSS, el PDF pesaría el triple. */
+  .foto img { width: 100%; height: 100%; object-fit: cover; }
+
+  main { display: grid; grid-template-columns: 1fr 64mm; gap: 8mm; flex: 1; }
+  h2 { margin: 0 0 2mm; padding-bottom: 1mm; border-bottom: 2px solid var(--ink); font-family: Seccion, sans-serif; font-size: 11pt; font-weight: normal; letter-spacing: .01em; text-transform: uppercase; }
+  section { margin-bottom: 3.6mm; }
+  .perfil p { color: var(--ink-2); }
+
+  .item { margin-bottom: 1.7mm; padding-bottom: 1.7mm; border-bottom: 1px dashed var(--rule); }
+  .item:last-child { margin-bottom: 0; border-bottom: 0; }
+  .item h3 { font-family: Fuerte, sans-serif; font-size: 10pt; font-weight: normal; line-height: 1.2; }
+  .item .org { color: var(--blue); font-family: Fuerte, sans-serif; font-size: 9pt; }
+  .item .meta { margin: .6mm 0 1mm; color: var(--ink-3); font-family: Mono, monospace; font-size: 7.6pt; }
+  .item p { color: var(--ink-2); }
+  .item ul { margin: .8mm 0 0 4mm; color: var(--ink-2); }
+  .item li { margin-bottom: .5mm; }
+  .item li::marker { color: var(--blue); }
+
+  aside h4 { margin: 2mm 0 1mm; color: var(--blue); font-family: Fuerte, sans-serif; font-size: 9.4pt; font-weight: normal; }
+  aside .lista { padding-bottom: 1.6mm; border-bottom: 1px dashed var(--rule); color: var(--ink-2); font-size: 9.2pt; line-height: 1.45; }
+  aside .lista:last-child { border-bottom: 0; }
+
+  footer { display: flex; justify-content: space-between; padding-top: 2mm; border-top: 1px solid var(--rule); color: var(--ink-3); font-family: Mono, monospace; font-size: 7pt; }
+</style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>{{ cv.nombre }}</h1>
+      <p class="rol">{{ cv.rol }}</p>
+      <p class="contacto">
+        {% if telefono %}{{ telefono }} · {% endif %}<a href="mailto:{{ correo }}">{{ correo }}</a> · <a href="{{ web.url }}">{{ web.texto }}</a><br>
+        <a href="{{ linkedin.url }}">{{ linkedin.texto }}</a> · <a href="{{ github.url }}">{{ github.texto }}</a><br>
+        {{ cv.ubicacion }}
+      </p>
+    </div>
+    <div class="foto"><img src="{{ retrato }}" alt="{{ cv.nombre }}"></div>
+  </header>
+
+  <main>
+    <div>
+      <section class="perfil">
+        <h2>{{ textos.perfil }}</h2>
+        <p>{{ cv.perfil | marcar }}</p>
+      </section>
+
+      <section>
+        <h2>{{ textos.proyectos }}</h2>
+        {% for p in proyectos %}
+        <div class="item">
+          <h3>{{ p.titulo }}</h3>
+          <p class="meta">{{ p.fechas }} · {{ p.lugar }}</p>
+          {% if p.enlace %}<p class="meta"><a href="{{ p.enlace.url }}">{{ p.enlace.texto }}</a></p>{% endif %}
+          <p>{{ p.descripcion | marcar }}</p>
+          <ul>{% for punto in p.puntos %}<li>{{ punto | marcar }}</li>{% endfor %}</ul>
+        </div>
+        {% endfor %}
+      </section>
+
+      <section>
+        <h2>{{ textos.experiencia }}</h2>
+        {% for e in experiencia %}
+        <div class="item">
+          <h3>{{ e.puesto }}</h3>
+          <p class="org">{{ e.empresa }}</p>
+          <p class="meta">{{ e.fechas }} · {{ e.lugar }}</p>
+          <p>{{ e.descripcion | marcar }}</p>
+          {% if e.puntos %}<ul>{% for punto in e.puntos %}<li>{{ punto | marcar }}</li>{% endfor %}</ul>{% endif %}
+        </div>
+        {% endfor %}
+      </section>
+    </div>
+
+    <aside>
+      <section>
+        <h2>{{ textos.educacion }}</h2>
+        {% for e in educacion %}
+        <div class="item">
+          <h3>{{ e.titulo }}</h3>
+          <p class="org">{{ e.centro }}</p>
+          <p class="meta">{{ e.fechas }} · {{ e.lugar }}</p>
+        </div>
+        {% endfor %}
+      </section>
+
+      <section>
+        <h2>{{ textos.habilidades }}</h2>
+        {% for g in cv.habilidades %}
+        <h4>{{ g.grupo }}</h4>
+        <p class="lista">{{ g.lista | join(", ") }}</p>
+        {% endfor %}
+      </section>
+    </aside>
+  </main>
+
+  <footer><span>{{ textos.pie }}: {{ web.texto }}</span><span>{{ textos.actualizado }}: {{ actualizado }}</span></footer>
+</body>
+</html>

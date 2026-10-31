@@ -188,6 +188,85 @@
   transform: translate(3px, -3px);
 }
 
+/* La del CV es una descarga: su flecha (↓) baja en vez de salir. */
+.canales a[download]:hover .f {
+  transform: translateY(3px);
+}
+
+/* La fila del correo: etiqueta · el correo (enlace) · "Copiar", en el hueco de la flecha.
+   Aprobado el 31/10/2026 (Recursos/Maquetas/contacto-copiar-correo.html, opción A). */
+.canales .con-copiar {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding-block: 10px;
+  border-bottom: 1px solid rgba(237, 235, 229, .14);
+}
+
+.canales .con-copiar a {
+  display: inline;
+  padding: 0;
+  border: 0;
+  color: var(--panel-ink);
+  transition: color var(--dur) var(--ease);
+}
+
+.canales .con-copiar a:hover {
+  padding: 0;
+  color: var(--panel-blue);
+}
+
+.copiar {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border: 1px solid rgba(237, 235, 229, .28);
+  background: transparent;
+  color: var(--panel-ink);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-xs);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.copiar svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+}
+
+.copiar:hover {
+  border-color: var(--panel-blue);
+  color: var(--panel-blue);
+}
+
+.copiar.hecho {
+  border-color: var(--panel-blue);
+  background: var(--panel-blue);
+  color: var(--panel);
+}
+
+/* Debajo de "Escríbeme directamente": "o [Copia el correo]". */
+.o-copiar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  color: var(--panel-dim);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
 /* --- Formulario: caja translúcida, para leerse sobre los puntos --- */
 .form-contacto {
   padding: clamp(22px, 3vw, 40px);
@@ -451,12 +530,25 @@
 /* Columna estrecha (móvil, o a 1024 con el formulario al lado): la etiqueta del canal
    encima del dato, para que el correo quepa entero en una línea. */
 @container (max-width: 460px) {
-  .canales a {
+  .canales a,
+  .canales .con-copiar {
     grid-template-columns: minmax(0, 1fr) auto;
     gap: var(--sp-1) 14px;
   }
 
   .canales .k {
     grid-column: 1 / -1;
+  }
+}
+
+/* Más estrecho todavía (móvil): el correo y "Copiar" no caben juntos. El botón baja a
+   su propia línea y el correo sigue entero. */
+@container (max-width: 400px) {
+  .canales .con-copiar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .canales .con-copiar .copiar {
+    justify-self: start;
   }
 }

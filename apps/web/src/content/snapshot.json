@@ -1,5 +1,5 @@
 {
-  "etag": "\"d43749defa9c5bebd23c204f68a66b9c80f928ca89bc02288659d7dccfee94fa\"",
+  "etag": "\"a195e34767ff51d47b3624865c7f5500e770b9472af853019da75b6eb72dc921\"",
   "education": [
     {
       "certificate_file": null,
@@ -17,6 +17,7 @@
       "institution": "4Geeks Academy",
       "kind": "program",
       "location": null,
+      "slug": "ai-engineering-4geeks",
       "sort_order": 0,
       "start_date": "2026-11-01",
       "title": {
@@ -42,6 +43,7 @@
       "institution": "4Geeks Academy",
       "kind": "program",
       "location": "Madrid",
+      "slug": "full-stack-4geeks",
       "sort_order": 1,
       "start_date": "2026-05-01",
       "title": {
@@ -71,6 +73,7 @@
         "en": "Taxi driver",
         "es": "Conductor de taxi"
       },
+      "slug": "wetaxi-madrid",
       "sort_order": 0,
       "start_date": "2022-06-01",
       "tools": null
@@ -105,6 +108,7 @@
         "en": "Graphic designer",
         "es": "Diseñador gráfico"
       },
+      "slug": "century21-arquitectura",
       "sort_order": 1,
       "start_date": "2020-09-01",
       "tools": "Photoshop, Illustrator, InDesign, Lightroom"
@@ -139,6 +143,7 @@
         "en": "Real estate agent",
         "es": "Asesor inmobiliario"
       },
+      "slug": "century21-sunset",
       "sort_order": 2,
       "start_date": "2019-04-01",
       "tools": null
@@ -173,6 +178,7 @@
         "en": "Founder & General Manager",
         "es": "Fundador y gerente"
       },
+      "slug": "rolling-tours",
       "sort_order": 3,
       "start_date": "2018-01-01",
       "tools": null
@@ -205,6 +211,7 @@
         "en": "Account executive",
         "es": "Especialista comercial"
       },
+      "slug": "we-art-tenerife",
       "sort_order": 4,
       "start_date": "2017-03-01",
       "tools": null

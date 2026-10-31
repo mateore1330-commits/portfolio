@@ -215,6 +215,9 @@ class Job(db.Model):
     __tablename__ = "jobs"
 
     job_id: Mapped[int] = mapped_column(primary_key=True)
+    # Clave corta y fija (wetaxi-madrid): con ella el CV engancha sus fechas a este empleo,
+    # aunque la semilla vuelva a crear la fila con otro id.
+    slug: Mapped[str] = mapped_column(unique=True)
     company: Mapped[str]
     location: Mapped[str | None]
     start_date: Mapped[date]
@@ -233,6 +236,7 @@ class Education(db.Model):
     __table_args__ = (CheckConstraint("hours > 0", name="horas_positivas"),)
 
     education_id: Mapped[int] = mapped_column(primary_key=True)
+    slug: Mapped[str] = mapped_column(unique=True)  # Como en Job: para los enganches del CV
     institution: Mapped[str | None]  # Nulo en la formación por cuenta propia
     location: Mapped[str | None]
     start_date: Mapped[date | None]

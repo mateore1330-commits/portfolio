@@ -106,15 +106,41 @@ def validar_estructura(es):
 
     nombres = [t["name"] for t in es["technologies"]]
     slugs = [p["slug"] for p in es["projects"]]
-    for lista, que in ((nombres, "tecnología"), (slugs, "proyecto")):
+    empleos = [j["slug"] for j in es["jobs"]]
+    formacion = [e["slug"] for e in es["education"]]
+    listas = (
+        (nombres, "tecnología"), (slugs, "proyecto"), (empleos, "empleo"), (formacion, "formación")
+    )
+    for lista, que in listas:
         for repetido in sorted({x for x in lista if lista.count(x) > 1}):
             errores.append(f"{que} repetido: '{repetido}'")
     for p in es["projects"]:
         for t in p.get("technologies", []):
             if t not in nombres:
                 errores.append(f"projects '{p['slug']}': usa '{t}', que no está en technologies")
+    errores += comprobar_enganches_cv(es["site_texts"].get("cv"), slugs, empleos, formacion)
     if errores:
         raise SemillaError("El JSON tiene errores:\n  " + "\n  ".join(errores))
+
+
+def comprobar_enganches_cv(cv, proyectos, empleos, formacion):
+    """Cada bloque del CV toma sus fechas (o su enlace) de algo de la web: tiene que existir."""
+    if cv is None:
+        return []
+    errores = []
+    for i, p in enumerate(cv.get("proyectos", [])):
+        if p.get("proyecto") not in proyectos:
+            errores.append(f"cv.proyectos[{i}]: el proyecto '{p.get('proyecto')}' no existe")
+    for i, e in enumerate(cv.get("experiencia", [])):
+        if not e.get("empleos"):
+            errores.append(f"cv.experiencia[{i}]: no está enganchado a ningún empleo")
+        for slug in e.get("empleos", []):
+            if slug not in empleos:
+                errores.append(f"cv.experiencia[{i}]: el empleo '{slug}' no existe")
+    for i, e in enumerate(cv.get("educacion", [])):
+        if e.get("formacion") not in formacion:
+            errores.append(f"cv.educacion[{i}]: la formación '{e.get('formacion')}' no existe")
+    return errores
 
 
 def comprobar_admin_env():
