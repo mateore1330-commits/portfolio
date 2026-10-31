@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import avif400 from '@/assets/retrato/retrato-400.avif'
 import jpg400 from '@/assets/retrato/retrato-400.jpg'
 import webp400 from '@/assets/retrato/retrato-400.webp'
@@ -43,13 +43,37 @@ function useInclinacion(ref) {
   }, [ref])
 }
 
+// La entrada del nombre, como la maqueta: cada línea sube desde abajo, recortada por su
+// propia caja (el recorte deja sitio arriba a la tilde de la Í). Se prepara antes del
+// primer pintado y arranca en el fotograma siguiente. Con movimiento reducido, quieto.
+function useEntradaNombre(ref) {
+  useLayoutEffect(() => {
+    const h1 = ref.current
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
+    h1.dataset.entrada = 'espera'
+    let segundo
+    const primero = requestAnimationFrame(() => {
+      segundo = requestAnimationFrame(() => {
+        h1.dataset.entrada = 'sube'
+      })
+    })
+    return () => {
+      cancelAnimationFrame(primero)
+      cancelAnimationFrame(segundo)
+      delete h1.dataset.entrada
+    }
+  }, [ref])
+}
+
 export default function Hero() {
   const t = useT()
   const p = usePick()
   const lang = useLang()
   const { site_texts: textos } = useContent()
   const retrato = useRef(null)
+  const titular = useRef(null)
   useInclinacion(retrato)
+  useEntradaNombre(titular)
 
   // "Mateo Rodríguez" → "Mateo" arriba y el resto debajo.
   const [nombre, ...apellidos] = p(textos['hero.nombre']).split(' ')
@@ -67,9 +91,13 @@ export default function Hero() {
         <span className="pill pill-fin">{t('hero.edicion')}</span>
       </div>
 
-      <h1 className="name">
-        <span className="ln">{nombre}</span>
-        <span className="ln name-2">{apellidos.join(' ')}</span>
+      <h1 className="name" ref={titular}>
+        <span className="ln">
+          <span>{nombre}</span>
+        </span>
+        <span className="ln name-2">
+          <span>{apellidos.join(' ')}</span>
+        </span>
       </h1>
 
       <div className="stage">

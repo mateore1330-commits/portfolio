@@ -100,12 +100,12 @@ export default function ProjectPage() {
         </div>
       </header>
 
-      <div className="pp-imagen">
+      <div className="pp-imagen" data-revelar="">
         <Portada imagen={portadaDe(proyecto)} nombre={nombre} ancha />
       </div>
 
       {bloques.map(([titulo, parrafos], i) => (
-        <section key={titulo} className="pp-bloque">
+        <section key={titulo} className="pp-bloque" data-revelar="">
           <h2>
             {String(i + 1).padStart(2, '0')} · {titulo}
           </h2>

@@ -118,7 +118,7 @@ export default function ContributionGrid({ semanas, total }) {
   }
 
   return (
-    <div className="gh" ref={caja}>
+    <div className="gh" ref={caja} data-revelar="">
       <div
         ref={desplazable}
         className="gh-scroll"

@@ -22,7 +22,7 @@ export default function About() {
       <SectionHead id="sobre-mi" />
 
       <div className="about-grid">
-        <div className="about-texto">
+        <div className="about-texto" data-revelar="">
           <p className="bigtext">
             <Marcado texto={p(textos['sobre.titular'])} />
           </p>
@@ -34,7 +34,7 @@ export default function About() {
           </blockquote>
         </div>
 
-        <dl className="facts">
+        <dl className="facts" data-revelar="">
           {cifras.map(({ etiqueta, valor }) => (
             <div key={etiqueta} className="fact">
               <dt>{etiqueta}</dt>

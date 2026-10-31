@@ -10,7 +10,7 @@ export default function SectionHead({ id }) {
   const { clave, subtitulo } = SECCIONES[posicion]
 
   return (
-    <div className="sechead">
+    <div className="sechead" data-revelar="">
       <span className="n" aria-hidden="true">
         {String(posicion + 1).padStart(2, '0')}
       </span>

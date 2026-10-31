@@ -28,7 +28,7 @@ export default function Contact() {
       <DotField />
       <div className="contact-halo" aria-hidden="true" />
       <div className="contact-dentro">
-        <div className="contact-cabecera">
+        <div className="contact-cabecera" data-revelar="">
           <p className="contact-pill">
             <i className="dot" aria-hidden="true" />
             {t('contacto.disponible')}
@@ -38,7 +38,7 @@ export default function Contact() {
           </h2>
         </div>
 
-        <div className="contact-texto">
+        <div className="contact-texto" data-revelar="">
           {p(textos['contacto.texto']).map((parrafo) => (
             <p key={parrafo} className="sub">
               <Marcado texto={parrafo} />

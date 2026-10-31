@@ -64,7 +64,7 @@ const unir = (...partes) => partes.filter(Boolean).join(' · ')
 
 function Bloque({ titulo, subtitulo, children }) {
   return (
-    <div className="bloque-trayectoria">
+    <div className="bloque-trayectoria" data-revelar="">
       <h3 className="subcabecera">
         {titulo}
         {subtitulo && <span>{subtitulo}</span>}

@@ -24,7 +24,7 @@ export default function Skills() {
 
       <div className="skgrid">
         {[...grupos].map(([categoria, lista]) => (
-          <div key={categoria} className="skcol">
+          <div key={categoria} className="skcol" data-revelar="">
             <h3>{titulos[categoria]?.titulo ?? categoria}</h3>
             <p className="sub">{titulos[categoria]?.subtitulo}</p>
             <ul>

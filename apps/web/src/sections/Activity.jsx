@@ -21,7 +21,7 @@ export default function Activity() {
     <section id="actividad" className="seccion activity">
       <SectionHead id="actividad" />
 
-      <dl className="gh-stats">
+      <dl className="gh-stats" data-revelar="">
         {cifras.map(({ clave, valor, enDias }) => (
           <div key={clave} className="gh-stat">
             <dt>{t(clave)}</dt>
