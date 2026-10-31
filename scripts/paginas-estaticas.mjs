@@ -9,7 +9,7 @@
 //
 // Uso: lo lanza `npm run build` (apps/web). Sin dependencias.
 
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -101,6 +101,21 @@ function cabecera(p) {
   ].join('\n    ')
 }
 
+// El retrato es lo más grande de la portada (el LCP de Lighthouse), pero el navegador no
+// lo descubre hasta que React pinta la página. Avisarle desde el HTML adelanta su descarga.
+// Mismos archivos y mismo `sizes` que el <picture> de Hero.jsx: si cambian allí, cambiar aquí.
+const RETRATO_SIZES = '(max-width: 980px) min(78vw, 420px), 38vw'
+
+async function precargaRetrato() {
+  const avif = (await readdir(join(DIST, 'assets')))
+    .map((archivo) => archivo.match(/^retrato-(\d+)-[\w-]+\.avif$/))
+    .filter(Boolean)
+    .sort((a, b) => a[1] - b[1])
+  if (!avif.length) throw new Error('No encuentro el retrato en AVIF en dist/assets.')
+  const srcset = avif.map(([archivo, ancho]) => `/assets/${archivo} ${ancho}w`).join(', ')
+  return `<link rel="preload" as="image" type="image/avif" imagesrcset="${srcset}" imagesizes="${RETRATO_SIZES}" fetchpriority="high" />`
+}
+
 const INICIO = '<!-- cabecera:inicio -->'
 const FIN = '<!-- cabecera:fin -->'
 
@@ -110,11 +125,15 @@ async function main() {
     throw new Error(`index.html no tiene las marcas ${INICIO} y ${FIN}.`)
   }
   const lista = paginas()
+  const retrato = await precargaRetrato()
 
   for (const p of lista) {
     const html = plantilla
       .replace(/<html lang="[^"]*">/, `<html lang="${p.lang}">`)
-      .replace(new RegExp(`${INICIO}[\\s\\S]*?${FIN}`), `${INICIO}\n    ${cabecera(p)}\n    ${FIN}`)
+      .replace(
+        new RegExp(`${INICIO}[\\s\\S]*?${FIN}`),
+        `${INICIO}\n    ${cabecera(p)}${p.resto === '/' ? `\n    ${retrato}` : ''}\n    ${FIN}`,
+      )
     const destino = join(DIST, ruta(p.lang, p.resto), 'index.html')
     await mkdir(dirname(destino), { recursive: true })
     await writeFile(destino, html)
