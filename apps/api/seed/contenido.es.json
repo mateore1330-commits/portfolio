@@ -99,7 +99,87 @@
     "contacto.respaldo": "Escríbeme directamente a info@mateorodriguez.solutions",
     "pie.texto": [
       "Diseñado y desarrollado por Mateo Rodríguez"
-    ]
+    ],
+    "legal.actualizado": "31 de octubre de 2026",
+    "legal.aviso": {
+      "titulo": "Aviso legal",
+      "bloques": [
+        {
+          "titulo": "Quién está detrás",
+          "texto": [
+            "Esta web es el portfolio personal de **Mateo Rodríguez Escobar**. Rodlux Solutions es una marca de Mateo Rodríguez Escobar.",
+            "Contacto: info@mateorodriguez.solutions."
+          ]
+        },
+        {
+          "titulo": "Para qué sirve",
+          "texto": [
+            "Mostrar mi trayectoria y mis proyectos, y facilitar que me escribas. La web no vende productos ni presta servicios."
+          ]
+        },
+        {
+          "titulo": "Contenidos",
+          "texto": [
+            "Los textos, el diseño y las imágenes de esta web son míos, salvo que se indique otra cosa. Las marcas y logotipos de terceros que aparecen pertenecen a sus dueños.",
+            "Los enlaces a otras webs (GitHub, LinkedIn o las demos de los proyectos) llevan a sitios que no controlo."
+          ]
+        },
+        {
+          "titulo": "Legislación",
+          "texto": [
+            "Esta web se rige por la legislación española."
+          ]
+        }
+      ]
+    },
+    "legal.privacidad": {
+      "titulo": "Privacidad",
+      "bloques": [
+        {
+          "titulo": "Responsable",
+          "texto": [
+            "**Mateo Rodríguez Escobar** · info@mateorodriguez.solutions."
+          ]
+        },
+        {
+          "titulo": "Qué datos recojo",
+          "texto": [
+            "Solo los que escribes en el formulario de contacto: nombre, correo, asunto (opcional) y mensaje. Además se guardan el idioma de la página, el navegador y la dirección IP desde la que se envía."
+          ]
+        },
+        {
+          "titulo": "Para qué",
+          "texto": [
+            "Para leer tu mensaje y responderte. La dirección IP se usa solo para limitar el número de envíos y evitar el spam. No uso tus datos para nada más ni los cedo a nadie.",
+            "La base legal es tu consentimiento, que das al marcar la casilla de privacidad y enviar el formulario. Para poder demostrarlo, junto a tu mensaje se guarda cuándo lo aceptaste y qué versión de esta política estaba vigente."
+          ]
+        },
+        {
+          "titulo": "Cuánto tiempo",
+          "texto": [
+            "Los mensajes se guardan **12 meses** desde que llegan y después se borran."
+          ]
+        },
+        {
+          "titulo": "Quién más interviene",
+          "texto": [
+            "Los servicios que hacen funcionar la web: Hostinger (el correo con el que recibo el aviso de tu mensaje), el servidor donde se aloja la API y Vercel (donde se publica la web). Solo tratan los datos para prestar ese servicio."
+          ]
+        },
+        {
+          "titulo": "Tus derechos",
+          "texto": [
+            "Puedes pedir ver, corregir o borrar tus datos, oponerte a su uso o limitarlo, escribiendo a info@mateorodriguez.solutions. Si crees que no se han tratado bien, puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es)."
+          ]
+        },
+        {
+          "titulo": "Cookies",
+          "texto": [
+            "Esta web no usa cookies de seguimiento ni analítica de terceros. Solo guarda en tu navegador el tema (claro u oscuro) y el idioma que eliges, para recordarlos."
+          ]
+        }
+      ]
+    }
   },
   "links": [
     {

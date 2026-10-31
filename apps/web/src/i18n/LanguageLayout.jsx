@@ -3,7 +3,8 @@ import { Outlet, useLocation, useNavigate, useNavigationType } from 'react-route
 import { actualizarAlternativas, ponerDescripcion, restaurarAncla } from '@/i18n/documento.js'
 import { leerGuardado, rutaEn } from '@/i18n/idiomas.js'
 import { LanguageContext } from '@/i18n/LanguageContext.js'
-import { useLang, useT } from '@/i18n/useLang.js'
+import { useContent } from '@/content/useContent.js'
+import { useLang, usePick, useT } from '@/i18n/useLang.js'
 import Cursor from '@/layout/Cursor.jsx'
 import Footer from '@/layout/Footer.jsx'
 import Header from '@/layout/Header.jsx'
@@ -37,6 +38,10 @@ let primeraPagina = true
 function Documento() {
   const lang = useLang()
   const t = useT()
+  const p = usePick()
+  const { site_texts: textos } = useContent()
+  // La descripción de siempre: la entradilla de la portada, sin las marcas **.
+  const descripcion = p(textos['hero.entradilla']).replace(/\*\*|`/g, '')
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const tipo = useNavigationType()
@@ -56,9 +61,9 @@ function Documento() {
     document.documentElement.lang = lang
     // Los de siempre; una página que tenga los suyos (la de un proyecto) los pone después.
     document.title = t('meta.titulo')
-    ponerDescripcion(null)
+    ponerDescripcion(descripcion)
     actualizarAlternativas(pathname)
-  }, [lang, t, pathname])
+  }, [lang, t, pathname, descripcion])
 
   // Al ir a otra página con un enlace, el foco pasa al contenido nuevo, para el lector de
   // pantalla. (El scroll lo lleva ScrollRestoration, en App: arriba al entrar, donde

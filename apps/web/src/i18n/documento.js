@@ -5,8 +5,18 @@ import { rutaEn } from '@/i18n/idiomas.js'
 const SITIO = (import.meta.env.VITE_SITE_URL ?? 'https://mateorodriguez.solutions').replace(/\/$/, '')
 
 // Cada versión apunta a la otra, y x-default a la española. Así Google sabe que
-// / y /en son la misma página en dos idiomas.
+// / y /en son la misma página en dos idiomas. El enlace canónico, a la página actual.
+// (En el build, scripts/paginas-estaticas.mjs ya los escribe en el HTML de cada página;
+// esto los mantiene al día al navegar sin recargar.)
 export function actualizarAlternativas(pathname) {
+  let canonico = document.head.querySelector('link[rel="canonical"]')
+  if (!canonico) {
+    canonico = document.createElement('link')
+    canonico.rel = 'canonical'
+    document.head.append(canonico)
+  }
+  canonico.href = SITIO + pathname
+
   for (const [hreflang, lang] of [['es', 'es'], ['en', 'en'], ['x-default', 'es']]) {
     let link = document.head.querySelector(`link[rel="alternate"][hreflang="${hreflang}"]`)
     if (!link) {

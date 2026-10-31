@@ -99,7 +99,87 @@
     "contacto.respaldo": "Email me directly at info@mateorodriguez.solutions",
     "pie.texto": [
       "Designed and developed by Mateo Rodríguez"
-    ]
+    ],
+    "legal.actualizado": "31 October 2026",
+    "legal.aviso": {
+      "titulo": "Legal notice",
+      "bloques": [
+        {
+          "titulo": "Who is behind it",
+          "texto": [
+            "This website is the personal portfolio of **Mateo Rodríguez Escobar**. Rodlux Solutions is a brand of Mateo Rodríguez Escobar.",
+            "Contact: info@mateorodriguez.solutions."
+          ]
+        },
+        {
+          "titulo": "What it is for",
+          "texto": [
+            "Showing my background and my projects, and making it easy for you to write to me. The website does not sell products or provide services."
+          ]
+        },
+        {
+          "titulo": "Content",
+          "texto": [
+            "The texts, design and images on this website are mine unless stated otherwise. Third-party brands and logos belong to their owners.",
+            "Links to other websites (GitHub, LinkedIn or the project demos) lead to sites I do not control."
+          ]
+        },
+        {
+          "titulo": "Applicable law",
+          "texto": [
+            "This website is governed by Spanish law."
+          ]
+        }
+      ]
+    },
+    "legal.privacidad": {
+      "titulo": "Privacy",
+      "bloques": [
+        {
+          "titulo": "Data controller",
+          "texto": [
+            "**Mateo Rodríguez Escobar** · info@mateorodriguez.solutions."
+          ]
+        },
+        {
+          "titulo": "What data I collect",
+          "texto": [
+            "Only what you write in the contact form: name, email, subject (optional) and message. The page language, the browser and the IP address it is sent from are also stored."
+          ]
+        },
+        {
+          "titulo": "What for",
+          "texto": [
+            "To read your message and reply to you. The IP address is used only to limit the number of submissions and prevent spam. I do not use your data for anything else or share it with anyone.",
+            "The legal basis is your consent, which you give by ticking the privacy box and sending the form. To be able to show this, the date you accepted it and the version of this policy in force are stored with your message."
+          ]
+        },
+        {
+          "titulo": "How long",
+          "texto": [
+            "Messages are kept for **12 months** from when they arrive and are then deleted."
+          ]
+        },
+        {
+          "titulo": "Who else is involved",
+          "texto": [
+            "The services that make the website work: Hostinger (the email account where I get notified of your message), the server hosting the API and Vercel (where the website is published). They only process the data to provide that service."
+          ]
+        },
+        {
+          "titulo": "Your rights",
+          "texto": [
+            "You can ask to see, correct or delete your data, or to object to or restrict its use, by writing to info@mateorodriguez.solutions. If you think it has not been handled properly, you can complain to the Spanish Data Protection Agency (aepd.es)."
+          ]
+        },
+        {
+          "titulo": "Cookies",
+          "texto": [
+            "This website does not use tracking cookies or third-party analytics. It only stores in your browser the theme (light or dark) and the language you choose, to remember them."
+          ]
+        }
+      ]
+    }
   },
   "links": [
     {

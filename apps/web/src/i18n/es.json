@@ -15,11 +15,11 @@
   "menu.cerrar": "Cerrar",
   "menu.etiqueta": "Menú de secciones",
   "tema.boton": "Modo",
-  "tema.a_oscuro": "Cambiar a tema oscuro",
-  "tema.a_claro": "Cambiar a tema claro",
+  "tema.a_oscuro": "Modo: cambiar a tema oscuro",
+  "tema.a_claro": "Modo: cambiar a tema claro",
   "saltar": "Saltar al contenido",
   "marca.rol": "Full Stack",
-  "marca.inicio": "Mateo Rodríguez, ir al inicio",
+  "marca.inicio": "Mateo Rodríguez Full Stack, ir al inicio",
   "hero.edicion": "Portfolio 2026",
   "hero.desplazate": "Desplázate",
   "hero.retrato_alt": "Retrato de Mateo Rodríguez",
@@ -78,6 +78,9 @@
   "contacto.mensaje_pista": "Cuéntame",
   "contacto.enviando": "Enviando…",
   "contacto.privacidad": "Uso tus datos solo para responderte.",
+  "contacto.acepto": "He leído y acepto la",
+  "contacto.politica": "política de privacidad",
+  "contacto.error_privacidad": "Marca la casilla para poder enviarlo.",
   "contacto.error_nombre": "Escribe tu nombre (entre 2 y 100 caracteres).",
   "contacto.error_correo": "Este correo no parece válido.",
   "contacto.error_asunto": "El asunto puede tener como mucho 150 caracteres.",
@@ -104,5 +107,6 @@
   "cursor.ver": "Ver",
   "cursor.abrir": "Abrir",
   "cursor.enviar": "Enviar",
-  "cursor.escribir": "Escribir"
+  "cursor.escribir": "Escribir",
+  "legal.actualizado": "Actualizado el"
 }

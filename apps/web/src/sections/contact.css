@@ -13,6 +13,11 @@
   color: var(--panel-ink);
 }
 
+/* El foco con teclado, en el azul del panel: el azul del tema claro casi no se ve sobre negro. */
+.contact :focus-visible {
+  outline-color: var(--panel-blue);
+}
+
 /* El lienzo ocupa todo el panel y se desvanece hacia los bordes. */
 .dotfield {
   position: absolute;
@@ -91,11 +96,13 @@
   }
 }
 
-/* La pregunta en blanco y la respuesta (marcada con **…** en el contenido) debajo, en azul. */
+/* La pregunta en blanco y la respuesta (marcada con **…** en el contenido) debajo, en azul.
+   El tope de 10cqi: "¿Construimos", la palabra más larga, mide unas 9,7 veces el tamaño de
+   letra; con 40 px fijos se salía y quedaba cortada en un móvil de 360. */
 .contact h2 {
   max-width: 16ch;
   color: var(--panel-ink);
-  font-size: clamp(40px, 7.4cqi, 118px);
+  font-size: min(clamp(40px, 7.4cqi, 118px), 10cqi);
   font-variation-settings: "wdth" 118, "wght" 800;
   line-height: .9;
   letter-spacing: -.03em;
@@ -126,6 +133,7 @@
 
 /* Cada canal, una fila: qué es (en azul), el dato (en negrita) y la flecha. */
 .canales {
+  container-type: inline-size;
   max-width: 520px;
   margin: 38px 0 0;
   padding: 0;
@@ -284,6 +292,58 @@
   letter-spacing: .06em;
 }
 
+/* La casilla de privacidad: un cuadrado fino que se llena de azul al marcarla. */
+.casilla {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 0 12px;
+  margin: 4px 0 18px;
+}
+
+.casilla input {
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  border: 1px solid rgba(237, 235, 229, .45);
+  border-radius: 0;
+  background: transparent center / 12px no-repeat;
+  cursor: pointer;
+  appearance: none;
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.casilla input:checked {
+  border-color: var(--panel-blue);
+  background-color: var(--panel-blue);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.2 4.8 9 10 3' fill='none' stroke='%230B0D11' stroke-width='1.8'/%3E%3C/svg%3E");
+}
+
+.casilla.mal input {
+  border-color: #FF8A8A;
+}
+
+.casilla label {
+  color: var(--panel-dim);
+  font-size: var(--fs-body-s);
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.casilla label a {
+  color: var(--panel-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.casilla label a:hover {
+  color: var(--panel-blue);
+}
+
+.casilla .error {
+  grid-column: 2;
+}
+
 /* La trampa para bots: fuera de la vista sin display:none (algunos bots lo detectan). */
 .trampa {
   position: absolute;
@@ -388,8 +448,9 @@
   }
 }
 
-/* Móvil: la etiqueta del canal encima del dato, para que el correo quepa entero. */
-@media (max-width: 640px) {
+/* Columna estrecha (móvil, o a 1024 con el formulario al lado): la etiqueta del canal
+   encima del dato, para que el correo quepa entero en una línea. */
+@container (max-width: 460px) {
   .canales a {
     grid-template-columns: minmax(0, 1fr) auto;
     gap: var(--sp-1) 14px;

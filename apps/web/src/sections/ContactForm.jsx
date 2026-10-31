@@ -1,11 +1,13 @@
 import { useEffect, useId, useRef, useState } from 'react'
+import { rutaEn } from '@/i18n/idiomas.js'
 import { useLang, useT } from '@/i18n/useLang.js'
+import EnlaceFuera from '@/sections/EnlaceFuera.jsx'
 import { useMagnetic } from '@/sections/useMagnetic.js'
 
 const API = import.meta.env.VITE_API_URL
 const ESPERA_MAXIMA_MS = 5000
 const CORREO = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
-const VACIO = { nombre: '', correo: '', asunto: '', mensaje: '' }
+const VACIO = { nombre: '', correo: '', asunto: '', mensaje: '', privacidad: false }
 
 // Las mismas reglas que el servidor (contacto.py): aquí, para avisar al momento; allí,
 // las que mandan. Devuelve el código de error de cada campo que falla.
@@ -18,6 +20,7 @@ function validar(campos) {
   if (correo.length > 254 || !CORREO.test(correo)) errores.correo = 'correo'
   if (campos.asunto.trim().length > 150) errores.asunto = 'asunto'
   if (mensaje.length < 10 || mensaje.length > 5000) errores.mensaje = 'mensaje'
+  if (!campos.privacidad) errores.privacidad = 'privacidad'
   return errores
 }
 
@@ -66,7 +69,8 @@ export default function ContactForm({ correo, boton, respaldo }) {
   }, [])
 
   const cambiar = (campo) => (e) => {
-    setCampos((c) => ({ ...c, [campo]: e.target.value }))
+    const valor = e.target.type === 'checkbox' ? e.target.checked : e.target.value
+    setCampos((c) => ({ ...c, [campo]: valor }))
     if (errores[campo]) {
       setErrores((antes) => {
         const resto = { ...antes }
@@ -188,6 +192,26 @@ export default function ContactForm({ correo, boton, respaldo }) {
       <div className="trampa" aria-hidden="true">
         <label htmlFor={`${id}-web`}>Web</label>
         <input ref={trampa} id={`${id}-web`} name="web" tabIndex={-1} autoComplete="off" defaultValue="" />
+      </div>
+
+      {/* La casilla de privacidad: obligatoria. El servidor guarda cuándo se aceptó y qué
+          versión de la política. El enlace abre otra pestaña para no perder lo escrito. */}
+      <div className={errores.privacidad ? 'casilla mal' : 'casilla'}>
+        <input
+          type="checkbox"
+          id={`${id}-privacidad`}
+          name="privacidad"
+          checked={campos.privacidad}
+          onChange={cambiar('privacidad')}
+          aria-invalid={errores.privacidad ? 'true' : undefined}
+          aria-describedby={errores.privacidad ? `${id}-privacidad-error` : undefined}
+        />
+        <label htmlFor={`${id}-privacidad`}>
+          {t('contacto.acepto')} <EnlaceFuera href={rutaEn(lang, '/privacidad')}>{t('contacto.politica')}</EnlaceFuera>
+        </label>
+        <span className="error" id={`${id}-privacidad-error`}>
+          {errores.privacidad && t('contacto.error_privacidad')}
+        </span>
       </div>
 
       <button ref={principal} type="submit" className="big-btn azul" disabled={estado === 'enviando'}>

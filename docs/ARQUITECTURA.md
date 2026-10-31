@@ -78,11 +78,13 @@ La API REST de GitHub **no expone las contribuciones**: hay que usar la GraphQL
 - Guarda en base de datos **y** envía aviso por correo. Si el correo falla, el mensaje ya está
   guardado: no se pierde nada.
 - Rate limit: 3 envíos por IP y hora.
+- **Casilla de privacidad obligatoria** (`privacidad: true`). Con cada mensaje se guarda cuándo
+  se aceptó y qué versión de la política (el "Actualizado el…" publicado, que pone el servidor).
 
 ### Tablas
 
 ```
-contact_messages    id, nombre, email, asunto, mensaje, ip, user_agent, leido, creado_en
+contact_messages    id, nombre, email, asunto, mensaje, ip, user_agent, leido, privacidad_aceptada_en, version_privacidad, creado_en
 contributions_cache id, payload (JSON), total, racha_actual, racha_max, actualizado_en
 page_views          id, ruta, idioma, referrer, pais, creado_en
 ```
