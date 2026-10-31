@@ -1,5 +1,5 @@
 {
-  "etag": "\"5b1a23d1d34211527257b4d09ee6b0c6f833c65cf23c427fd1620f4e4bc5b241\"",
+  "etag": "\"d43749defa9c5bebd23c204f68a66b9c80f928ca89bc02288659d7dccfee94fa\"",
   "education": [
     {
       "certificate_file": null,
@@ -674,7 +674,7 @@
           {
             "texto": [
               "To read your message and reply to you. The IP address is used only to limit the number of submissions and prevent spam. I do not use your data for anything else or share it with anyone.",
-              "The legal basis is your consent, which you give when you send the form."
+              "The legal basis is your consent, which you give by ticking the privacy box and sending the form. To be able to show this, the date you accepted it and the version of this policy in force are stored with your message."
             ],
             "titulo": "What for"
           },
@@ -722,7 +722,7 @@
           {
             "texto": [
               "Para leer tu mensaje y responderte. La dirección IP se usa solo para limitar el número de envíos y evitar el spam. No uso tus datos para nada más ni los cedo a nadie.",
-              "La base legal es tu consentimiento, que das al enviar el formulario."
+              "La base legal es tu consentimiento, que das al marcar la casilla de privacidad y enviar el formulario. Para poder demostrarlo, junto a tu mensaje se guarda cuándo lo aceptaste y qué versión de esta política estaba vigente."
             ],
             "titulo": "Para qué"
           },

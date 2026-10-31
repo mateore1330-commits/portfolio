@@ -292,6 +292,58 @@
   letter-spacing: .06em;
 }
 
+/* La casilla de privacidad: un cuadrado fino que se llena de azul al marcarla. */
+.casilla {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 0 12px;
+  margin: 4px 0 18px;
+}
+
+.casilla input {
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  border: 1px solid rgba(237, 235, 229, .45);
+  border-radius: 0;
+  background: transparent center / 12px no-repeat;
+  cursor: pointer;
+  appearance: none;
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.casilla input:checked {
+  border-color: var(--panel-blue);
+  background-color: var(--panel-blue);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.2 4.8 9 10 3' fill='none' stroke='%230B0D11' stroke-width='1.8'/%3E%3C/svg%3E");
+}
+
+.casilla.mal input {
+  border-color: #FF8A8A;
+}
+
+.casilla label {
+  color: var(--panel-dim);
+  font-size: var(--fs-body-s);
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.casilla label a {
+  color: var(--panel-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.casilla label a:hover {
+  color: var(--panel-blue);
+}
+
+.casilla .error {
+  grid-column: 2;
+}
+
 /* La trampa para bots: fuera de la vista sin display:none (algunos bots lo detectan). */
 .trampa {
   position: absolute;
