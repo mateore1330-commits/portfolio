@@ -68,13 +68,11 @@
   "trayectoria.actualidad": "present",
   "trayectoria.cursos": "Courses",
   "trayectoria.certificado": "View certificate",
-  "contacto.pista": "Move the mouse · click",
   "contacto.nombre": "Name",
   "contacto.nombre_pista": "Your name",
   "contacto.correo": "Email",
   "contacto.correo_pista": "you@email.com",
   "contacto.asunto": "Subject",
-  "contacto.opcional": "(optional)",
   "contacto.asunto_pista": "What would you like to talk about",
   "contacto.mensaje": "Message",
   "contacto.mensaje_pista": "Tell me",
@@ -91,5 +89,13 @@
   "contacto.sin_api": "The form isn't available right now, but you can email me directly.",
   "contacto.sin_api_nota": "Your email app opens with the subject and what you wrote already filled in.",
   "contacto.asunto_defecto": "Contact from the portfolio",
-  "pie.derechos": "© {anio} Rodlux Solutions. All rights reserved."
+  "pie.derechos": "© {anio} Rodlux Solutions. All rights reserved.",
+  "contacto.disponible": "Available · Jobs and freelance projects",
+  "contacto.escribeme": "Write to me",
+  "contacto.asunto_opcional": "Subject is optional",
+  "contacto.canal_email": "Email",
+  "contacto.canal_linkedin": "LinkedIn",
+  "contacto.canal_github": "GitHub",
+  "contacto.canal_cv": "CV",
+  "contacto.canal_other": "Link"
 }

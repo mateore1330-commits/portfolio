@@ -142,11 +142,15 @@ export default function ContactForm({ correo, boton, respaldo }) {
     )
   }
 
-  const campo = (nombre, etiqueta, props = {}, Elemento = 'input') => {
+  // Cada campo, con su número en azul (01…04), su error enlazado y la línea que se
+  // vuelve azul al escribir.
+  const campo = (nombre, numero, etiqueta, props = {}, Elemento = 'input') => {
     const error = errores[nombre]
     return (
       <div className={error ? 'campo mal' : 'campo'}>
-        <label htmlFor={`${id}-${nombre}`}>{etiqueta}</label>
+        <label htmlFor={`${id}-${nombre}`}>
+          <b aria-hidden="true">{String(numero).padStart(2, '0')}</b> {etiqueta}
+        </label>
         <Elemento
           id={`${id}-${nombre}`}
           name={nombre}
@@ -165,14 +169,17 @@ export default function ContactForm({ correo, boton, respaldo }) {
 
   return (
     <form className="form-contacto" onSubmit={enviar} noValidate>
-      {campo('nombre', t('contacto.nombre'), { autoComplete: 'name', placeholder: t('contacto.nombre_pista') })}
-      {campo('correo', t('contacto.correo'), { type: 'email', autoComplete: 'email', placeholder: t('contacto.correo_pista') })}
-      {campo('asunto', (
-        <>
-          {t('contacto.asunto')} <i>{t('contacto.opcional')}</i>
-        </>
-      ), { placeholder: t('contacto.asunto_pista') })}
-      {campo('mensaje', t('contacto.mensaje'), { rows: 5, placeholder: t('contacto.mensaje_pista') }, 'textarea')}
+      <div className="cab-form">
+        <span className="flecha" aria-hidden="true">
+          →
+        </span>
+        <h3>{t('contacto.escribeme')}</h3>
+        <span className="mini">{t('contacto.asunto_opcional')}</span>
+      </div>
+      {campo('nombre', 1, t('contacto.nombre'), { autoComplete: 'name', placeholder: t('contacto.nombre_pista') })}
+      {campo('correo', 2, t('contacto.correo'), { type: 'email', autoComplete: 'email', placeholder: t('contacto.correo_pista') })}
+      {campo('asunto', 3, t('contacto.asunto'), { placeholder: t('contacto.asunto_pista') })}
+      {campo('mensaje', 4, t('contacto.mensaje'), { rows: 5, placeholder: t('contacto.mensaje_pista') }, 'textarea')}
 
       {/* La trampa: invisible y fuera del tabulador. Una persona no la rellena; un bot, sí. */}
       <div className="trampa" aria-hidden="true">
@@ -180,9 +187,13 @@ export default function ContactForm({ correo, boton, respaldo }) {
         <input ref={trampa} id={`${id}-web`} name="web" tabIndex={-1} autoComplete="off" defaultValue="" />
       </div>
 
-      <button type="submit" className="big-btn" disabled={estado === 'enviando'}>
-        {estado === 'enviando' ? t('contacto.enviando') : boton}
-        {estado !== 'enviando' && <span aria-hidden="true">→</span>}
+      <button type="submit" className="big-btn azul" disabled={estado === 'enviando'}>
+        <span>{estado === 'enviando' ? t('contacto.enviando') : boton}</span>
+        {estado !== 'enviando' && (
+          <span className="flecha" aria-hidden="true">
+            →
+          </span>
+        )}
       </button>
       <p className="nota peq">{t('contacto.privacidad')}</p>
       <p className="aviso-envio" role="alert">
