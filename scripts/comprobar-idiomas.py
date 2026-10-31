@@ -36,6 +36,12 @@ FIJOS = {
 FIJOS_EN = {
     "technologies": (".projects[",),
     "tools": (".projects[", ".jobs["),
+    # El CV: sus enganches a la web (proyecto, empleos, formación), las fechas del proyecto,
+    # los nombres propios y las listas de tecnologías.
+    **{
+        clave: (".site_texts.cv",)
+        for clave in ("proyecto", "empleos", "formacion", "desde", "hasta", "nombre", "empresa", "lista")
+    },
 }
 
 

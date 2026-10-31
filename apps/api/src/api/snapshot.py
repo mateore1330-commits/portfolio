@@ -30,6 +30,9 @@ TAMANO_MAXIMO = 200 * 1024
 
 # Campos internos que no le sirven a la web.
 INTERNOS = {"created_at", "updated_at", "status", "is_visible"}
+# Textos que la web no usa: el CV lo lee el comando que genera el PDF. Fuera de la foto,
+# la web no carga con ellos.
+TEXTOS_FUERA = {"cv"}
 
 
 class InstantaneaError(Exception):
@@ -89,6 +92,7 @@ def generar_instantanea():
         "site_texts": {
             t.text_key: t.value
             for t in db.session.scalars(select(SiteText).order_by(SiteText.text_key))
+            if t.text_key not in TEXTOS_FUERA
         },
         "links": visibles(Link, Link.sort_order, Link.link_id),
         "technologies": [_fila(t) for t in tecnologias],

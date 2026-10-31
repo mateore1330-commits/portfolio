@@ -179,6 +179,121 @@
           ]
         }
       ]
+    },
+    "cv": {
+      "nombre": "Mateo Rodríguez Escobar",
+      "rol": "Full Stack Developer with AI",
+      "ubicacion": "Tenerife, España.",
+      "perfil": "Desarrollador **Full Stack** versátil y dinámico, con amplios conocimientos en el desarrollo asistido por IA (**AI-assisted coding**) para optimizar flujos de trabajo. Dominio del frontend (**React, Next.js**), backend y bases de datos (**Python, Node.js, SQL**). Destaco por mi alta capacidad de aprendizaje, adaptabilidad a nuevas tecnologías y colaboración en entornos orientados a la excelencia técnica.",
+      "proyectos": [
+        {
+          "titulo": "Full Stack Developer · CleanFlow",
+          "proyecto": "cleanflow",
+          "desde": "2026-09-01",
+          "hasta": "2026-10-01",
+          "lugar": "Madrid, España",
+          "descripcion": "Desarrollo de aplicación web para la gestión y organización de empresas en el sector de la limpieza.",
+          "puntos": [
+            "**Interfaz de Usuario (UI/UX):** interfaces dinámicas y responsivas utilizando React y Bootstrap, optimizando la experiencia del usuario.",
+            "**APIs RESTful y Seguridad:** Integración de APIs RESTful para conectar el front-end y back-end, garantizando la seguridad mediante autenticación basada en JWT (JSON Web Tokens).",
+            "**Bases de Datos:** Gestión, modelado y optimización de bases de datos relacionales mediante SQL.",
+            "**Integración de servicios de terceros:** autenticación con Google (OAuth) y gestión de archivos multimedia con Cloudinary.",
+            "**Flujo de Trabajo y Control de Versiones:** Uso de Git y GitHub para la gestión de código, garantizando un desarrollo colaborativo, organizado y con trazabilidad continua."
+          ]
+        }
+      ],
+      "experiencia": [
+        {
+          "puesto": "Conductor VTC y Taxista",
+          "empresa": "WeTaxi Madrid",
+          "lugar": "Madrid, España",
+          "empleos": [
+            "wetaxi-madrid"
+          ],
+          "descripcion": "Transporte de pasajeros.",
+          "puntos": [
+            "Trabajo autónomo con gestión de horarios, atención al cliente y resolución de incidencias en el momento."
+          ]
+        },
+        {
+          "puesto": "Diseñador gráfico y edición fotográfica",
+          "empresa": "Arquitectura Realty SLU",
+          "lugar": "Santa Cruz de Tenerife, España",
+          "empleos": [
+            "century21-arquitectura"
+          ],
+          "descripcion": "Diseñador gráfico en un grupo empresarial inmobiliario.",
+          "puntos": [
+            "Edición de los reportajes fotográficos de las propiedades captadas.",
+            "Diseño y maquetación para imprenta del merchandising y para campañas de marketing del grupo empresarial.",
+            "Negociación y coordinación con proveedores de impresión."
+          ]
+        },
+        {
+          "puesto": "Fundador y gerente",
+          "empresa": "Rolling Tours",
+          "lugar": "Santa Cruz de Tenerife, España",
+          "empleos": [
+            "rolling-tours"
+          ],
+          "descripcion": "Creación y gestión integral de una empresa de excursiones turísticas.",
+          "puntos": [
+            "Gestión de TPV, intranet B2B y CRM."
+          ]
+        }
+      ],
+      "educacion": [
+        {
+          "titulo": "Full Stack Developer with AI",
+          "centro": "4Geeks Academy España",
+          "lugar": "Madrid, España",
+          "formacion": "full-stack-4geeks"
+        },
+        {
+          "titulo": "Bachillerato",
+          "centro": "IES Alcalá - Guía de Isora",
+          "lugar": "Santa Cruz de Tenerife, España",
+          "formacion": "bachillerato"
+        }
+      ],
+      "habilidades": [
+        {
+          "grupo": "Front-end",
+          "lista": [
+            "HTML",
+            "CSS",
+            "Bootstrap",
+            "JavaScript",
+            "React",
+            "Tailwind CSS",
+            "Next.js",
+            "Vite"
+          ]
+        },
+        {
+          "grupo": "Back-end",
+          "lista": [
+            "Python",
+            "Flask",
+            "APIs",
+            "Node.js"
+          ]
+        },
+        {
+          "grupo": "Bases de datos",
+          "lista": [
+            "SQL",
+            "PostgreSQL"
+          ]
+        },
+        {
+          "grupo": "Control de Versiones",
+          "lista": [
+            "Git",
+            "GitHub"
+          ]
+        }
+      ]
     }
   },
   "links": [
@@ -704,6 +819,7 @@
   ],
   "jobs": [
     {
+      "slug": "wetaxi-madrid",
       "company": "WeTaxi Madrid",
       "location": "Madrid",
       "start_date": "2022-06-01",
@@ -718,6 +834,7 @@
       "achievements": []
     },
     {
+      "slug": "century21-arquitectura",
       "company": "Century 21 Arquitectura",
       "location": "Tenerife",
       "start_date": "2020-09-01",
@@ -737,6 +854,7 @@
       ]
     },
     {
+      "slug": "century21-sunset",
       "company": "Century 21 Sunset Tenerife",
       "location": "Tenerife",
       "start_date": "2019-04-01",
@@ -756,6 +874,7 @@
       ]
     },
     {
+      "slug": "rolling-tours",
       "company": "Rolling Tours",
       "location": "Tenerife",
       "start_date": "2018-01-01",
@@ -775,6 +894,7 @@
       ]
     },
     {
+      "slug": "we-art-tenerife",
       "company": "We Art Tenerife",
       "location": "Tenerife",
       "start_date": "2017-03-01",
@@ -795,6 +915,7 @@
   ],
   "education": [
     {
+      "slug": "ai-engineering-4geeks",
       "kind": "program",
       "institution": "4Geeks Academy",
       "location": null,
@@ -811,6 +932,7 @@
       ]
     },
     {
+      "slug": "full-stack-4geeks",
       "kind": "program",
       "institution": "4Geeks Academy",
       "location": "Madrid",
@@ -828,6 +950,7 @@
       ]
     },
     {
+      "slug": "curso-ejemplo-python",
       "kind": "course",
       "institution": "Plataforma de ejemplo",
       "location": null,
@@ -842,6 +965,7 @@
       "description": null
     },
     {
+      "slug": "formacion-continua",
       "kind": "program",
       "institution": null,
       "location": null,
@@ -858,6 +982,7 @@
       ]
     },
     {
+      "slug": "bachillerato",
       "kind": "program",
       "institution": "IES Alcalá",
       "location": "Guía de Isora",

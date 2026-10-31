@@ -179,6 +179,121 @@
           ]
         }
       ]
+    },
+    "cv": {
+      "nombre": "Mateo Rodríguez Escobar",
+      "rol": "Full Stack Developer with AI",
+      "ubicacion": "Tenerife, Spain.",
+      "perfil": "Versatile and dynamic **Full Stack** developer with extensive knowledge of AI-assisted development (**AI-assisted coding**) to optimize workflows. Strong command of the frontend (**React, Next.js**), backend and databases (**Python, Node.js, SQL**). I stand out for my ability to learn quickly, adapt to new technologies and collaborate in teams focused on technical excellence.",
+      "proyectos": [
+        {
+          "titulo": "Full Stack Developer · CleanFlow",
+          "proyecto": "cleanflow",
+          "desde": "2026-09-01",
+          "hasta": "2026-10-01",
+          "lugar": "Madrid, Spain",
+          "descripcion": "Web application for managing and organizing companies in the cleaning sector.",
+          "puntos": [
+            "**User Interface (UI/UX):** dynamic, responsive interfaces built with React and Bootstrap, optimizing the user experience.",
+            "**RESTful APIs and Security:** RESTful APIs connecting the front end and back end, secured with JWT (JSON Web Tokens) authentication.",
+            "**Databases:** management, modeling and optimization of relational databases with SQL.",
+            "**Third-party integrations:** Google sign-in (OAuth) and media management with Cloudinary.",
+            "**Workflow and Version Control:** Git and GitHub for code management, ensuring collaborative, organized and fully traceable development."
+          ]
+        }
+      ],
+      "experiencia": [
+        {
+          "puesto": "VTC and Taxi Driver",
+          "empresa": "WeTaxi Madrid",
+          "lugar": "Madrid, Spain",
+          "empleos": [
+            "wetaxi-madrid"
+          ],
+          "descripcion": "Passenger transport.",
+          "puntos": [
+            "Self-employed: managing my own schedule, customer service and solving incidents on the spot."
+          ]
+        },
+        {
+          "puesto": "Graphic Designer and Photo Editor",
+          "empresa": "Arquitectura Realty SLU",
+          "lugar": "Santa Cruz de Tenerife, Spain",
+          "empleos": [
+            "century21-arquitectura"
+          ],
+          "descripcion": "Graphic designer at a real estate group.",
+          "puntos": [
+            "Editing the photo shoots of the properties listed.",
+            "Print design and layout of merchandise and of the group's marketing campaigns.",
+            "Negotiation and coordination with print suppliers."
+          ]
+        },
+        {
+          "puesto": "Founder and Manager",
+          "empresa": "Rolling Tours",
+          "lugar": "Santa Cruz de Tenerife, Spain",
+          "empleos": [
+            "rolling-tours"
+          ],
+          "descripcion": "Founded and ran a sightseeing tour company end to end.",
+          "puntos": [
+            "Managed the POS, B2B intranet and CRM."
+          ]
+        }
+      ],
+      "educacion": [
+        {
+          "titulo": "Full Stack Developer with AI",
+          "centro": "4Geeks Academy Spain",
+          "lugar": "Madrid, Spain",
+          "formacion": "full-stack-4geeks"
+        },
+        {
+          "titulo": "High School Diploma (Bachillerato)",
+          "centro": "IES Alcalá - Guía de Isora",
+          "lugar": "Santa Cruz de Tenerife, Spain",
+          "formacion": "bachillerato"
+        }
+      ],
+      "habilidades": [
+        {
+          "grupo": "Front-end",
+          "lista": [
+            "HTML",
+            "CSS",
+            "Bootstrap",
+            "JavaScript",
+            "React",
+            "Tailwind CSS",
+            "Next.js",
+            "Vite"
+          ]
+        },
+        {
+          "grupo": "Back-end",
+          "lista": [
+            "Python",
+            "Flask",
+            "APIs",
+            "Node.js"
+          ]
+        },
+        {
+          "grupo": "Databases",
+          "lista": [
+            "SQL",
+            "PostgreSQL"
+          ]
+        },
+        {
+          "grupo": "Version Control",
+          "lista": [
+            "Git",
+            "GitHub"
+          ]
+        }
+      ]
     }
   },
   "links": [
@@ -704,6 +819,7 @@
   ],
   "jobs": [
     {
+      "slug": "wetaxi-madrid",
       "company": "WeTaxi Madrid",
       "location": "Madrid",
       "start_date": "2022-06-01",
@@ -718,6 +834,7 @@
       "achievements": []
     },
     {
+      "slug": "century21-arquitectura",
       "company": "Century 21 Arquitectura",
       "location": "Tenerife",
       "start_date": "2020-09-01",
@@ -737,6 +854,7 @@
       ]
     },
     {
+      "slug": "century21-sunset",
       "company": "Century 21 Sunset Tenerife",
       "location": "Tenerife",
       "start_date": "2019-04-01",
@@ -756,6 +874,7 @@
       ]
     },
     {
+      "slug": "rolling-tours",
       "company": "Rolling Tours",
       "location": "Tenerife",
       "start_date": "2018-01-01",
@@ -775,6 +894,7 @@
       ]
     },
     {
+      "slug": "we-art-tenerife",
       "company": "We Art Tenerife",
       "location": "Tenerife",
       "start_date": "2017-03-01",
@@ -795,6 +915,7 @@
   ],
   "education": [
     {
+      "slug": "ai-engineering-4geeks",
       "kind": "program",
       "institution": "4Geeks Academy",
       "location": null,
@@ -811,6 +932,7 @@
       ]
     },
     {
+      "slug": "full-stack-4geeks",
       "kind": "program",
       "institution": "4Geeks Academy",
       "location": "Madrid",
@@ -828,6 +950,7 @@
       ]
     },
     {
+      "slug": "curso-ejemplo-python",
       "kind": "course",
       "institution": "Plataforma de ejemplo",
       "location": null,
@@ -842,6 +965,7 @@
       "description": null
     },
     {
+      "slug": "formacion-continua",
       "kind": "program",
       "institution": null,
       "location": null,
@@ -858,6 +982,7 @@
       ]
     },
     {
+      "slug": "bachillerato",
       "kind": "program",
       "institution": "IES Alcalá",
       "location": "Guía de Isora",
