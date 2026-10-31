@@ -15,6 +15,10 @@ bcrypt = "==5.0.0"
 
 [dev-packages]
 ruff = "==0.17.1"
+pypdf = "==6.21.0"
+pillow = "==12.3.0"
+fonttools = "==4.67.0"
+brotli = "==1.2.0"
 
 [requires]
 python_version = "3.13"
@@ -26,3 +30,4 @@ seed = "python seed/cargar.py"
 publicar = "python seed/publicar.py"
 reenviar-avisos = "python seed/reenviar.py"
 borrar-mensajes-antiguos = "python seed/borrar_mensajes.py"
+generar-cv = "python seed/generar_cv.py"
