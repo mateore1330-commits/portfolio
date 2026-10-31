@@ -19,7 +19,9 @@
   --paper-3: #CFCBC3;
   --ink: #14161C;
   --ink-2: #3C404B;
-  --ink-3: #6E717C;
+  /* #555862 y no el #6E717C de la maqueta: con este, las etiquetas mono pequeñas no llegaban
+     al contraste AA (4,5:1) sobre el papel. Ahora 5,4:1 sobre --paper y 4,9:1 sobre --paper-2. */
+  --ink-3: #555862;
   --mist: #A8A59D;
   --rule: rgba(20, 22, 28, .16);
   --rule-2: rgba(20, 22, 28, .08);
@@ -116,6 +118,8 @@
     --blue: #7290FF;
     --blue-2: #9CB0FF;
     --blue-wash: rgba(114, 144, 255, .12);
+  /* Texto oscuro sobre el azul claro: el blanco se quedaba en 2,9:1. */
+  --on-blue: #0E1014;
     --shadow: 0 1px 0 rgba(230, 228, 222, .08);
     --tint-op: .58;
     --grain-op: .07;
@@ -136,6 +140,7 @@
   --blue: #7290FF;
   --blue-2: #9CB0FF;
   --blue-wash: rgba(114, 144, 255, .12);
+  --on-blue: #0E1014;
   --shadow: 0 1px 0 rgba(230, 228, 222, .08);
   --tint-op: .58;
   --grain-op: .07;

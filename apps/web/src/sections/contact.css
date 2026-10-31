@@ -13,6 +13,11 @@
   color: var(--panel-ink);
 }
 
+/* El foco con teclado, en el azul del panel: el azul del tema claro casi no se ve sobre negro. */
+.contact :focus-visible {
+  outline-color: var(--panel-blue);
+}
+
 /* El lienzo ocupa todo el panel y se desvanece hacia los bordes. */
 .dotfield {
   position: absolute;
@@ -91,11 +96,13 @@
   }
 }
 
-/* La pregunta en blanco y la respuesta (marcada con **…** en el contenido) debajo, en azul. */
+/* La pregunta en blanco y la respuesta (marcada con **…** en el contenido) debajo, en azul.
+   El tope de 10cqi: "¿Construimos", la palabra más larga, mide unas 9,7 veces el tamaño de
+   letra; con 40 px fijos se salía y quedaba cortada en un móvil de 360. */
 .contact h2 {
   max-width: 16ch;
   color: var(--panel-ink);
-  font-size: clamp(40px, 7.4cqi, 118px);
+  font-size: min(clamp(40px, 7.4cqi, 118px), 10cqi);
   font-variation-settings: "wdth" 118, "wght" 800;
   line-height: .9;
   letter-spacing: -.03em;
@@ -126,6 +133,7 @@
 
 /* Cada canal, una fila: qué es (en azul), el dato (en negrita) y la flecha. */
 .canales {
+  container-type: inline-size;
   max-width: 520px;
   margin: 38px 0 0;
   padding: 0;
@@ -388,8 +396,9 @@
   }
 }
 
-/* Móvil: la etiqueta del canal encima del dato, para que el correo quepa entero. */
-@media (max-width: 640px) {
+/* Columna estrecha (móvil, o a 1024 con el formulario al lado): la etiqueta del canal
+   encima del dato, para que el correo quepa entero en una línea. */
+@container (max-width: 460px) {
   .canales a {
     grid-template-columns: minmax(0, 1fr) auto;
     gap: var(--sp-1) 14px;
