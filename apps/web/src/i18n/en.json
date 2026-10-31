@@ -15,11 +15,11 @@
   "menu.cerrar": "Close",
   "menu.etiqueta": "Sections menu",
   "tema.boton": "Mode",
-  "tema.a_oscuro": "Switch to dark theme",
-  "tema.a_claro": "Switch to light theme",
+  "tema.a_oscuro": "Mode: switch to dark theme",
+  "tema.a_claro": "Mode: switch to light theme",
   "saltar": "Skip to content",
   "marca.rol": "Full Stack",
-  "marca.inicio": "Mateo Rodríguez, go to top",
+  "marca.inicio": "Mateo Rodríguez Full Stack, go to top",
   "hero.edicion": "Portfolio 2026",
   "hero.desplazate": "Scroll",
   "hero.retrato_alt": "Portrait of Mateo Rodríguez",
@@ -78,6 +78,9 @@
   "contacto.mensaje_pista": "Tell me",
   "contacto.enviando": "Sending…",
   "contacto.privacidad": "I only use your details to reply to you.",
+  "contacto.acepto": "I have read and accept the",
+  "contacto.politica": "privacy policy",
+  "contacto.error_privacidad": "Tick the box to send it.",
   "contacto.error_nombre": "Enter your name (2 to 100 characters).",
   "contacto.error_correo": "This email doesn't look valid.",
   "contacto.error_asunto": "The subject can be 150 characters at most.",
@@ -104,5 +107,6 @@
   "cursor.ver": "View",
   "cursor.abrir": "Open",
   "cursor.enviar": "Send",
-  "cursor.escribir": "Write"
+  "cursor.escribir": "Write",
+  "legal.actualizado": "Updated"
 }

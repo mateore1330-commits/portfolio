@@ -171,3 +171,8 @@
     gap: var(--sp-3);
   }
 }
+
+/* --- Páginas legales: el mismo esqueleto, con un titular menor (son textos, no carteles) --- */
+.pagina-legal .pp-cab h1 {
+  font-size: var(--fs-d-xl);
+}

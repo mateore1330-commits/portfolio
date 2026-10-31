@@ -15,6 +15,7 @@ from sqlalchemy import func, select
 from .correo import ErrorCorreo, enviar_aviso
 from .extensions import db
 from .models import ContactMessage
+from .snapshot import ultima_instantanea
 
 CORREO = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 TIEMPO_MINIMO_MS = 3000  # una persona no rellena el formulario en menos de 3 s
@@ -34,6 +35,8 @@ def limpiar(datos):
         "asunto": texto("asunto"),
         "mensaje": texto("mensaje"),
         "idioma": texto("idioma"),
+        # La casilla de privacidad: solo vale un true de verdad, no "sí" ni 1.
+        "privacidad": datos.get("privacidad") is True,
     }
 
 
@@ -48,6 +51,8 @@ def validar(campos):
         errores["asunto"] = "asunto"
     if not 10 <= len(campos["mensaje"]) <= 5000:
         errores["mensaje"] = "mensaje"
+    if not campos["privacidad"]:
+        errores["privacidad"] = "privacidad"
     return errores
 
 
@@ -71,6 +76,17 @@ def supera_limite(ip):
     return recientes >= LIMITE_POR_HORA
 
 
+def version_privacidad():
+    """La versión de la política vigente: su "Actualizado el…" en la instantánea publicada.
+
+    La pone el servidor, no la web: así nadie puede enviar una versión que no existió."""
+    snapshot = ultima_instantanea()
+    if snapshot is None:
+        return None
+    fecha = snapshot.payload.get("site_texts", {}).get("legal.actualizado")
+    return fecha.get("es") if isinstance(fecha, dict) else None
+
+
 def guardar(campos, ip, navegador):
     mensaje = ContactMessage(
         name=campos["nombre"],
@@ -80,6 +96,8 @@ def guardar(campos, ip, navegador):
         locale=campos["idioma"] if campos["idioma"] in IDIOMAS else None,
         ip_address=ip,
         user_agent=(navegador or "")[:300] or None,
+        privacy_accepted_at=datetime.now(UTC),
+        privacy_version=version_privacidad(),
     )
     db.session.add(mensaje)
     db.session.commit()

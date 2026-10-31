@@ -312,6 +312,11 @@ class ContactMessage(db.Model):
     )
     # Se guarda ANTES de intentar el envío: si el correo falla, el mensaje no se pierde.
     email_sent: Mapped[bool] = mapped_column(server_default=text("false"))
+    # La prueba de que aceptó la política de privacidad (casilla obligatoria): cuándo y
+    # qué versión (la fecha de "Actualizado el…" publicada en ese momento). Vacíos en los
+    # mensajes anteriores a la casilla.
+    privacy_accepted_at: Mapped[datetime | None]
+    privacy_version: Mapped[str | None]
     created_at: Mapped[datetime] = created_at()
 
 
