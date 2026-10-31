@@ -1,6 +1,6 @@
 import Marcado from '@/content/Marcado.jsx'
 import { useContent } from '@/content/useContent.js'
-import { usePick, useT } from '@/i18n/useLang.js'
+import { useLang, usePick, useT } from '@/i18n/useLang.js'
 import ContactForm from '@/sections/ContactForm.jsx'
 import DotField from '@/sections/DotField.jsx'
 import '@/sections/contact.css'
@@ -12,6 +12,10 @@ function datoDe(enlace, nombre) {
   return nombre
 }
 
+// El CV en PDF de cada idioma. Lo genera `pipenv run generar-cv` (apps/api/seed/generar_cv.py)
+// con estos mismos nombres.
+const rutaCv = (lang) => `/cv/CV-Mateo-Rodriguez-Escobar-${lang.toUpperCase()}.pdf`
+
 // El cierre de la web: panel negro en los dos temas con el campo de puntos. Arriba, a
 // todo el ancho, la etiqueta de disponibilidad y el titular (la parte marcada, en azul).
 // Debajo, el texto y los canales a la izquierda y el formulario a la derecha.
@@ -19,6 +23,7 @@ function datoDe(enlace, nombre) {
 export default function Contact() {
   const t = useT()
   const p = usePick()
+  const lang = useLang()
   const { site_texts: textos, links } = useContent()
   const nombre = p(textos['hero.nombre'])
   const correo = links.find((l) => l.type === 'email')?.url.replace(/^mailto:/, '') ?? ''
@@ -60,6 +65,16 @@ export default function Contact() {
                 </li>
               )
             })}
+            <li>
+              <a href={rutaCv(lang)} download type="application/pdf">
+                <span className="k">{t('contacto.canal_cv')}</span>
+                <span className="v">{t('contacto.cv_descargar')}</span>
+                <span className="f" aria-hidden="true">
+                  ↓
+                </span>
+                <span className="solo-lector"> {t('contacto.cv_formato')}</span>
+              </a>
+            </li>
           </ul>
         </div>
 

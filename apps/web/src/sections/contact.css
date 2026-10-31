@@ -188,6 +188,11 @@
   transform: translate(3px, -3px);
 }
 
+/* La del CV es una descarga: su flecha (↓) baja en vez de salir. */
+.canales a[download]:hover .f {
+  transform: translateY(3px);
+}
+
 /* --- Formulario: caja translúcida, para leerse sobre los puntos --- */
 .form-contacto {
   padding: clamp(22px, 3vw, 40px);

@@ -100,6 +100,8 @@
   "contacto.canal_linkedin": "LinkedIn",
   "contacto.canal_github": "GitHub",
   "contacto.canal_cv": "CV",
+  "contacto.cv_descargar": "Download as PDF",
+  "contacto.cv_formato": "(PDF, one page)",
   "contacto.canal_other": "Link",
   "pie.aviso_legal": "Legal notice",
   "pie.privacidad": "Privacy",
