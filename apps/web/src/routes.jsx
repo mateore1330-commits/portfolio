@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router'
 import App from '@/App.jsx'
 import LanguageLayout from '@/i18n/LanguageLayout.jsx'
 import Home from '@/pages/Home.jsx'
+import LegalPage from '@/pages/LegalPage.jsx'
 import NotFound from '@/pages/NotFound.jsx'
 import ProjectPage from '@/pages/ProjectPage.jsx'
 
@@ -17,6 +18,8 @@ const paginas = (lang) => ({
   children: [
     { index: true, element: <Home /> },
     { path: 'proyectos/:slug', element: <ProjectPage /> },
+    { path: 'aviso-legal', element: <LegalPage clave="aviso" /> },
+    { path: 'privacidad', element: <LegalPage clave="privacidad" /> },
     { path: '*', element: <NotFound /> },
   ],
 })

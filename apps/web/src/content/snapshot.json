@@ -1,5 +1,5 @@
 {
-  "etag": "\"981f47d0ec233d14fab1f53feb6c7257196e6238c5ca062dad345546abb33c50\"",
+  "etag": "\"5b1a23d1d34211527257b4d09ee6b0c6f833c65cf23c427fd1620f4e4bc5b241\"",
   "education": [
     {
       "certificate_file": null,
@@ -587,6 +587,172 @@
     "hero.nombre": {
       "en": "Mateo Rodríguez",
       "es": "Mateo Rodríguez"
+    },
+    "legal.actualizado": {
+      "en": "31 October 2026",
+      "es": "31 de octubre de 2026"
+    },
+    "legal.aviso": {
+      "en": {
+        "bloques": [
+          {
+            "texto": [
+              "This website is the personal portfolio of **Mateo Rodríguez Escobar**. Rodlux Solutions is a brand of Mateo Rodríguez Escobar.",
+              "Contact: info@mateorodriguez.solutions."
+            ],
+            "titulo": "Who is behind it"
+          },
+          {
+            "texto": [
+              "Showing my background and my projects, and making it easy for you to write to me. The website does not sell products or provide services."
+            ],
+            "titulo": "What it is for"
+          },
+          {
+            "texto": [
+              "The texts, design and images on this website are mine unless stated otherwise. Third-party brands and logos belong to their owners.",
+              "Links to other websites (GitHub, LinkedIn or the project demos) lead to sites I do not control."
+            ],
+            "titulo": "Content"
+          },
+          {
+            "texto": [
+              "This website is governed by Spanish law."
+            ],
+            "titulo": "Applicable law"
+          }
+        ],
+        "titulo": "Legal notice"
+      },
+      "es": {
+        "bloques": [
+          {
+            "texto": [
+              "Esta web es el portfolio personal de **Mateo Rodríguez Escobar**. Rodlux Solutions es una marca de Mateo Rodríguez Escobar.",
+              "Contacto: info@mateorodriguez.solutions."
+            ],
+            "titulo": "Quién está detrás"
+          },
+          {
+            "texto": [
+              "Mostrar mi trayectoria y mis proyectos, y facilitar que me escribas. La web no vende productos ni presta servicios."
+            ],
+            "titulo": "Para qué sirve"
+          },
+          {
+            "texto": [
+              "Los textos, el diseño y las imágenes de esta web son míos, salvo que se indique otra cosa. Las marcas y logotipos de terceros que aparecen pertenecen a sus dueños.",
+              "Los enlaces a otras webs (GitHub, LinkedIn o las demos de los proyectos) llevan a sitios que no controlo."
+            ],
+            "titulo": "Contenidos"
+          },
+          {
+            "texto": [
+              "Esta web se rige por la legislación española."
+            ],
+            "titulo": "Legislación"
+          }
+        ],
+        "titulo": "Aviso legal"
+      }
+    },
+    "legal.privacidad": {
+      "en": {
+        "bloques": [
+          {
+            "texto": [
+              "**Mateo Rodríguez Escobar** · info@mateorodriguez.solutions."
+            ],
+            "titulo": "Data controller"
+          },
+          {
+            "texto": [
+              "Only what you write in the contact form: name, email, subject (optional) and message. The page language, the browser and the IP address it is sent from are also stored."
+            ],
+            "titulo": "What data I collect"
+          },
+          {
+            "texto": [
+              "To read your message and reply to you. The IP address is used only to limit the number of submissions and prevent spam. I do not use your data for anything else or share it with anyone.",
+              "The legal basis is your consent, which you give when you send the form."
+            ],
+            "titulo": "What for"
+          },
+          {
+            "texto": [
+              "Messages are kept for **12 months** from when they arrive and are then deleted."
+            ],
+            "titulo": "How long"
+          },
+          {
+            "texto": [
+              "The services that make the website work: Hostinger (the email account where I get notified of your message), the server hosting the API and Vercel (where the website is published). They only process the data to provide that service."
+            ],
+            "titulo": "Who else is involved"
+          },
+          {
+            "texto": [
+              "You can ask to see, correct or delete your data, or to object to or restrict its use, by writing to info@mateorodriguez.solutions. If you think it has not been handled properly, you can complain to the Spanish Data Protection Agency (aepd.es)."
+            ],
+            "titulo": "Your rights"
+          },
+          {
+            "texto": [
+              "This website does not use tracking cookies or third-party analytics. It only stores in your browser the theme (light or dark) and the language you choose, to remember them."
+            ],
+            "titulo": "Cookies"
+          }
+        ],
+        "titulo": "Privacy"
+      },
+      "es": {
+        "bloques": [
+          {
+            "texto": [
+              "**Mateo Rodríguez Escobar** · info@mateorodriguez.solutions."
+            ],
+            "titulo": "Responsable"
+          },
+          {
+            "texto": [
+              "Solo los que escribes en el formulario de contacto: nombre, correo, asunto (opcional) y mensaje. Además se guardan el idioma de la página, el navegador y la dirección IP desde la que se envía."
+            ],
+            "titulo": "Qué datos recojo"
+          },
+          {
+            "texto": [
+              "Para leer tu mensaje y responderte. La dirección IP se usa solo para limitar el número de envíos y evitar el spam. No uso tus datos para nada más ni los cedo a nadie.",
+              "La base legal es tu consentimiento, que das al enviar el formulario."
+            ],
+            "titulo": "Para qué"
+          },
+          {
+            "texto": [
+              "Los mensajes se guardan **12 meses** desde que llegan y después se borran."
+            ],
+            "titulo": "Cuánto tiempo"
+          },
+          {
+            "texto": [
+              "Los servicios que hacen funcionar la web: Hostinger (el correo con el que recibo el aviso de tu mensaje), el servidor donde se aloja la API y Vercel (donde se publica la web). Solo tratan los datos para prestar ese servicio."
+            ],
+            "titulo": "Quién más interviene"
+          },
+          {
+            "texto": [
+              "Puedes pedir ver, corregir o borrar tus datos, oponerte a su uso o limitarlo, escribiendo a info@mateorodriguez.solutions. Si crees que no se han tratado bien, puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es)."
+            ],
+            "titulo": "Tus derechos"
+          },
+          {
+            "texto": [
+              "Esta web no usa cookies de seguimiento ni analítica de terceros. Solo guarda en tu navegador el tema (claro u oscuro) y el idioma que eliges, para recordarlos."
+            ],
+            "titulo": "Cookies"
+          }
+        ],
+        "titulo": "Privacidad"
+      }
     },
     "pie.texto": {
       "en": [
