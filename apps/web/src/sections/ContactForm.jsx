@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { rutaEn } from '@/i18n/idiomas.js'
 import { useLang, useT } from '@/i18n/useLang.js'
+import BotonCopiar from '@/sections/BotonCopiar.jsx'
 import EnlaceFuera from '@/sections/EnlaceFuera.jsx'
 import { useMagnetic } from '@/sections/useMagnetic.js'
 
@@ -144,6 +145,10 @@ export default function ContactForm({ correo, boton, respaldo }) {
         <a ref={principal} className="big-btn" href={enlaceRespaldo(correo, t('contacto.asunto_defecto'), campos)}>
           {respaldo} <span aria-hidden="true">→</span>
         </a>
+        <p className="o-copiar">
+          {t('contacto.o')}{' '}
+          <BotonCopiar texto={correo} etiqueta={t('contacto.copia_el_correo')} nombre={t('contacto.copia_el_correo')} />
+        </p>
         <p className="nota peq">{t('contacto.sin_api_nota')}</p>
       </div>
     )

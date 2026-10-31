@@ -1,6 +1,7 @@
 import Marcado from '@/content/Marcado.jsx'
 import { useContent } from '@/content/useContent.js'
 import { useLang, usePick, useT } from '@/i18n/useLang.js'
+import BotonCopiar from '@/sections/BotonCopiar.jsx'
 import ContactForm from '@/sections/ContactForm.jsx'
 import DotField from '@/sections/DotField.jsx'
 import '@/sections/contact.css'
@@ -51,6 +52,19 @@ export default function Contact() {
           ))}
           <ul className="canales">
             {links.map((enlace) => {
+              // El correo: el enlace abre la app de correo y, en el hueco de la flecha,
+              // "Copiar" para quien no tenga ninguna configurada.
+              if (enlace.type === 'email') {
+                return (
+                  <li key={enlace.url} className="con-copiar">
+                    <span className="k">{t('contacto.canal_email')}</span>
+                    <a className="v" href={enlace.url}>
+                      {correo}
+                    </a>
+                    <BotonCopiar texto={correo} etiqueta={t('contacto.copiar')} nombre={t('contacto.copiar_correo')} />
+                  </li>
+                )
+              }
               const fuera = !enlace.url.startsWith('mailto:')
               return (
                 <li key={enlace.url}>
