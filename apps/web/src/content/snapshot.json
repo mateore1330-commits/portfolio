@@ -1,5 +1,5 @@
 {
-  "etag": "\"12affbd912d2c1da0defecb829ac2aac87acce1d947c8a6d9c4020cb2aa37ad9\"",
+  "etag": "\"981f47d0ec233d14fab1f53feb6c7257196e6238c5ca062dad345546abb33c50\"",
   "education": [
     {
       "certificate_file": null,
@@ -496,17 +496,17 @@
     },
     "contacto.texto": {
       "en": [
-        "I'm looking for my first job as a full stack developer, keen to work on backend and infrastructure. I'm based in Tenerife, open to hybrid or remote, and I can start right away.",
-        "Drop me a line and in ten minutes I'll tell you what I can bring to your team."
+        "I can **join your team** or **take on your project** as a freelancer.",
+        "I work **remotely or hybrid** and I'm **available right away**. Tell me what you're working on and I'll get back to you with a proposal."
       ],
       "es": [
-        "Busco mi primer puesto como desarrollador full stack, con ganas de tocar backend e infraestructura. Estoy en Tenerife, me vale híbrido o remoto, y puedo incorporarme ya.",
-        "Escríbeme y te cuento en diez minutos qué puedo aportar a tu equipo."
+        "Puedo **sumarme a tu equipo** o **encargarme de tu proyecto** como freelance.",
+        "Trabajo en **remoto o híbrido** y tengo **disponibilidad inmediata**. Cuéntame qué tienes entre manos y te respondo con una propuesta."
       ]
     },
     "contacto.titular": {
-      "en": "Let's talk",
-      "es": "Hablamos"
+      "en": "Shall we build something together? **Let's talk.**",
+      "es": "¿Construimos algo juntos? **Hablemos.**"
     },
     "hero.entradilla": {
       "en": "My background in sales, graphic design and running my own company gives me a view that goes beyond code. I don't just build interfaces: I build products that solve real problems for the people who use them.",
@@ -590,12 +590,10 @@
     },
     "pie.texto": {
       "en": [
-        "Mateo Rodríguez · Full Stack Developer · Tenerife, Spain",
-        "This site is built with React and Flask, and the code is public."
+        "Designed and developed by Mateo Rodríguez"
       ],
       "es": [
-        "Mateo Rodríguez · Desarrollador Full Stack · Tenerife, España",
-        "Esta web está hecha con React y Flask, y el código es público."
+        "Diseñado y desarrollado por Mateo Rodríguez"
       ]
     },
     "sobre.cifras": {

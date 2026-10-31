@@ -90,16 +90,15 @@
         "subtitulo": "From the previous eight years"
       }
     },
-    "contacto.titular": "Let's talk",
+    "contacto.titular": "Shall we build something together? **Let's talk.**",
     "contacto.texto": [
-      "I'm looking for my first job as a full stack developer, keen to work on backend and infrastructure. I'm based in Tenerife, open to hybrid or remote, and I can start right away.",
-      "Drop me a line and in ten minutes I'll tell you what I can bring to your team."
+      "I can **join your team** or **take on your project** as a freelancer.",
+      "I work **remotely or hybrid** and I'm **available right away**. Tell me what you're working on and I'll get back to you with a proposal."
     ],
     "contacto.boton": "Send message",
     "contacto.respaldo": "Email me directly at info@mateorodriguez.solutions",
     "pie.texto": [
-      "Mateo Rodríguez · Full Stack Developer · Tenerife, Spain",
-      "This site is built with React and Flask, and the code is public."
+      "Designed and developed by Mateo Rodríguez"
     ]
   },
   "links": [

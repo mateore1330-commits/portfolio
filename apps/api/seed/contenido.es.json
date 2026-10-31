@@ -90,16 +90,15 @@
         "subtitulo": "De los ocho años anteriores"
       }
     },
-    "contacto.titular": "Hablamos",
+    "contacto.titular": "¿Construimos algo juntos? **Hablemos.**",
     "contacto.texto": [
-      "Busco mi primer puesto como desarrollador full stack, con ganas de tocar backend e infraestructura. Estoy en Tenerife, me vale híbrido o remoto, y puedo incorporarme ya.",
-      "Escríbeme y te cuento en diez minutos qué puedo aportar a tu equipo."
+      "Puedo **sumarme a tu equipo** o **encargarme de tu proyecto** como freelance.",
+      "Trabajo en **remoto o híbrido** y tengo **disponibilidad inmediata**. Cuéntame qué tienes entre manos y te respondo con una propuesta."
     ],
     "contacto.boton": "Enviar mensaje",
     "contacto.respaldo": "Escríbeme directamente a info@mateorodriguez.solutions",
     "pie.texto": [
-      "Mateo Rodríguez · Desarrollador Full Stack · Tenerife, España",
-      "Esta web está hecha con React y Flask, y el código es público."
+      "Diseñado y desarrollado por Mateo Rodríguez"
     ]
   },
   "links": [

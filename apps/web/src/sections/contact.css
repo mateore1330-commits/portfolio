@@ -1,0 +1,401 @@
+/* ============================================================
+   CONTACTO — el cierre de la web. Panel negro en los dos temas, con el
+   campo de puntos. Propuesta aprobada el 31/10/2026
+   (Recursos/Maquetas/contacto-propuesta.html).
+   ============================================================ */
+
+.contact {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(76px, 11vw, 150px) var(--gut);
+  background: var(--panel);
+  color: var(--panel-ink);
+}
+
+/* El lienzo ocupa todo el panel y se desvanece hacia los bordes. */
+.dotfield {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(120% 92% at 50% 46%, #000 34%, transparent 100%);
+  mask-image: radial-gradient(120% 92% at 50% 46%, #000 34%, transparent 100%);
+}
+
+/* Un halo azul suave detrás del formulario. */
+.contact-halo {
+  position: absolute;
+  top: 25%;
+  right: -10%;
+  z-index: 0;
+  width: 60%;
+  height: 80%;
+  background: radial-gradient(closest-side, rgba(114, 144, 255, .16), transparent);
+  pointer-events: none;
+}
+
+.contact-dentro {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(30px, 6vw, 96px);
+  max-width: 1250px;
+  margin-inline: auto;
+  container-type: inline-size;
+}
+
+/* --- Cabecera: disponibilidad y titular, a todo el ancho --- */
+.contact-cabecera {
+  grid-column: 1 / -1;
+}
+
+.contact-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 26px;
+  padding: var(--sp-2) 14px;
+  border: 1px solid rgba(114, 144, 255, .45);
+  background: rgba(114, 144, 255, .08);
+  color: var(--panel-ink);
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: var(--tr-mono);
+  text-transform: uppercase;
+}
+
+/* El punto que late, como en la portada, en el azul del panel. */
+.contact-pill .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--panel-blue);
+  animation: latido 2.6s infinite;
+}
+
+@keyframes latido {
+  0% {
+    box-shadow: 0 0 0 0 rgba(114, 144, 255, .5);
+  }
+
+  70%,
+  100% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+}
+
+/* La pregunta en blanco y la respuesta (marcada con **…** en el contenido) debajo, en azul. */
+.contact h2 {
+  max-width: 16ch;
+  color: var(--panel-ink);
+  font-size: clamp(40px, 7.4cqi, 118px);
+  font-variation-settings: "wdth" 118, "wght" 800;
+  line-height: .9;
+  letter-spacing: -.03em;
+}
+
+.contact h2 b {
+  display: block;
+  color: var(--panel-blue);
+  font-weight: inherit;
+}
+
+/* --- Texto y canales --------------------------------------- */
+.contact .sub {
+  max-width: 44ch;
+  color: var(--panel-dim);
+  font-size: var(--fs-lede);
+  line-height: 1.5;
+}
+
+.contact .sub + .sub {
+  margin-top: var(--sp-3);
+}
+
+.contact .sub b {
+  color: var(--panel-ink);
+  font-weight: 600;
+}
+
+/* Cada canal, una fila: qué es (en azul), el dato (en negrita) y la flecha. */
+.canales {
+  max-width: 520px;
+  margin: 38px 0 0;
+  padding: 0;
+  border-top: 1px solid rgba(237, 235, 229, .14);
+  list-style: none;
+}
+
+.canales a {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 14px;
+  padding-block: 14px;
+  border-bottom: 1px solid rgba(237, 235, 229, .14);
+  color: var(--panel-ink);
+  text-decoration: none;
+  transition: padding var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.canales .k {
+  color: var(--panel-blue);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.canales .v {
+  overflow-wrap: anywhere;
+  font-family: var(--f-display);
+  font-size: var(--fs-body);
+  font-variation-settings: "wdth" 108, "wght" 700;
+}
+
+.canales .f {
+  color: var(--panel-dim);
+  font-family: var(--f-mono);
+  font-size: 14px;
+  transition: transform var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.canales a:hover {
+  padding-left: 10px;
+}
+
+.canales a:hover .v,
+.canales a:hover .f {
+  color: var(--panel-blue);
+}
+
+.canales a:hover .f {
+  transform: translate(3px, -3px);
+}
+
+/* --- Formulario: caja translúcida, para leerse sobre los puntos --- */
+.form-contacto {
+  padding: clamp(22px, 3vw, 40px);
+  border: 1px solid rgba(114, 144, 255, .28);
+  background: rgba(11, 13, 17, .72);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(114, 144, 255, .25);
+}
+
+.cab-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sp-3);
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(237, 235, 229, .14);
+}
+
+.cab-form .flecha {
+  color: var(--panel-blue);
+  font-family: var(--f-mono);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.cab-form h3 {
+  font-size: 28px;
+  font-variation-settings: "wdth" 118, "wght" 800;
+  line-height: 1;
+}
+
+.cab-form .mini {
+  margin-left: auto;
+  color: var(--panel-dim);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-xs);
+  letter-spacing: var(--tr-mono);
+  text-transform: uppercase;
+}
+
+.campo {
+  margin-bottom: 18px;
+}
+
+.campo label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--panel-dim);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.campo label b {
+  margin-right: 6px;
+  color: var(--panel-blue);
+  font-weight: 700;
+}
+
+/* Al escribir, una línea azul crece de izquierda a derecha sobre la fina. El contorno de
+   foco de base.css se mantiene. */
+.campo input,
+.campo textarea {
+  width: 100%;
+  padding: 6px 0 8px;
+  border: 0;
+  border-bottom: 1px solid rgba(237, 235, 229, .28);
+  border-radius: 0;
+  background: linear-gradient(var(--panel-blue), var(--panel-blue)) left bottom / 0 2px no-repeat;
+  color: var(--panel-ink);
+  font-family: var(--f-body);
+  font-size: var(--fs-body);
+  resize: vertical;
+  transition: background-size .5s var(--ease-out);
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+  color: rgba(138, 142, 153, .6);
+}
+
+.campo input:focus,
+.campo textarea:focus {
+  background-size: 100% 2px;
+}
+
+.campo.mal input,
+.campo.mal textarea {
+  border-color: #FF8A8A;
+}
+
+.error,
+.aviso-envio {
+  display: block;
+  min-height: 1.2em;
+  margin-top: 5px;
+  color: #FF8A8A;
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: .06em;
+}
+
+/* La trampa para bots: fuera de la vista sin display:none (algunos bots lo detectan). */
+.trampa {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.big-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 30px;
+  border: 0;
+  background: var(--panel-ink);
+  color: var(--panel);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-l);
+  letter-spacing: var(--tr-mono-wide);
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+.big-btn:hover:not([disabled]) {
+  background: var(--panel-blue);
+  box-shadow: 0 0 44px rgba(114, 144, 255, .45);
+  color: #0B0D11;
+}
+
+/* El de enviar: azul y a todo el ancho; la flecha se adelanta al pasar el ratón. */
+.big-btn.azul {
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px 24px;
+  background: var(--panel-blue);
+  color: #0B0D11;
+  font-weight: 700;
+}
+
+.big-btn.azul:hover:not([disabled]) {
+  background: #9CB0FF;
+}
+
+.big-btn .flecha {
+  transition: transform var(--dur) var(--ease);
+}
+
+.big-btn:hover .flecha {
+  transform: translateX(6px);
+}
+
+.big-btn[disabled] {
+  opacity: .55;
+  cursor: wait;
+}
+
+.form-contacto .nota {
+  margin-top: 14px;
+  color: var(--panel-dim);
+}
+
+.form-contacto .peq {
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.estado-ok {
+  color: var(--panel-blue);
+  font-family: var(--f-display);
+  font-size: 32px;
+  font-variation-settings: "wdth" 118, "wght" 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.respaldo .big-btn {
+  margin-top: 18px;
+}
+
+.enlace-texto {
+  margin-top: var(--sp-4);
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid rgba(237, 235, 229, .28);
+  background: none;
+  color: var(--panel-dim);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+@media (max-width: 1000px) {
+  .contact-dentro {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Móvil: la etiqueta del canal encima del dato, para que el correo quepa entero. */
+@media (max-width: 640px) {
+  .canales a {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--sp-1) 14px;
+  }
+
+  .canales .k {
+    grid-column: 1 / -1;
+  }
+}

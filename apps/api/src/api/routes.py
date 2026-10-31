@@ -1,5 +1,6 @@
 from flask import Blueprint, current_app, jsonify, request
 
+from . import contacto
 from .github import contribuciones
 from .snapshot import ultima_instantanea
 
@@ -38,3 +39,27 @@ def contributions():
     # Cambia como mucho una vez al día: el navegador puede reutilizarla una hora.
     respuesta.headers["Cache-Control"] = "public, max-age=3600"
     return respuesta
+
+
+@api.post("/contact")
+def contact():
+    """El formulario de contacto. 201 enviado · 400 errores por campo · 429 demasiados."""
+    datos = request.get_json(silent=True) or {}
+    # Trampa o demasiado rápido: se responde como si se hubiera enviado y no se guarda.
+    # A un bot no se le dan pistas de qué le ha delatado.
+    if contacto.es_bot(datos):
+        return jsonify(ok=True), 201
+
+    campos = contacto.limpiar(datos)
+    errores = contacto.validar(campos)
+    if errores:
+        return jsonify(errores=errores), 400
+
+    # La IP real llega por el proxy del servidor (X-Forwarded-For); se configura en INFRA.
+    ip = request.remote_addr
+    if contacto.supera_limite(ip):
+        return jsonify(error="limite"), 429
+
+    message_id = contacto.guardar(campos, ip, request.headers.get("User-Agent"))
+    contacto.avisar_en_segundo_plano(message_id)
+    return jsonify(ok=True), 201
