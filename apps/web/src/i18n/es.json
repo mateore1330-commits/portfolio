@@ -89,7 +89,7 @@
   "contacto.sin_api": "Ahora mismo el formulario no está disponible, pero puedes escribirme directamente.",
   "contacto.sin_api_nota": "Se abre tu correo con el asunto y lo que hayas escrito ya puestos.",
   "contacto.asunto_defecto": "Contacto desde el portfolio",
-  "pie.derechos": "© {anio} Rodlux Solutions. Todos los derechos reservados.",
+  "pie.derechos": "Copyright © {anio} Rodlux Solutions",
   "contacto.disponible": "Disponible para ofertas de empleo y proyectos freelance",
   "contacto.escribeme": "Escríbeme",
   "contacto.asunto_opcional": "El asunto es opcional",
@@ -97,5 +97,8 @@
   "contacto.canal_linkedin": "LinkedIn",
   "contacto.canal_github": "GitHub",
   "contacto.canal_cv": "CV",
-  "contacto.canal_other": "Enlace"
+  "contacto.canal_other": "Enlace",
+  "pie.aviso_legal": "Aviso legal",
+  "pie.privacidad": "Privacidad",
+  "pie.legal": "Información legal"
 }

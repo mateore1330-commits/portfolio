@@ -89,7 +89,7 @@
   "contacto.sin_api": "The form isn't available right now, but you can email me directly.",
   "contacto.sin_api_nota": "Your email app opens with the subject and what you wrote already filled in.",
   "contacto.asunto_defecto": "Contact from the portfolio",
-  "pie.derechos": "© {anio} Rodlux Solutions. All rights reserved.",
+  "pie.derechos": "Copyright © {anio} Rodlux Solutions",
   "contacto.disponible": "Available for job offers and freelance projects",
   "contacto.escribeme": "Write to me",
   "contacto.asunto_opcional": "Subject is optional",
@@ -97,5 +97,8 @@
   "contacto.canal_linkedin": "LinkedIn",
   "contacto.canal_github": "GitHub",
   "contacto.canal_cv": "CV",
-  "contacto.canal_other": "Link"
+  "contacto.canal_other": "Link",
+  "pie.aviso_legal": "Legal notice",
+  "pie.privacidad": "Privacy",
+  "pie.legal": "Legal information"
 }

@@ -255,18 +255,51 @@
   white-space: nowrap;
 }
 
-/* --- Pie --------------------------------------------------- */
+/* --- Pie: una línea, en tres partes (izquierda · centro · derecha) --- */
 .pie {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: var(--sp-3) var(--sp-5);
   padding: 22px var(--gut) 34px;
   border-top: 1px solid var(--rule-2);
   color: var(--ink-3);
   font-size: var(--fs-mono-s);
   letter-spacing: .12em;
+}
+
+.pie-centro {
+  text-align: center;
+}
+
+.pie-der {
+  display: flex;
+  justify-content: flex-end;
+  gap: 22px;
+}
+
+.pie-der a {
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+  transition: color var(--dur-fast), border-color var(--dur-fast);
+}
+
+.pie-der a:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+/* Estrecho: una debajo de otra, centradas. */
+@media (max-width: 900px) {
+  .pie {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+
+  .pie-der {
+    justify-content: center;
+  }
 }
 
 /* --- Pantallas estrechas ----------------------------------- */
