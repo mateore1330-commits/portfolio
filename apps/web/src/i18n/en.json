@@ -100,5 +100,9 @@
   "contacto.canal_other": "Link",
   "pie.aviso_legal": "Legal notice",
   "pie.privacidad": "Privacy",
-  "pie.legal": "Legal information"
+  "pie.legal": "Legal information",
+  "cursor.ver": "View",
+  "cursor.abrir": "Open",
+  "cursor.enviar": "Send",
+  "cursor.escribir": "Write"
 }

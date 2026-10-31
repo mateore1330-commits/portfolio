@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { useLang, useT } from '@/i18n/useLang.js'
+import { useMagnetic } from '@/sections/useMagnetic.js'
 
 const API = import.meta.env.VITE_API_URL
 const ESPERA_MAXIMA_MS = 5000
@@ -43,6 +44,8 @@ export default function ContactForm({ correo, boton, respaldo }) {
   const [estado, setEstado] = useState(API ? 'listo' : 'sinApi')
   const inicio = useRef(0) // cuándo se vio el formulario (para el tiempo mínimo)
   const trampa = useRef(null)
+  const principal = useRef(null) // el botón de enviar o el de correo: con efecto imán
+  useMagnetic(principal, estado)
 
   // Al aparecer: se apunta la hora (para el antispam) y, si la API no contesta, el
   // respaldo desde el principio, antes de que nadie escriba nada.
@@ -120,7 +123,7 @@ export default function ContactForm({ correo, boton, respaldo }) {
 
   if (estado === 'enviado') {
     return (
-      <div className="form-contacto hecho" role="status">
+      <div className="form-contacto hecho" role="status" data-revelar="">
         <p className="estado-ok">✓ {t('contacto.enviado')}</p>
         <p className="nota">{t('contacto.enviado_nota')}</p>
         <button type="button" className="enlace-texto" onClick={() => setEstado('listo')}>
@@ -132,9 +135,9 @@ export default function ContactForm({ correo, boton, respaldo }) {
 
   if (estado === 'sinApi') {
     return (
-      <div className="form-contacto respaldo" role="status">
+      <div className="form-contacto respaldo" role="status" data-revelar="">
         <p className="nota">{t('contacto.sin_api')}</p>
-        <a className="big-btn" href={enlaceRespaldo(correo, t('contacto.asunto_defecto'), campos)}>
+        <a ref={principal} className="big-btn" href={enlaceRespaldo(correo, t('contacto.asunto_defecto'), campos)}>
           {respaldo} <span aria-hidden="true">→</span>
         </a>
         <p className="nota peq">{t('contacto.sin_api_nota')}</p>
@@ -168,7 +171,7 @@ export default function ContactForm({ correo, boton, respaldo }) {
   }
 
   return (
-    <form className="form-contacto" onSubmit={enviar} noValidate>
+    <form className="form-contacto" onSubmit={enviar} noValidate data-revelar="">
       <div className="cab-form">
         <span className="flecha" aria-hidden="true">
           →
@@ -187,7 +190,7 @@ export default function ContactForm({ correo, boton, respaldo }) {
         <input ref={trampa} id={`${id}-web`} name="web" tabIndex={-1} autoComplete="off" defaultValue="" />
       </div>
 
-      <button type="submit" className="big-btn azul" disabled={estado === 'enviando'}>
+      <button ref={principal} type="submit" className="big-btn azul" disabled={estado === 'enviando'}>
         <span>{estado === 'enviando' ? t('contacto.enviando') : boton}</span>
         {estado !== 'enviando' && (
           <span className="flecha" aria-hidden="true">

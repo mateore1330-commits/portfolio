@@ -4,9 +4,11 @@ import { actualizarAlternativas, ponerDescripcion, restaurarAncla } from '@/i18n
 import { leerGuardado, rutaEn } from '@/i18n/idiomas.js'
 import { LanguageContext } from '@/i18n/LanguageContext.js'
 import { useLang, useT } from '@/i18n/useLang.js'
+import Cursor from '@/layout/Cursor.jsx'
 import Footer from '@/layout/Footer.jsx'
 import Header from '@/layout/Header.jsx'
 import ProgressRail from '@/layout/ProgressRail.jsx'
+import Revelado from '@/layout/Revelado.jsx'
 import '@/i18n/language-switch.css'
 import '@/layout/layout.css'
 
@@ -22,6 +24,9 @@ export default function LanguageLayout({ lang }) {
         <Outlet />
         <Footer />
       </div>
+      <Revelado />
+      <Cursor />
+      <div className="grano" aria-hidden="true" />
     </LanguageContext.Provider>
   )
 }

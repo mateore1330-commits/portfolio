@@ -72,7 +72,7 @@ export default function Projects() {
   return (
     <section id="proyectos" className="seccion projects">
       <SectionHead id="proyectos" />
-      <div className="stack" ref={pila}>
+      <div className="stack" ref={pila} data-revelar="">
         {orden.map((proyecto, i) => (
           <ProjectCard key={proyecto.slug} proyecto={proyecto} numero={i + 1} />
         ))}

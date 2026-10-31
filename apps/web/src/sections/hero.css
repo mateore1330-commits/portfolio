@@ -76,6 +76,30 @@
   display: block;
 }
 
+/* La entrada (WEB-11): cada línea, recortada por su caja, sube desde abajo. El recorte se
+   amplía hacia arriba (y un poco a los lados) para no comerse la tilde de la Í, que
+   asoma por encima de la línea y recorta la O de "Mateo". */
+.name .ln {
+  clip-path: inset(-40% -6% 0 -6%);
+}
+
+.name .ln > span {
+  display: block;
+}
+
+/* La transición solo al subir: al prepararse (espera), las líneas bajan sin animación. */
+.name[data-entrada="sube"] .ln > span {
+  transition: transform 1s var(--ease-out);
+}
+
+.name[data-entrada="espera"] .ln > span {
+  transform: translateY(105%);
+}
+
+.name[data-entrada="sube"] .ln + .ln > span {
+  transition-delay: .12s;
+}
+
 /* Blanco con "difference": sobre el fondo sale del color del texto en los dos temas,
    y donde la tilde de la Í pisa la O de arriba, se invierte y la recorta. */
 .name-2 {

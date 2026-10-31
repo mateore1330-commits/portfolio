@@ -100,5 +100,9 @@
   "contacto.canal_other": "Enlace",
   "pie.aviso_legal": "Aviso legal",
   "pie.privacidad": "Privacidad",
-  "pie.legal": "Información legal"
+  "pie.legal": "Información legal",
+  "cursor.ver": "Ver",
+  "cursor.abrir": "Abrir",
+  "cursor.enviar": "Enviar",
+  "cursor.escribir": "Escribir"
 }

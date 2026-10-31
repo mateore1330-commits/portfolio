@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { Link } from 'react-router'
 import Marcado from '@/content/Marcado.jsx'
 import { portadaDe, porcentaje, rutaProyecto } from '@/content/proyectos.js'
@@ -5,12 +6,15 @@ import { useNombreTecnologia } from '@/content/useNombreTecnologia.js'
 import { useLang, usePick, useT } from '@/i18n/useLang.js'
 import EnlaceFuera from '@/sections/EnlaceFuera.jsx'
 import Portada from '@/sections/Portada.jsx'
+import { useMagnetic } from '@/sections/useMagnetic.js'
 
 export default function ProjectCard({ proyecto, numero }) {
   const t = useT()
   const p = usePick()
   const lang = useLang()
   const nombreTec = useNombreTecnologia()
+  const completo = useRef(null)
+  useMagnetic(completo)
 
   const nombre = p(proyecto.name)
   const aportacion = porcentaje(lang, proyecto.commits_share)
@@ -49,7 +53,7 @@ export default function ProjectCard({ proyecto, numero }) {
               {t('proyectos.repo')}
             </EnlaceFuera>
           )}
-          <Link className="btn btn--azul" to={rutaProyecto(lang, proyecto.slug)}>
+          <Link ref={completo} className="btn btn--azul" to={rutaProyecto(lang, proyecto.slug)}>
             {t('proyectos.completo')} <span aria-hidden="true">→</span>
           </Link>
         </div>
