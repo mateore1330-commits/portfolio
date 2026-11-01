@@ -52,6 +52,12 @@ def app():
     aplicacion = create_app()
     aplicacion.config["TESTING"] = True
     with aplicacion.app_context():
+        # Segundo seguro, justo antes de vaciar: la base a la que está conectada DE VERDAD.
+        # (El 01/11/2026, `pipenv run` cargó el .env y su DATABASE_URL pisó la de pruebas en
+        # un script a mano: se vació la base local. Aquí no puede pasar.)
+        conectada = db.engine.url.database or ""
+        if not conectada.endswith("_test"):
+            pytest.exit(f"Los tests iban a vaciar '{conectada}', que no es de pruebas. Parado.", 2)
         db.drop_all()
         db.create_all()
     yield aplicacion
