@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 from dotenv import load_dotenv
 
@@ -42,4 +43,20 @@ def load_config():
         "SMTP_USER": os.getenv("SMTP_USER", "").strip(),
         "SMTP_PASSWORD": os.getenv("SMTP_PASSWORD", ""),
         "CONTACT_TO": os.getenv("CONTACT_TO", "").strip(),
+        # La sesión del panel (ADM-01): un JWT en una cookie que el JavaScript no puede leer
+        # (httpOnly), que solo viaja por HTTPS (Secure; en local, Chrome la acepta también
+        # en http://localhost) y solo a las rutas del panel. Dura 8 horas.
+        "JWT_SECRET_KEY": os.environ["SECRET_KEY"],
+        "JWT_TOKEN_LOCATION": ["cookies"],
+        "JWT_ACCESS_COOKIE_NAME": "sesion_panel",
+        "JWT_ACCESS_COOKIE_PATH": "/api/admin",
+        "JWT_COOKIE_SECURE": os.getenv("COOKIE_SECURE", "1").strip() != "0",
+        "JWT_COOKIE_SAMESITE": "Lax",
+        "JWT_SESSION_COOKIE": False,
+        "JWT_ACCESS_TOKEN_EXPIRES": timedelta(hours=8),
+        # Protección CSRF: cada petición que cambia algo lleva también la cabecera
+        # X-CSRF-TOKEN. El código no va en una cookie legible (la web y la API estarán en
+        # dominios distintos): la API lo da en la respuesta del login y de /sesion.
+        "JWT_COOKIE_CSRF_PROTECT": True,
+        "JWT_CSRF_IN_COOKIES": False,
     }
