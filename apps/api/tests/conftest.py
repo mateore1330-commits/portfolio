@@ -67,13 +67,14 @@ def app():
 
 @pytest.fixture(autouse=True)
 def base_limpia(app):
-    """Cada test empieza sin administrador ni intentos de entrar."""
+    """Cada test empieza con la base vacía. En este orden: primero lo que apunta a otras tablas."""
+    from api import models as m
     from api.extensions import db
-    from api.models import AdminUser, AuthAttempt
 
     with app.app_context():
-        db.session.query(AuthAttempt).delete()
-        db.session.query(AdminUser).delete()
+        for modelo in (m.Snapshot, m.AuthAttempt, m.AdminUser, m.ContactMessage, m.Project,
+                       m.Technology, m.Job, m.Education):
+            db.session.query(modelo).delete()
         db.session.commit()
     yield
 

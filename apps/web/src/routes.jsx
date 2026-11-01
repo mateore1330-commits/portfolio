@@ -31,16 +31,26 @@ const paginas = (lang) => ({
   ],
 })
 
-// El panel (ADM-01): fuera de la web pública y solo si su dirección está configurada
-// (VITE_ADMIN_PATH). Todo su código se carga al entrar en él: la web no lo lleva encima.
+// El panel (ADM-01 y ADM-02): fuera de la web pública y solo si su dirección está
+// configurada (VITE_ADMIN_PATH). Todo su código se carga al entrar en él: la web no lo lleva
+// encima. Todo menos entrar pasa por el portero (RutaProtegida). Las secciones que aún no
+// existen caen en :seccion ("Llega en…"); cada issue pone la suya delante.
+const delPanel = (cargar, nombre = 'default') => async () => ({ Component: (await cargar())[nombre] })
 const panel = RUTA_PANEL
   ? [{
       path: RUTA_PANEL,
-      lazy: async () => ({ Component: (await import('@/admin/PanelRaiz.jsx')).default }),
+      lazy: delPanel(() => import('@/admin/PanelRaiz.jsx')),
       HydrateFallback: () => null,
       children: [
-        { index: true, lazy: async () => ({ Component: (await import('@/admin/PanelProvisional.jsx')).default }) },
-        { path: 'entrar', lazy: async () => ({ Component: (await import('@/admin/Entrar.jsx')).default }) },
+        { path: 'entrar', lazy: delPanel(() => import('@/admin/Entrar.jsx')) },
+        {
+          lazy: delPanel(() => import('@/admin/RutaProtegida.jsx')),
+          children: [
+            { index: true, lazy: delPanel(() => import('@/admin/Inicio.jsx')) },
+            { path: ':seccion', lazy: delPanel(() => import('@/admin/Proximamente.jsx')) },
+            { path: '*', lazy: delPanel(() => import('@/admin/Proximamente.jsx'), 'NoEncontrado') },
+          ],
+        },
       ],
     }]
   : []
