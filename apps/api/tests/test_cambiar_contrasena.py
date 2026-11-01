@@ -6,8 +6,12 @@ from cambiar_contrasena import ContrasenaError, cambiar_contrasena, comprobar
 RUTA = "/api/admin"
 
 
+def entrar(cliente, correo, contrasena):
+    return cliente.post(f"{RUTA}/login", json={"correo": correo, "contrasena": contrasena})
+
+
 def test_cambiar_cierra_las_sesiones_y_solo_vale_la_nueva(app, cliente, admin):
-    assert cliente.post(f"{RUTA}/login", json={"correo": admin["correo"], "contrasena": admin["contrasena"]}).status_code == 200
+    assert entrar(cliente, admin["correo"], admin["contrasena"]).status_code == 200
 
     with app.app_context():
         cambiar_contrasena("la-contrasena-nueva-123")
@@ -15,8 +19,8 @@ def test_cambiar_cierra_las_sesiones_y_solo_vale_la_nueva(app, cliente, admin):
     # La sesión que había abierta ya no vale…
     assert cliente.get(f"{RUTA}/sesion").status_code == 401
     # …la contraseña vieja no entra y la nueva sí.
-    vieja = cliente.post(f"{RUTA}/login", json={"correo": admin["correo"], "contrasena": admin["contrasena"]})
-    nueva = cliente.post(f"{RUTA}/login", json={"correo": admin["correo"], "contrasena": "la-contrasena-nueva-123"})
+    vieja = entrar(cliente, admin["correo"], admin["contrasena"])
+    nueva = entrar(cliente, admin["correo"], "la-contrasena-nueva-123")
     assert vieja.status_code == 401
     assert nueva.status_code == 200
 

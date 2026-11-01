@@ -14,7 +14,8 @@ def entrar(cliente, correo=CORREO, contrasena="una-contrasena-de-prueba"):
 
 
 def cookie_de(respuesta):
-    return next((c for c in respuesta.headers.getlist("Set-Cookie") if c.startswith(f"{COOKIE}=")), "")
+    cookies = respuesta.headers.getlist("Set-Cookie")
+    return next((c for c in cookies if c.startswith(f"{COOKIE}=")), "")
 
 
 # ---------------------------------------------------------------- Entrar
@@ -118,7 +119,9 @@ def test_un_pase_caducado_lo_dice(app, cliente, admin):
     from flask_jwt_extended import create_access_token
 
     with app.app_context():
-        pase = create_access_token(identity="1", additional_claims={"v": 1}, expires_delta=timedelta(seconds=-1))
+        pase = create_access_token(
+            identity="1", additional_claims={"v": 1}, expires_delta=timedelta(seconds=-1)
+        )
     cliente.set_cookie(COOKIE, pase, path=RUTA)
     respuesta = cliente.get(f"{RUTA}/sesion")
     assert respuesta.status_code == 401
