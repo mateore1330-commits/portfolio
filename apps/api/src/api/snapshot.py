@@ -57,12 +57,17 @@ def _fila(obj):
     }
 
 
-def generar_instantanea():
-    """Todo lo publicado, en los dos idiomas, sin borradores ni ocultos y en orden fijo."""
+def generar_instantanea(incluir=None):
+    """Todo lo publicado, en los dos idiomas, sin borradores ni ocultos y en orden fijo.
+
+    incluir: el id de un proyecto que entra aunque sea borrador. Solo para la vista previa
+    del panel (ADM-03); lo que se publica nunca lo usa.
+    """
+    visible = Project.status == ContentStatus.PUBLISHED
+    if incluir is not None:
+        visible = visible | (Project.project_id == incluir)
     proyectos = db.session.scalars(
-        select(Project)
-        .where(Project.status == ContentStatus.PUBLISHED)
-        .order_by(Project.sort_order, Project.slug)
+        select(Project).where(visible).order_by(Project.sort_order, Project.slug)
     ).all()
 
     projects = []

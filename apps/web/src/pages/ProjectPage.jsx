@@ -18,8 +18,11 @@ const sinMarcas = (texto) => texto.replace(/\*\*|`/g, '')
 
 // La página de un proyecto: todo su contenido, sacado de la foto incrustada (se ve
 // aunque la API esté caída). Un slug que no existe, o un proyecto sin publicar, da la 404.
-export default function ProjectPage() {
-  const { slug } = useParams()
+// La vista previa del panel (ADM-03) le pasa el slug y su propio contenido: así enseña la
+// página de verdad, no una copia.
+export default function ProjectPage({ slug: slugFijo }) {
+  const { slug: slugDeLaRuta } = useParams()
+  const slug = slugFijo ?? slugDeLaRuta
   const lang = useLang()
   const t = useT()
   const p = usePick()

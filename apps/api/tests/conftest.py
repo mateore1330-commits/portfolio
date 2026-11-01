@@ -73,7 +73,7 @@ def base_limpia(app):
 
     with app.app_context():
         for modelo in (m.Snapshot, m.AuthAttempt, m.AdminUser, m.ContactMessage, m.Project,
-                       m.Technology, m.Job, m.Education):
+                       m.Technology, m.Job, m.Education, m.SiteText):
             db.session.query(modelo).delete()
         db.session.commit()
     yield

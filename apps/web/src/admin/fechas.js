@@ -24,3 +24,17 @@ export function diaYHora(iso, ahora = new Date()) {
   const dia = fecha.getFullYear() === ahora.getFullYear() ? DIA.format(fecha) : DIA_ANO.format(fecha)
   return `${dia}, ${HORA.format(fecha)}`
 }
+
+// Para lo guardado (los formularios): "a las 22:10" si es de hoy; si no, "el 31/10".
+export function cuandoSeGuardo(iso, ahora = new Date()) {
+  const fecha = new Date(iso)
+  if (mismoDia(fecha, ahora)) return `a las ${HORA.format(fecha)}`
+  return `el ${fecha.getFullYear() === ahora.getFullYear() ? DIA.format(fecha) : DIA_ANO.format(fecha)}`
+}
+
+// "el 31/10 a las 22:10": la cabecera de un formulario.
+export function elDiaALas(iso, ahora = new Date()) {
+  const fecha = new Date(iso)
+  const dia = fecha.getFullYear() === ahora.getFullYear() ? DIA.format(fecha) : DIA_ANO.format(fecha)
+  return `el ${dia} a las ${HORA.format(fecha)}`
+}

@@ -62,9 +62,10 @@ export default function PanelLayout({ correo }) {
     navigate(RUTA_ENTRAR, { replace: true })
   }
 
+  // Los avisos van dentro de .panel-app: sus estilos solo valen ahí.
   return (
-    <Avisos>
-      <div className={`panel-app${menuAbierto ? ' menu-abierto' : ''}`}>
+    <div className={`panel-app${menuAbierto ? ' menu-abierto' : ''}`}>
+      <Avisos>
         <a className="solo-lector" href="#contenido">
           Saltar al contenido
         </a>
@@ -132,8 +133,8 @@ export default function PanelLayout({ correo }) {
           </main>
         </div>
         <DialogoSesion correoInicial={correo} />
-      </div>
-    </Avisos>
+      </Avisos>
+    </div>
   )
 }
 
