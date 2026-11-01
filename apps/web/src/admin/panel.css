@@ -1,0 +1,28 @@
+/* La página provisional del panel (ADM-01), con los estilos de la web. ADM-02 la sustituye. */
+.panel-provisional {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 18px;
+  max-width: 640px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.panel-provisional h1 {
+  font-family: var(--f-display);
+  font-size: clamp(40px, 9vw, 64px);
+  font-variation-settings: "wdth" 118, "wght" 800;
+  line-height: .9;
+  letter-spacing: -.03em;
+  text-transform: uppercase;
+}
+
+.panel-provisional p {
+  color: var(--ink-2);
+}
+
+.panel-provisional b {
+  color: var(--ink);
+}

@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router'
 import App from '@/App.jsx'
 import LanguageLayout from '@/i18n/LanguageLayout.jsx'
 import Home from '@/pages/Home.jsx'
+import { RUTA_PANEL } from '@/admin/ruta.js'
 
 // /_design solo existe en desarrollo: en el build, import.meta.env.DEV es
 // false y la página ni siquiera se incluye en el bundle.
@@ -30,7 +31,22 @@ const paginas = (lang) => ({
   ],
 })
 
+// El panel (ADM-01): fuera de la web pública y solo si su dirección está configurada
+// (VITE_ADMIN_PATH). Todo su código se carga al entrar en él: la web no lo lleva encima.
+const panel = RUTA_PANEL
+  ? [{
+      path: RUTA_PANEL,
+      lazy: async () => ({ Component: (await import('@/admin/PanelRaiz.jsx')).default }),
+      HydrateFallback: () => null,
+      children: [
+        { index: true, lazy: async () => ({ Component: (await import('@/admin/PanelProvisional.jsx')).default }) },
+        { path: 'entrar', lazy: async () => ({ Component: (await import('@/admin/Entrar.jsx')).default }) },
+      ],
+    }]
+  : []
+
 export const router = createBrowserRouter([
+  ...panel,
   {
     path: '/',
     element: <App />,

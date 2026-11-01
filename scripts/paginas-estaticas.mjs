@@ -155,11 +155,9 @@ async function main() {
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`,
   )
 
-  // robots.txt: todo menos el panel de administración.
-  await writeFile(
-    join(DIST, 'robots.txt'),
-    `User-agent: *\nDisallow: /admin\nDisallow: /en/admin\n\nSitemap: ${SITIO}/sitemap.xml\n`,
-  )
+  // robots.txt: todo abierto. El panel no se nombra aquí (ADM-01): su dirección es
+  // aleatoria y escribirla en robots.txt sería señalar la puerta. Sus páginas llevan noindex.
+  await writeFile(join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITIO}/sitemap.xml\n`)
 
   console.log(`paginas-estaticas: ${lista.length} páginas, sitemap.xml (${urls.length} direcciones) y robots.txt.`)
 }
