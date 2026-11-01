@@ -395,9 +395,12 @@ def slug_libre():
 @admin.get("/projects/<int:project_id>/vista-previa")
 @admin_required
 def vista_previa(project_id):
-    """Todo el contenido de la web como quedaría con este proyecto publicado (con lo guardado)."""
+    """Todo el contenido de la web como quedaría con este proyecto publicado (con lo guardado),
+    y su slug, para saber cuál enseñar (la instantánea no lleva los id)."""
     proyecto, falla = _buscar(project_id)
-    return falla or jsonify(generar_instantanea(incluir=proyecto.project_id))
+    if falla:
+        return falla
+    return jsonify(slug=proyecto.slug, contenido=generar_instantanea(incluir=proyecto.project_id))
 
 
 @admin.get("/technologies")

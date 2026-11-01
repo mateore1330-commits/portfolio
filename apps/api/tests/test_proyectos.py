@@ -195,7 +195,8 @@ def test_un_borrador_no_entra_en_la_foto_y_si_en_la_vista_previa(app, cliente, c
         assert [p["slug"] for p in generar_instantanea()["projects"]] == ["blog-dragon-ball"]
 
     previa = cliente.get(f"{RUTA}/projects/{borrador['id']}/vista-previa").json
-    assert [p["slug"] for p in previa["projects"]] == ["borrador", "blog-dragon-ball"]
+    assert previa["slug"] == "borrador"
+    assert [p["slug"] for p in previa["contenido"]["projects"]] == ["borrador", "blog-dragon-ball"]
 
 
 @pytest.fixture
