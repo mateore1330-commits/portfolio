@@ -1,4 +1,5 @@
-"""El panel de administración: entrar, salir y saber si hay sesión (ADM-01).
+"""El panel de administración: entrar, salir y saber si hay sesión (ADM-01), y el resumen
+del Inicio (ADM-02).
 
 La sesión es un JWT en una cookie httpOnly (ver config.py). Cada pase lleva dentro la
 `token_version` del administrador: si cambia (al salir o al cambiar la contraseña),
@@ -26,7 +27,18 @@ from flask_jwt_extended import (
 from sqlalchemy import func, select
 
 from .extensions import db
-from .models import AdminUser, AuthAttempt
+from .models import (
+    AdminUser,
+    AuthAttempt,
+    ContactMessage,
+    ContentStatus,
+    Education,
+    Job,
+    MessageStatus,
+    Project,
+    Snapshot,
+    Technology,
+)
 
 admin = Blueprint("admin", __name__, url_prefix="/api/admin")
 jwt = JWTManager()
@@ -169,6 +181,54 @@ def logout():
     respuesta = jsonify(ok=True)
     unset_jwt_cookies(respuesta)
     return respuesta
+
+
+def _contar(modelo, *condiciones):
+    return db.session.scalar(select(func.count()).select_from(modelo).where(*condiciones))
+
+
+def _visibles_y_ocultos(modelo):
+    ocultos = _contar(modelo, modelo.is_visible.is_(False))
+    return {"visibles": _contar(modelo) - ocultos, "ocultos": ocultos}
+
+
+@admin.get("/resumen")
+@admin_required
+def resumen():
+    """Lo que enseña el Inicio del panel, en una sola petición. Las visitas (ADM-10) y los
+    cambios sin publicar (ADM-05) se añadirán aquí cuando existan."""
+    ultimos = db.session.scalars(
+        select(ContactMessage)
+        .where(ContactMessage.status != MessageStatus.SPAM)
+        .order_by(ContactMessage.created_at.desc())
+        .limit(2)
+    )
+    ultima = db.session.scalar(select(func.max(Snapshot.published_at)))
+    return jsonify({
+        "mensajes": {
+            "sin_leer": _contar(ContactMessage, ContactMessage.status == MessageStatus.NEW),
+            "ultimos": [
+                {
+                    "nombre": m.name,
+                    "asunto": m.subject,
+                    "fecha": m.created_at.isoformat(),
+                    "sin_leer": m.status == MessageStatus.NEW,
+                }
+                for m in ultimos
+            ],
+        },
+        "contenido": {
+            "proyectos": {
+                "publicados": _contar(Project, Project.status == ContentStatus.PUBLISHED),
+                "borradores": _contar(Project, Project.status == ContentStatus.DRAFT),
+            },
+            "empleos": _visibles_y_ocultos(Job),
+            "formacion": _visibles_y_ocultos(Education),
+            # Los de la sección Conocimientos (las de solo etiquetar proyectos no salen ahí).
+            "conocimientos": _contar(Technology, Technology.is_skill.is_(True)),
+        },
+        "ultima_publicacion": ultima.isoformat() if ultima else None,
+    })
 
 
 def iniciar(app):
