@@ -68,7 +68,9 @@
 }
 
 .panel-app button,
-.panel-app input {
+.panel-app input,
+.panel-app select,
+.panel-app textarea {
   font: inherit;
   color: inherit;
 }
@@ -651,6 +653,16 @@
   color: var(--ink-2);
 }
 
+.panel-app .dialogo .caja > ul {
+  margin: 12px 0 0 18px;
+  padding: 0;
+  color: var(--ink-2);
+}
+
+.panel-app .dialogo .caja > ul li {
+  margin-top: 4px;
+}
+
 .panel-app .dialogo .acciones {
   display: flex;
   flex-wrap: wrap;
@@ -659,15 +671,19 @@
   margin-top: 6px;
 }
 
-/* --- Campos (de momento, los del diálogo de sesión) ------- */
+/* --- Campos (los de los formularios, más abajo) ------------ */
 .panel-app .campos {
   display: grid;
   gap: 22px;
   margin-top: 18px;
 }
 
-.panel-app .campo-panel label {
-  display: block;
+.panel-app .campo-panel label,
+.panel-app .campo-panel .etiqueta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 10px;
   margin-bottom: 8px;
   color: var(--ink-2);
   font: 500 9.5px var(--f-mono);
@@ -675,7 +691,7 @@
   text-transform: uppercase;
 }
 
-.panel-app .campo-panel input {
+.panel-app .campo-panel input:not([type="checkbox"]) {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--rule);
@@ -685,11 +701,11 @@
   transition: border-color .15s;
 }
 
-.panel-app .campo-panel input:hover {
+.panel-app .campo-panel input:not([type="checkbox"]):hover {
   border-color: color-mix(in srgb, var(--ink) 40%, transparent);
 }
 
-.panel-app .campo-panel input:focus {
+.panel-app .campo-panel input:not([type="checkbox"]):focus {
   border-color: var(--blue);
   outline: 0;
   box-shadow: 0 0 0 3px var(--blue-wash);
@@ -767,4 +783,797 @@
     width: 100%;
     margin-left: 0;
   }
+}
+
+/* ============================================================
+   PROYECTOS (ADM-03): la lista y el formulario
+   Las piezas del formulario (.bloque, pestañas, párrafos, fichas, marcas de cambio y la
+   barra de guardar) son las de todos los formularios del panel: ADM-04 y ADM-06 las usan.
+   ============================================================ */
+
+/* --- Volver, etiquetas de estado y filtros ----------------- */
+.panel-app .volver {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: var(--ink-3);
+  font: 500 10px var(--f-mono);
+  letter-spacing: .14em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.panel-app .volver:hover {
+  color: var(--blue);
+}
+
+.panel-app .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  font: 500 9px var(--f-mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.panel-app .chip i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.panel-app .chip.pub {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+
+.panel-app .chip.bor {
+  border: 1px dashed var(--ink-3);
+  color: var(--ink-3);
+}
+
+.panel-app .chip.aviso {
+  padding: 1px 5px;
+  background: var(--aviso-bg);
+  color: var(--aviso);
+}
+
+.panel-app .filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 18px 0 14px;
+}
+
+.panel-app .filtros button {
+  padding: 6px 10px;
+  border: 1px solid var(--rule);
+  background: none;
+  color: var(--ink-3);
+  font: 500 9.5px var(--f-mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.panel-app .filtros [aria-pressed="true"] {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* --- La tabla (en móvil, tarjetas) ------------------------- */
+.panel-app .tabla {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--caja);
+}
+
+.panel-app .tabla th {
+  padding: 10px 10px 8px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-3);
+  font: 500 9px var(--f-mono);
+  letter-spacing: .16em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.panel-app .tabla td {
+  padding: 13px 10px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+
+.panel-app .tabla tr:hover td {
+  background: var(--blue-wash);
+}
+
+/* La posición, donde irá el asa ⋮⋮ de ADM-09. */
+.panel-app .tabla .posicion {
+  width: 26px;
+  color: var(--ink-3);
+  font: 500 11px var(--f-mono);
+}
+
+.panel-app .tabla .nom {
+  font-family: var(--f-display);
+  font-size: 15.5px;
+  font-variation-settings: "wdth" 110, "wght" 750;
+  text-transform: uppercase;
+}
+
+.panel-app .tabla .nom a {
+  text-decoration: none;
+}
+
+.panel-app .tabla .nom a:hover {
+  color: var(--blue);
+}
+
+.panel-app .tabla .sub {
+  margin-top: 2px;
+  color: var(--ink-3);
+  font: 400 10px var(--f-mono);
+}
+
+.panel-app .tabla td.gris {
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
+.panel-app .tabla .der {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.panel-app .tabla .der > * + * {
+  margin-left: 16px;
+}
+
+.panel-app .estrella {
+  border: 0;
+  background: none;
+  color: var(--blue);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.panel-app .estrella.off {
+  color: var(--ink-3);
+}
+
+.panel-app .estrella[disabled] {
+  cursor: progress;
+}
+
+/* Editar como botón; Borrar en rojo suave, visible pero sin competir. */
+.panel-app .enlace.borrar {
+  padding: 6px 2px;
+  color: var(--error);
+  font-size: 10px;
+}
+
+.panel-app .boton.peligro {
+  border-color: var(--error);
+  color: var(--error);
+}
+
+.panel-app .boton.peligro:hover,
+.panel-app .boton.peligro.lleno {
+  background: var(--error);
+  color: var(--paper);
+}
+
+.panel-app .filas-cargando {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+/* --- El formulario: bloques numerados ---------------------- */
+.panel-app .form {
+  display: grid;
+  gap: 34px;
+  margin-top: 26px;
+}
+
+.panel-app .bloque {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 28px;
+  padding-top: 22px;
+  border-top: 1px solid var(--rule);
+}
+
+.panel-app .bloque > * {
+  min-width: 0;
+}
+
+.panel-app .bloque > header h2 {
+  font-size: 15px;
+  font-variation-settings: "wdth" 110, "wght" 750;
+  letter-spacing: 0;
+}
+
+.panel-app .bloque > header h2 b {
+  margin-right: 8px;
+  color: var(--blue);
+  font: 500 10px var(--f-mono);
+}
+
+.panel-app .bloque > header p {
+  margin-top: 6px;
+  color: var(--ink-3);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.panel-app .bloque .campos,
+.panel-app .panel-idioma {
+  display: grid;
+  gap: 28px;
+  margin-top: 0;
+}
+
+.panel-app .panel-idioma[hidden] {
+  display: none;
+}
+
+.panel-app .fila-campos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px;
+}
+
+.panel-app .campo-panel textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--rule);
+  background: var(--campo);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.45;
+  transition: border-color .15s;
+}
+
+.panel-app .campo-panel textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.panel-app .campo-panel textarea:hover {
+  border-color: color-mix(in srgb, var(--ink) 40%, transparent);
+}
+
+.panel-app .campo-panel textarea:focus {
+  border-color: var(--blue);
+  outline: 0;
+  box-shadow: 0 0 0 3px var(--blue-wash);
+}
+
+.panel-app .campo-panel .ayuda {
+  margin-top: 8px;
+  color: var(--ink-3);
+  font-size: 13.5px;
+}
+
+.panel-app .campo-panel .err {
+  margin-top: 6px;
+}
+
+.panel-app .campo-panel.mal input,
+.panel-app .campo-panel.mal textarea,
+.panel-app .lista-editable .item.mal textarea {
+  border-color: var(--error);
+}
+
+.panel-app .con-boton {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+}
+
+.panel-app .con-boton button {
+  padding: 0 12px;
+  border: 1px solid var(--rule);
+  background: var(--campo);
+  color: var(--ink-2);
+  font: 500 9.5px var(--f-mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.panel-app .con-boton button:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* --- Interruptor y segmento --------------------------------- */
+.panel-app .interruptor,
+.panel-app .campo-panel label.interruptor {
+  display: inline-flex;
+  justify-content: flex-start;
+  margin-bottom: 0;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink-2);
+  font: 500 10px var(--f-mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.panel-app .interruptor input {
+  appearance: none;
+  position: relative;
+  width: 34px;
+  height: 20px;
+  margin: 0;
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  background: var(--paper-3);
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.panel-app .interruptor input::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ink-3);
+  transition: transform .2s, background .2s;
+}
+
+.panel-app .interruptor input:checked {
+  border-color: var(--blue);
+  background: var(--blue);
+}
+
+.panel-app .interruptor input:checked::after {
+  background: var(--on-blue);
+  transform: translateX(14px);
+}
+
+.panel-app .campo-panel.cambiado .interruptor input {
+  box-shadow: -4px 0 0 var(--punto-aviso);
+}
+
+.panel-app .segmento {
+  display: inline-flex;
+  border: 1px solid var(--ink);
+}
+
+.panel-app .segmento button {
+  padding: 8px 14px;
+  border: 0;
+  background: none;
+  color: var(--ink-2);
+  font: 500 10px var(--f-mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.panel-app .segmento [aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.panel-app .segmento.cambiado {
+  box-shadow: -4px 0 0 var(--punto-aviso);
+}
+
+/* --- Pestañas de idioma ------------------------------------ */
+.panel-app .tabs {
+  display: flex;
+  gap: 22px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.panel-app .tabs button {
+  position: relative;
+  padding: 10px 0;
+  border: 0;
+  background: none;
+  color: var(--ink-3);
+  font: 500 10.5px var(--f-mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.panel-app .tabs [aria-selected="true"] {
+  color: var(--ink);
+}
+
+.panel-app .tabs [aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: var(--blue);
+}
+
+.panel-app .tabs .con-cambios::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: var(--punto-aviso);
+  vertical-align: 2px;
+}
+
+/* --- Párrafos ---------------------------------------------- */
+.panel-app .lista-editable {
+  display: grid;
+  gap: 10px;
+}
+
+.panel-app .lista-editable .item {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: start;
+}
+
+.panel-app .lista-editable .item > span {
+  padding-top: 11px;
+  color: var(--ink-3);
+  font: 11px var(--f-mono);
+}
+
+.panel-app .lista-editable .item textarea {
+  min-height: 72px;
+  /* El cuadro crece con el párrafo (donde el navegador lo sabe hacer), sin barra interior. */
+  field-sizing: content;
+}
+
+.panel-app .lista-editable .item > button {
+  margin-top: 8px;
+  border: 0;
+  background: none;
+  color: var(--ink-3);
+  font: 15px var(--f-mono);
+  cursor: pointer;
+}
+
+.panel-app .lista-editable .item > button:hover {
+  color: var(--error);
+}
+
+/* La marca y el error de un párrafo, debajo del cuadro, a la derecha. */
+.panel-app .lista-editable .item > .marca-cambio,
+.panel-app .lista-editable .item > .err {
+  grid-column: 2;
+  justify-self: end;
+  margin: 2px 0 4px;
+}
+
+.panel-app .anadir {
+  justify-self: start;
+  margin-top: 2px;
+  padding: 8px 12px;
+  border: 1px dashed var(--rule);
+  background: none;
+  color: var(--ink-2);
+  font: 500 9.5px var(--f-mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.panel-app .anadir:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+/* --- Tecnologías: fichas y sugerencias --------------------- */
+.panel-app .selector {
+  position: relative;
+}
+
+.panel-app .fichas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--rule);
+  background: var(--campo);
+}
+
+.panel-app .fichas:focus-within {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px var(--blue-wash);
+}
+
+.panel-app .fichas span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  background: var(--paper-3);
+  font: 500 10.5px var(--f-mono);
+}
+
+.panel-app .fichas span button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+.panel-app .fichas span button:hover {
+  color: var(--error);
+}
+
+/* Más fuerte que la regla general de .campo-panel input: aquí el campo va sin caja. */
+.panel-app .campo-panel .fichas input:not([type="checkbox"]) {
+  width: auto;
+  flex: 1;
+  min-width: 140px;
+  padding: 5px;
+  border: 0;
+  background: none;
+  font: 400 13px var(--f-mono);
+}
+
+.panel-app .campo-panel .fichas input:not([type="checkbox"]):focus {
+  outline: 0;
+  box-shadow: none;
+}
+
+.panel-app .campo-panel.cambiado .fichas {
+  border-left: 3px solid var(--punto-aviso);
+}
+
+.panel-app .campo-panel.cambiado .fichas input:not([type="checkbox"]) {
+  border-left: 0;
+}
+
+.panel-app .sugerencias {
+  position: absolute;
+  z-index: 20;
+  right: 0;
+  left: 0;
+  max-height: 260px;
+  margin: 4px 0 0;
+  padding: 0;
+  overflow-y: auto;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  box-shadow: var(--sombra);
+  list-style: none;
+}
+
+.panel-app .sugerencias li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  font: 400 12px var(--f-mono);
+  cursor: pointer;
+}
+
+.panel-app .sugerencias li[aria-selected="true"] {
+  background: var(--blue-wash);
+}
+
+.panel-app .sugerencias li small {
+  color: var(--ink-2);
+}
+
+.panel-app .sugerencias .nada {
+  color: var(--ink-3);
+  cursor: default;
+}
+
+.panel-app .solo-lectura {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  padding: 10px 12px;
+  border: 1px dashed var(--rule);
+  color: var(--ink-2);
+  font: 400 12px var(--f-mono);
+}
+
+.panel-app .solo-lectura .chip {
+  margin-left: auto;
+}
+
+/* --- Cambios sin guardar, campo a campo (ADM-00) ------------ */
+.panel-app .campo-panel.cambiado input:not([type="checkbox"]),
+.panel-app .campo-panel.cambiado textarea,
+.panel-app .lista-editable .item.cambiado textarea {
+  border-left: 3px solid var(--punto-aviso);
+}
+
+.panel-app .marca-cambio {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  color: var(--aviso);
+  font: 500 9.5px var(--f-mono);
+  letter-spacing: .08em;
+  text-transform: none;
+}
+
+.panel-app .deshacer {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: none;
+  color: var(--ink-2);
+  font: 500 9.5px var(--f-mono);
+  letter-spacing: .06em;
+  cursor: pointer;
+}
+
+.panel-app .deshacer:hover {
+  color: var(--blue);
+}
+
+.panel-app .cuenta-cambios {
+  margin-left: 10px;
+  padding: 2px 6px;
+  background: var(--aviso-bg);
+  color: var(--aviso);
+  font: 500 9px var(--f-mono);
+  letter-spacing: .08em;
+  text-transform: none;
+  vertical-align: 2px;
+}
+
+/* --- La barra de guardar ----------------------------------- */
+.panel-app .barra-guardar {
+  position: sticky;
+  bottom: 0;
+  z-index: 15;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 40px;
+  padding: 14px 0;
+  border-top: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.panel-app .barra-guardar p {
+  color: var(--ink-3);
+  font: 500 10px var(--f-mono);
+  letter-spacing: .06em;
+}
+
+.panel-app .barra-guardar p.aviso {
+  color: var(--aviso);
+}
+
+.panel-app .barra-guardar p.mal {
+  color: var(--error);
+}
+
+.panel-app .barra-guardar .acciones {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.panel-app .esqueleto {
+  display: grid;
+  gap: 34px;
+  margin-top: 26px;
+}
+
+@media (max-width: 900px) {
+  .panel-app .bloque {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  /* La tabla pasa a tarjetas: cada fila, un bloque. */
+  .panel-app .tabla thead {
+    display: none;
+  }
+
+  .panel-app .tabla,
+  .panel-app .tabla tbody,
+  .panel-app .tabla tr,
+  .panel-app .tabla td {
+    display: block;
+  }
+
+  .panel-app .tabla tr {
+    position: relative;
+    padding: 12px 0 12px 30px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .panel-app .tabla td {
+    padding: 2px 0;
+    border: 0;
+  }
+
+  .panel-app .tabla .posicion {
+    position: absolute;
+    top: 16px;
+    left: 4px;
+  }
+
+  .panel-app .tabla .der {
+    padding-top: 8px;
+    text-align: left;
+  }
+
+  .panel-app .tabla td.ocultar-movil {
+    display: none;
+  }
+
+  /* El estado y la estrella, en la misma línea. */
+  .panel-app .tabla td:has(> .chip),
+  .panel-app .tabla td:has(> .estrella) {
+    display: inline-flex;
+    align-items: center;
+    margin: 6px 12px 0 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .panel-app .fila-campos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .panel-app .barra-guardar .acciones {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+.panel-app .tabs .chip {
+  margin-left: 6px;
+}
+
+.panel-app .nota-vacia {
+  padding: 18px 0;
+  color: var(--ink-3);
+}
+
+.panel-app .lista-editable .quitados {
+  margin-left: 30px;
+}
+
+.panel-app .esqueleto .campos > div {
+  display: grid;
+  gap: 4px;
+}
+
+.panel-app .hueco.mini {
+  width: 90px;
+  height: 9px;
+}
+
+.panel-app .hueco.alto {
+  height: 42px;
+}
+
+/* Con la barra de guardar abajo, los avisos van encima: así no tapan "Guardar". */
+.panel-app:has(.barra-guardar) .toasts {
+  bottom: 84px;
 }
