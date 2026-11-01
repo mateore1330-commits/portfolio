@@ -4,14 +4,8 @@ import contenido from '@/content/snapshot.json'
 import { ponerTitulo } from '@/i18n/documento.js'
 import FondoEntrar from '@/admin/FondoEntrar.jsx'
 import { RUTA_PANEL } from '@/admin/ruta.js'
-import { entrar, hayApi, sesion } from '@/admin/sesion.js'
+import { ERRORES_ENTRAR as ERRORES, entrar, hayApi, sesion } from '@/admin/sesion.js'
 import '@/admin/entrar.css'
-
-const ERRORES = {
-  credenciales: 'Correo o contraseña incorrectos.',
-  demasiados_intentos: 'Demasiados intentos. Espera unos 15 minutos y vuelve a probar.',
-  red: 'No se puede conectar con el servidor. Vuelve a intentarlo en un rato.',
-}
 
 // La pantalla de entrar al panel (ADM-01), como en la maqueta aprobada (ADM-00): siempre
 // oscura, sin textos que den pistas y con un enlace discreto a la web. Si la sesión había
