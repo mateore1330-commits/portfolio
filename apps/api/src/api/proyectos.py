@@ -232,7 +232,9 @@ def limpiar(datos, actual=None):
     return {
         "slug": slug,
         "status": ContentStatus(estado),
-        "is_featured": datos.get("is_featured") is True,
+        # Pedir que sea el destacado (el interruptor del formulario). Un borrador no puede
+        # serlo: se ignora (el panel ya lo bloquea). La regla la aplica un_destacado().
+        "destacar": estado == "published" and datos.get("is_featured") is True,
         "is_team_project": en_equipo,
         "team_size": personas,
         "commits_share": commits,
@@ -252,6 +254,42 @@ def _al_final(proyecto):
     proyecto.sort_order = max((p.sort_order for p in resto), default=-1) + 1
 
 
+def _arriba(proyecto):
+    """Lo pone por delante de todos (para hacerlo el destacado: un_destacado() renumera)."""
+    resto = [p for p in _ordenados() if p is not proyecto]
+    proyecto.sort_order = min((p.sort_order for p in resto), default=1) - 1
+
+
+def _nombre(p):
+    return (p.name.get("es") or p.slug) if p is not None else None
+
+
+def un_destacado(antes=False):
+    """La regla del destacado (#154): siempre uno solo, el primer publicado de la lista, y va
+    el primero. Se aplica tras todo lo que puede cambiarlo (la estrella, ordenar, guardar,
+    crear y borrar), así nunca hay dos aunque falle la pantalla. Sin publicados, ninguno.
+
+    Devuelve el cambio para avisarlo, {"antes": nombre, "ahora": nombre}, o None si el
+    destacado sigue siendo el mismo. antes: el nombre de antes, si ya no está (al borrar)."""
+    db.session.flush()
+    lista = _ordenados()
+    anterior = next((p for p in lista if p.is_featured), None)
+    ahora = next((p for p in lista if p.status == ContentStatus.PUBLISHED), None)
+    if ahora is not None:
+        lista.remove(ahora)
+        lista.insert(0, ahora)
+    for i, p in enumerate(lista):
+        p.sort_order = i
+        p.is_featured = p is ahora
+    if antes is False:
+        if anterior is ahora:
+            return None
+        antes = _nombre(anterior)
+    elif antes == _nombre(ahora):
+        return None
+    return {"antes": antes, "ahora": _nombre(ahora)}
+
+
 def _renombrar_en_cv(anterior, nuevo):
     """El CV engancha los proyectos por su slug: si cambia, el enganche cambia con él."""
     cv = _cv()
@@ -268,6 +306,7 @@ def _renombrar_en_cv(anterior, nuevo):
 
 def _aplicar(proyecto, campos):
     tecnologias = campos.pop("technologies")
+    destacar = campos.pop("destacar")
     for campo, valor in campos.items():
         setattr(proyecto, campo, valor)
     # Las que ya estaban se reutilizan: una fila nueva con la misma clave chocaría con la
@@ -280,6 +319,8 @@ def _aplicar(proyecto, campos):
         pt.sort_order = i
     if proyecto.project_id is None:
         _al_final(proyecto)
+    if destacar and not proyecto.is_featured:
+        _arriba(proyecto)
     # updated_at solo se mueve solo si cambia una columna; las tecnologías también cuentan.
     proyecto.updated_at = func.now()
 
@@ -308,8 +349,9 @@ def crear_proyecto():
     proyecto = Project()
     db.session.add(proyecto)
     _aplicar(proyecto, campos)
+    cambio = un_destacado()
     db.session.commit()
-    return jsonify(_entero(proyecto, _posicion(proyecto))), 201
+    return jsonify(**_entero(proyecto, _posicion(proyecto)), cambio_destacado=cambio), 201
 
 
 @admin.get("/projects/<int:project_id>")
@@ -340,23 +382,27 @@ def guardar_proyecto(project_id):
     if campos["slug"] != proyecto.slug:
         _renombrar_en_cv(proyecto.slug, campos["slug"])
     _aplicar(proyecto, campos)
+    cambio = un_destacado()
     db.session.commit()
-    return jsonify(_entero(proyecto, _posicion(proyecto)))
+    return jsonify(**_entero(proyecto, _posicion(proyecto)), cambio_destacado=cambio)
 
 
 @admin.patch("/projects/<int:project_id>")
 @admin_required
 def cambiar_proyecto(project_id):
-    """Cambios sueltos desde la lista: por ahora, la estrella de destacado."""
+    """La estrella de la lista: hace destacado a este proyecto (sube el primero y el anterior
+    deja de serlo). Solo se puede encender: siempre tiene que haber uno (#154)."""
     proyecto, falla = _buscar(project_id)
     if falla:
         return falla
-    datos = request.get_json(silent=True) or {}
-    if set(datos) != {"is_featured"} or not isinstance(datos["is_featured"], bool):
+    if (request.get_json(silent=True) or {}) != {"is_featured": True}:
         return jsonify(error="validacion", errores={"is_featured": "formato"}), 400
-    proyecto.is_featured = datos["is_featured"]
+    if proyecto.status != ContentStatus.PUBLISHED:
+        return jsonify(error="borrador"), 409
+    _arriba(proyecto)
+    cambio = un_destacado()
     db.session.commit()
-    return jsonify(_resumen(proyecto, _posicion(proyecto)))
+    return jsonify(**_resumen(proyecto, _posicion(proyecto)), cambio_destacado=cambio)
 
 
 @admin.delete("/projects/<int:project_id>")
@@ -370,15 +416,15 @@ def borrar_proyecto(project_id):
     if falla:
         return falla
     fotos = [m.url for m in proyecto.media]
+    antes = _nombre(next((p for p in _ordenados() if p.is_featured), None))
     db.session.delete(proyecto)
-    db.session.flush()
-    for i, p in enumerate(_ordenados()):
-        p.sort_order = i
+    # Si era el destacado, pasa a serlo el siguiente publicado.
+    cambio = un_destacado(antes=antes)
     db.session.commit()
     # Sus fotos, fuera de Cloudinary (ya, o al publicar si la web las enseña: ADM-08).
     for url in fotos:
         soltar(url)
-    return jsonify(ok=True)
+    return jsonify(ok=True, cambio_destacado=cambio)
 
 
 @admin.get("/projects/slug")

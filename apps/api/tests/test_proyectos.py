@@ -164,11 +164,13 @@ def test_uno_nuevo_va_al_final_y_guardar_no_lo_mueve(cliente, csrf):
 
 
 def test_la_estrella(cliente, csrf):
-    p = crear(cliente, csrf, name=ambos("A", "")).json
+    # Las reglas del destacado, en test_destacado.py. Aquí, solo la forma del PATCH.
+    p = crear(cliente, csrf, **completo()).json
     ruta = f"{RUTA}/projects/{p['id']}"
     assert cliente.patch(ruta, json={"is_featured": True}, headers=csrf).json["is_featured"] is True
-    otra = cliente.patch(ruta, json={"slug": "x"}, headers=csrf)
-    assert otra.status_code == 400
+    assert cliente.patch(ruta, json={"slug": "x"}, headers=csrf).status_code == 400
+    # Apagarla no se puede: siempre tiene que haber uno.
+    assert cliente.patch(ruta, json={"is_featured": False}, headers=csrf).status_code == 400
 
 
 def test_borrar(app, cliente, csrf, tecnologias):
@@ -191,7 +193,8 @@ def test_un_borrador_no_entra_en_la_foto_y_si_en_la_vista_previa(app, cliente, c
 
     previa = cliente.get(f"{RUTA}/projects/{borrador['id']}/vista-previa").json
     assert previa["slug"] == "borrador"
-    assert [p["slug"] for p in previa["contenido"]["projects"]] == ["borrador", "blog-dragon-ball"]
+    # El publicado es el destacado y va el primero (#154); el borrador, detrás.
+    assert [p["slug"] for p in previa["contenido"]["projects"]] == ["blog-dragon-ball", "borrador"]
 
 
 @pytest.fixture
