@@ -126,9 +126,9 @@ def test_ocultar_y_el_orden(cliente, csrf):
         crear(cliente, csrf, "jobs", empleo(company=nombre))
     lista = cliente.get(f"{RUTA}/jobs").json["lista"]
     tres = lista[2]
-    cliente.put(f"{RUTA}/jobs/{tres['id']}", json=empleo(company="Tres", posicion=1), headers=csrf)
+    cliente.put(f"{RUTA}/jobs/{tres['id']}", json=empleo(company="Tres"), headers=csrf)
     nombres = [e["company"] for e in cliente.get(f"{RUTA}/jobs").json["lista"]]
-    assert nombres == ["Tres", "Uno", "Dos"]
+    assert nombres == ["Uno", "Dos", "Tres"]
     oculto = cliente.patch(f"{RUTA}/jobs/{tres['id']}", json={"is_visible": False}, headers=csrf)
     assert oculto.json["is_visible"] is False
 

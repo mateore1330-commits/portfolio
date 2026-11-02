@@ -208,10 +208,6 @@ def limpiar(datos, actual=None):
     urls = {campo: _url(datos.get(campo)) for campo in ("demo_url", "repo_url")}
     errores |= {campo: "url" for campo, valor in urls.items() if valor is False}
 
-    posicion = _numero(datos.get("posicion"), 1, 100000)
-    if posicion is False:
-        errores["posicion"] = "numero"
-
     ids = datos.get("technologies", [])
     enteros = isinstance(ids, list) and all(type(i) is int for i in ids)
     if not enteros:
@@ -245,19 +241,15 @@ def limpiar(datos, actual=None):
         "summary": campos["summary"],
         **{campo: opcional(campos[campo]) for campo in ("label", "period", *PARRAFOS)},
         "technologies": ids,
-        "posicion": posicion,
     }
 
 
 # ---------------------------------------------------------------- Guardar
 
-def _colocar(proyecto, posicion):
-    """Lo pone en esa posición (1 es la primera) y numera todos de nuevo: 0, 1, 2…"""
+def _al_final(proyecto):
+    """Uno nuevo va al final; desde ahí se mueve arrastrando (ADM-09, orden.py)."""
     resto = [p for p in _ordenados() if p is not proyecto]
-    indice = len(resto) if posicion is None else min(posicion - 1, len(resto))
-    resto.insert(indice, proyecto)
-    for i, p in enumerate(resto):
-        p.sort_order = i
+    proyecto.sort_order = max((p.sort_order for p in resto), default=-1) + 1
 
 
 def _renombrar_en_cv(anterior, nuevo):
@@ -276,7 +268,6 @@ def _renombrar_en_cv(anterior, nuevo):
 
 def _aplicar(proyecto, campos):
     tecnologias = campos.pop("technologies")
-    posicion = campos.pop("posicion")
     for campo, valor in campos.items():
         setattr(proyecto, campo, valor)
     # Las que ya estaban se reutilizan: una fila nueva con la misma clave chocaría con la
@@ -287,9 +278,8 @@ def _aplicar(proyecto, campos):
     ]
     for i, pt in enumerate(proyecto.technologies):
         pt.sort_order = i
-    # Al crear, al final; al editar sin posición, donde estaba.
-    if posicion is not None or proyecto.project_id is None:
-        _colocar(proyecto, posicion)
+    if proyecto.project_id is None:
+        _al_final(proyecto)
     # updated_at solo se mueve solo si cambia una columna; las tecnologías también cuentan.
     proyecto.updated_at = func.now()
 
@@ -310,7 +300,7 @@ def lista_proyectos():
 @admin.post("/projects")
 @admin_required
 def crear_proyecto():
-    """Crear. Nace donde diga su posición o, si no la trae, al final."""
+    """Crear. Nace al final de la lista."""
     try:
         campos = limpiar(request.get_json(silent=True) or {})
     except Invalido as error:
