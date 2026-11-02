@@ -1,6 +1,6 @@
 import { useId, useState } from 'react'
+import { GRUPOS } from '@/admin/conocimientos/datos.js'
 
-const GRUPOS = { frontend: 'Frontend', backend: 'Backend', data: 'Datos', tools: 'Herramientas', design: 'Diseño', soft: 'Personales' }
 const MAXIMO = 8
 
 // "Vue" encuentra "vue.js"; "diseno" encuentra "Diseño".

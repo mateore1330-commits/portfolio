@@ -15,7 +15,7 @@ export const GRUPOS = [
       { ruta: 'proyectos', n: '01', nombre: 'Proyectos' },
       { ruta: 'textos', n: '02', nombre: 'Textos' },
       { ruta: 'trayectoria', n: '03', nombre: 'Trayectoria' },
-      { ruta: 'conocimientos', n: '04', nombre: 'Conocimientos y enlaces', issue: 'ADM-07', que: 'Las tecnologías por grupo y nivel, y los enlaces de contacto.' },
+      { ruta: 'conocimientos', n: '04', nombre: 'Conocimientos y enlaces' },
       { ruta: 'cv', n: '05', nombre: 'CV' },
     ],
   },
