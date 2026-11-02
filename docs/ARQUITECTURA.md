@@ -86,8 +86,13 @@ La API REST de GitHub **no expone las contribuciones**: hay que usar la GraphQL
 ```
 contact_messages    id, nombre, email, asunto, mensaje, ip, user_agent, leido, privacidad_aceptada_en, version_privacidad, creado_en
 contributions_cache id, payload (JSON), total, racha_actual, racha_max, actualizado_en
-page_views          id, ruta, idioma, referrer, pais, creado_en
 ```
+
+### Visitas
+
+Las cuenta **Umami**, instalado en nuestro servidor (ADM-10): sin cookies y sin guardar nada en
+el dispositivo de quien visita. La web le manda las páginas vistas y los eventos; el panel le pide
+las cifras a la API, y la API a Umami (con su usuario, solo en el `.env`). El panel nunca se mide.
 
 
 ## 4 bis. Contenido editable y panel de administración
@@ -284,5 +289,4 @@ portfolio/
 ## 7. Pendiente de decidir
 
 - Proveedor de envío de correo (Resend tiene plan gratuito suficiente)
-- Analítica: contador propio en `page_views` o algo externo sin cookies
 - Destino de los backups: Hetzner Storage Box o Backblaze B2
