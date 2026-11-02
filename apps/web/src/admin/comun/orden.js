@@ -11,17 +11,18 @@ export function ordenarPor(lista, ids) {
 // Guardar el orden al soltar (ADM-09): se ve al momento y se manda a la API. Si falla,
 // vuelve a como estaba y se avisa. Si la lista había cambiado (otra pestaña creó o borró
 // algo: 409), se recarga.
-//   guardarOrden({ ruta, ids, cuerpo, poner, antes })
+//   guardarOrden({ ruta, ids, cuerpo, poner, antes, aviso })
 //   - poner(ids): coloca la lista de la pantalla en ese orden.
 //   - antes: los ids de antes, para volver.
+//   - aviso: otro texto para cuando sale bien (el cambio de destacado, #154).
 export function useGuardarOrden({ alGuardar, alDesfasar }) {
   const avisar = useAvisar()
   return useCallback(
-    async ({ ruta, ids, cuerpo = {}, poner, antes }) => {
+    async ({ ruta, ids, cuerpo = {}, poner, antes, aviso }) => {
       poner(ids)
       const r = await pedir(ruta, { method: 'PUT', body: JSON.stringify({ ...cuerpo, ids }) })
       if (r.ok) {
-        avisar('ok', 'Orden guardado. Se verá en la web al publicar.')
+        avisar('ok', aviso ?? 'Orden guardado. Se verá en la web al publicar.')
         alGuardar?.()
         return
       }

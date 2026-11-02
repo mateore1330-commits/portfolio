@@ -5,8 +5,9 @@ import { useAvisar } from '@/admin/comun/avisos.js'
 import { Banda, Cabecera, Vacio } from '@/admin/comun/Estados.jsx'
 import { ordenarPor, useGuardarOrden } from '@/admin/comun/orden.js'
 import ListaOrdenable, { Asa, Ordenable } from '@/admin/comun/Ordenable.jsx'
-import { rutaProyecto } from '@/admin/proyectos/campos.js'
+import { avisoDestacado, conDestacado, rutaProyecto } from '@/admin/proyectos/campos.js'
 import DialogoBorrar from '@/admin/proyectos/DialogoBorrar.jsx'
+import DialogoDestacado from '@/admin/proyectos/DialogoDestacado.jsx'
 import { RUTA_PANEL } from '@/admin/ruta.js'
 import { ponerTitulo } from '@/i18n/documento.js'
 
@@ -18,8 +19,10 @@ const FILTROS = [
 ]
 
 // 4 · Proyectos (aprobada en ADM-00): todos, en el orden de la web, con su estado y la
-// estrella de destacado, que se guarda al pulsarla. El orden se cambia arrastrando el asa
-// ⋮⋮ (ADM-09), solo viéndolos todos: con un filtro no se sabe dónde caen los ocultos.
+// estrella de destacado. El orden se cambia arrastrando el asa ⋮⋮ (ADM-09), solo viéndolos
+// todos: con un filtro no se sabe dónde caen los ocultos. El destacado es siempre uno, el
+// primer publicado, y va el primero (#154): cambiarlo, con la estrella o arrastrando, pide
+// confirmación en la misma ventana.
 export default function Proyectos() {
   const avisar = useAvisar()
   const { cargarResumen } = useOutletContext()
@@ -28,6 +31,7 @@ export default function Proyectos() {
   const [filtro, setFiltro] = useState('todos')
   const [aBorrar, setABorrar] = useState(null)
   const [intento, setIntento] = useState(0)
+  const [pendiente, setPendiente] = useState(null) // { nuevo, anterior, aceptar, cancelar }
 
   useEffect(() => {
     ponerTitulo('Proyectos · Panel')
@@ -51,26 +55,51 @@ export default function Proyectos() {
   }, [])
 
   const guardarOrden = useGuardarOrden({ alGuardar: cargarResumen, alDesfasar: recargar })
-  const mover = (ids) =>
-    guardarOrden({
-      ruta: '/projects/orden',
-      ids,
-      antes: lista.map((p) => p.id),
-      poner: (orden) => setLista((l) => ordenarPor(l, orden)),
+  const destacado = lista?.find((p) => p.is_featured)
+
+  // Arrastrar. La lista se enseña ya como quedará (con la regla del destacado: un borrador
+  // puesto arriba queda debajo de él). Si cambia el destacado, antes se pregunta.
+  const mover = (ids) => {
+    const antes = lista.map((p) => p.id)
+    const poner = (orden) => setLista((l) => conDestacado(ordenarPor(l, orden)))
+    const nueva = conDestacado(ordenarPor(lista, ids))
+    const sera = nueva.find((p) => p.is_featured)
+    const guardar = (aviso) => guardarOrden({ ruta: '/projects/orden', ids, antes, poner, aviso })
+    poner(ids)
+    if (destacado && sera && sera.id !== destacado.id) {
+      setPendiente({
+        nuevo: nombreDe(sera),
+        anterior: nombreDe(destacado),
+        aceptar: () => guardar(avisoDestacado({ antes: nombreDe(destacado), ahora: nombreDe(sera) })),
+        cancelar: () => poner(antes),
+      })
+    } else if (sera && ids[0] !== sera.id) {
+      // Arriba se ha soltado un borrador: la regla lo deja segundo.
+      guardar(`Orden guardado. Un borrador no puede ser el destacado: queda debajo de ${nombreDe(sera)}.`)
+    } else guardar()
+  }
+
+  // La estrella de un publicado que no es el destacado: lo hace destacado, tras preguntar.
+  const destacar = (p) =>
+    setPendiente({
+      nuevo: nombreDe(p),
+      anterior: destacado && nombreDe(destacado),
+      aceptar: async () => {
+        const r = await pedir(`/projects/${p.id}`, { method: 'PATCH', body: JSON.stringify({ is_featured: true }) })
+        if (r.ok) {
+          avisar('ok', avisoDestacado(r.datos.cambio_destacado ?? { ahora: nombreDe(p) }))
+          recargar()
+          cargarResumen()
+        } else if (r.error === 'borrador') avisar('error', 'Un borrador no puede ser el destacado: publícalo primero.')
+        else avisar('error', 'No se ha guardado. Vuelve a probar.')
+      },
     })
 
-  // La estrella: cambia al momento y, si la API falla, vuelve a como estaba.
-  const destacar = async (p) => {
-    const nuevo = !p.is_featured
-    const poner = (valor) => setLista((l) => l.map((x) => (x.id === p.id ? { ...x, is_featured: valor, guardando: false } : x)))
-    setLista((l) => l.map((x) => (x.id === p.id ? { ...x, is_featured: nuevo, guardando: true } : x)))
-    const r = await pedir(`/projects/${p.id}`, { method: 'PATCH', body: JSON.stringify({ is_featured: nuevo }) })
-    poner(r.ok ? nuevo : !nuevo)
-    if (r.ok) {
-      avisar('ok', 'Guardado. Se verá en la web al publicar.')
-      cargarResumen()
-    }
-    else avisar('error', 'No se ha guardado la estrella. Ha vuelto a como estaba.')
+  const cerrarPendiente = (aceptado) => {
+    const { aceptar, cancelar } = pendiente
+    setPendiente(null)
+    if (aceptado) aceptar()
+    else cancelar?.()
   }
 
   const cabecera = (
@@ -203,16 +232,7 @@ export default function Proyectos() {
                       )}
                     </td>
                     <td>
-                      <button
-                        className={`estrella${p.is_featured ? '' : ' off'}`}
-                        type="button"
-                        aria-pressed={p.is_featured}
-                        aria-label={`Destacado: ${nombre}`}
-                        disabled={p.guardando}
-                        onClick={() => destacar(p)}
-                      >
-                        {p.is_featured ? '★' : '☆'}
-                      </button>
+                      <Estrella proyecto={p} nombre={nombre} alDestacar={() => destacar(p)} />
                     </td>
                     <td className="der">
                       <Link className="boton pequeno" to={rutaProyecto(p.id)} aria-label={`Editar ${nombre}`}>
@@ -229,6 +249,7 @@ export default function Proyectos() {
           </tbody>
         </table>
       )}
+      <DialogoDestacado cambio={pendiente} alAceptar={() => cerrarPendiente(true)} alCancelar={() => cerrarPendiente(false)} />
       <DialogoBorrar
         proyecto={aBorrar}
         alCerrar={() => setABorrar(null)}
@@ -239,5 +260,29 @@ export default function Proyectos() {
         }}
       />
     </>
+  )
+}
+
+// La estrella (#154): en el destacado, encendida; en un borrador, apagada. Las dos dicen
+// por qué no hacen nada (aria-disabled y no disabled: así se puede llegar con el teclado y
+// leer el motivo).
+function Estrella({ proyecto, nombre, alDestacar }) {
+  const motivo = proyecto.is_featured
+    ? 'Es el destacado. Para cambiarlo, marca otro.'
+    : proyecto.status !== 'published'
+      ? 'Publícalo para poder destacarlo.'
+      : null
+  return (
+    <button
+      className={`estrella${proyecto.is_featured ? '' : ' off'}`}
+      type="button"
+      aria-pressed={proyecto.is_featured}
+      aria-label={`Destacado: ${nombre}${motivo ? `. ${motivo}` : ''}`}
+      aria-disabled={motivo ? true : undefined}
+      title={motivo ?? 'Hacerlo el destacado'}
+      onClick={motivo ? undefined : alDestacar}
+    >
+      {proyecto.is_featured ? '★' : '☆'}
+    </button>
   )
 }

@@ -57,7 +57,8 @@ export function aApi(f) {
   return {
     status: f.status,
     slug: f.slug,
-    is_featured: f.is_featured,
+    // Un borrador no puede ser el destacado (#154).
+    is_featured: f.status === 'published' && f.is_featured,
     is_team_project: f.is_team_project,
     team_size: numero(f.team_size),
     commits_share: numero(f.commits_share),
@@ -88,4 +89,19 @@ export function mensaje(clave, codigo, extra = {}) {
     return 'Un número, de 1 en adelante.'
   }
   return 'Revisa este campo.'
+}
+
+// --- El destacado (#154) --------------------------------------------------------------
+// La misma regla que la API: el primer publicado de la lista es el destacado y va el
+// primero. Para enseñar al momento cómo quedará la lista al arrastrar.
+export function conDestacado(lista) {
+  const ahora = lista.find((p) => p.status === 'published')
+  const resto = lista.filter((p) => p !== ahora)
+  return (ahora ? [ahora, ...resto] : resto).map((p) => ({ ...p, is_featured: p === ahora }))
+}
+
+// El aviso cuando la API dice que ha cambiado el destacado: { antes, ahora }.
+export function avisoDestacado({ antes, ahora }) {
+  if (!ahora) return 'Ya no hay proyecto destacado: no queda ninguno publicado.'
+  return `Ahora el destacado es ${ahora}${antes ? ` (antes, ${antes})` : ''}. Se verá en la web al publicar.`
 }
