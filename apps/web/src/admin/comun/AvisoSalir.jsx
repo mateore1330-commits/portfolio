@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useBlocker } from 'react-router'
 import Dialogo from '@/admin/comun/Dialogo.jsx'
+import { ponerSinGuardar } from '@/admin/comun/sinGuardar.js'
 
 // Avisa antes de perder cambios sin guardar:
 // - al cerrar la pestaña o recargar, con el aviso del propio navegador;
@@ -8,6 +9,12 @@ import Dialogo from '@/admin/comun/Dialogo.jsx'
 //   El navegador no deja poner su aviso en ese caso.
 export default function AvisoSalir({ cuantos }) {
   const hayCambios = cuantos > 0
+
+  // El diálogo de Publicar avisa de que lo no guardado no se publica.
+  useEffect(() => {
+    ponerSinGuardar(cuantos)
+    return () => ponerSinGuardar(0)
+  }, [cuantos])
 
   useEffect(() => {
     if (!hayCambios) return undefined

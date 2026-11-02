@@ -177,10 +177,9 @@ def test_el_cv_con_distinto_numero_de_bloques(cliente, csrf, contenido):
 
 
 def test_lo_guardado_lo_entiende_el_generador_del_cv(app, cliente, csrf, contenido):
-    """El generador del PDF (seed/generar_cv.py) prepara lo que guarda el panel."""
-    import generar_cv
-
+    """El generador del PDF (api/cv/generar.py) prepara lo que guarda el panel."""
     from api import models as m
+    from api.cv import generar as generar_cv
     from api.extensions import db
 
     cliente.put(f"{RUTA}/cv", json={"cv": ambos(CV_ES, en_ingles(CV_ES))}, headers=csrf)

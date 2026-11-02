@@ -120,8 +120,11 @@ def ultima_instantanea():
     return db.session.scalar(select(Snapshot).order_by(Snapshot.snapshot_id.desc()).limit(1))
 
 
-def publicar(autor_id):
+def publicar(autor_id, forzar=False):
     """Guarda una instantánea nueva si el contenido ha cambiado. Devuelve (nueva, snapshot, bytes).
+
+    forzar: una nueva aunque el contenido sea el mismo (desde el panel, cuando solo ha
+    cambiado el CV: cada publicación deja su fila en el historial).
 
     El que llama hace el commit. Se lee con REPEATABLE READ para que la foto no recoja
     la mitad de un cambio que alguien esté guardando a la vez. Por eso tiene que ser lo
@@ -140,7 +143,7 @@ def publicar(autor_id):
 
     etag = huella(payload)
     ultima = ultima_instantanea()
-    if ultima is not None and ultima.etag == etag:
+    if ultima is not None and ultima.etag == etag and not forzar:
         return False, ultima, tamano
 
     snapshot = Snapshot(payload=payload, etag=etag, published_by=autor_id)

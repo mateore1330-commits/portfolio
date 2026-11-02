@@ -5,6 +5,8 @@ import contenido from '@/content/snapshot.json'
 import { pedir } from '@/admin/api.js'
 import Avisos from '@/admin/comun/Avisos.jsx'
 import DialogoSesion from '@/admin/comun/DialogoSesion.jsx'
+import BarraPublicar from '@/admin/publicar/BarraPublicar.jsx'
+import DialogoPublicar from '@/admin/publicar/DialogoPublicar.jsx'
 import { RUTA_ENTRAR, RUTA_PANEL } from '@/admin/ruta.js'
 import { GRUPOS, SECCIONES } from '@/admin/secciones.js'
 import { salir } from '@/admin/sesion.js'
@@ -22,28 +24,40 @@ const rutaDe = (seccion) => (seccion.ruta ? `${RUTA_PANEL}/${seccion.ruta}` : RU
 const nombre = contenido.site_texts['hero.nombre'].es
 
 // El armazón de todas las pantallas del panel (ADM-02), como en la maqueta (ADM-00): el
-// menú lateral (en el móvil, detrás del botón Menú) y la barra de arriba. Pide el resumen
-// una vez: lo usan el contador de mensajes del menú y el Inicio.
+// menú lateral (en el móvil, detrás del botón Menú) y la barra de arriba, con Publicar
+// (ADM-05). Pide el resumen (contador de mensajes, Inicio) y qué hay sin publicar; las
+// pantallas los vuelven a pedir con cargarResumen() al guardar.
 export default function PanelLayout({ correo }) {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const [menuAbierto, setMenuAbierto] = useState(false)
   const [resumen, setResumen] = useState(null)
   const [saliendo, setSaliendo] = useState(false)
+  const [publicar, setPublicar] = useState(null) // { pendientes, ultima }
+  const [publicando, setPublicando] = useState(false)
+
+  const cargarPublicar = useCallback(async () => {
+    const r = await pedir('/publicar')
+    setPublicar(r.ok ? r.datos : { error: r.error })
+  }, [])
 
   const cargarResumen = useCallback(async () => {
     setResumen(null)
+    cargarPublicar()
     const r = await pedir('/resumen')
     setResumen(r.ok ? r.datos : { error: r.error })
-  }, [])
+  }, [cargarPublicar])
 
   useEffect(() => {
     let vivo = true
     pedir('/resumen').then((r) => vivo && setResumen(r.ok ? r.datos : { error: r.error }))
+    pedir('/publicar').then((r) => vivo && setPublicar(r.ok ? r.datos : { error: r.error }))
     return () => {
       vivo = false
     }
   }, [])
+
+  const abrirPublicar = useCallback(() => setPublicando(true), [])
 
   // Esc cierra el menú del móvil.
   useEffect(() => {
@@ -127,11 +141,18 @@ export default function PanelLayout({ correo }) {
             <p className="miga">
               <b>{actual?.nombre ?? 'No encontrado'}</b>
             </p>
+            <BarraPublicar estado={publicar} alPublicar={abrirPublicar} />
           </header>
           <main className="cont" id="contenido" tabIndex={-1}>
-            <Outlet context={{ resumen, cargarResumen }} />
+            <Outlet context={{ resumen, cargarResumen, publicar, abrirPublicar }} />
           </main>
         </div>
+        <DialogoPublicar
+          abierto={publicando}
+          pendientes={publicar?.pendientes ?? []}
+          alCerrar={() => setPublicando(false)}
+          alPublicado={cargarResumen}
+        />
         <DialogoSesion correoInicial={correo} />
       </Avisos>
     </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router'
-import { pedir } from '@/admin/api.js'
+import { pedir, urlPanel } from '@/admin/api.js'
 import AreaTexto from '@/admin/comun/AreaTexto.jsx'
 import AvisoSalir from '@/admin/comun/AvisoSalir.jsx'
 import { useAvisar } from '@/admin/comun/avisos.js'
@@ -13,7 +13,7 @@ import ListaParrafos from '@/admin/comun/ListaParrafos.jsx'
 import PestanasIdioma from '@/admin/comun/PestanasIdioma.jsx'
 import SelectorTecnologias from '@/admin/comun/SelectorTecnologias.jsx'
 import { conError, parrafosCambiados, useFormulario } from '@/admin/comun/useFormulario.js'
-import { cuandoSeGuardo } from '@/admin/fechas.js'
+import { cuandoSeGuardo, elDiaALas } from '@/admin/fechas.js'
 import { erroresDeLista, mensaje } from '@/admin/textos/textos.js'
 import { ponerTitulo } from '@/i18n/documento.js'
 
@@ -69,10 +69,33 @@ export default function CV() {
   const [errores, setErrores] = useState({})
   const [fallo, setFallo] = useState(null)
   const [guardando, setGuardando] = useState(false)
+  const [prueba, setPrueba] = useState({ estado: 'nada' }) // nada | generando | hecha | error
 
   useEffect(() => {
     ponerTitulo('CV · Panel')
   }, [])
+
+  // El último PDF de prueba, si lo hay: se enseña su resultado al entrar.
+  useEffect(() => {
+    let vivo = true
+    pedir('/cv/pdf').then((r) => {
+      if (!vivo || !r.ok || !r.datos.prueba.es) return
+      const { es, en } = r.datos.prueba
+      setPrueba({ estado: 'hecha', datos: { ok: !es.problemas.length && !en?.problemas.length, prueba: r.datos.prueba } })
+    })
+    return () => {
+      vivo = false
+    }
+  }, [])
+
+  // "Generar PDF" (decidido en ADM-05): una prueba, sin publicarla. El PDF de la web se
+  // genera al publicar.
+  const generarPrueba = async () => {
+    setPrueba({ estado: 'generando' })
+    const r = await pedir('/cv/prueba', { method: 'POST' })
+    if (r.ok) setPrueba({ estado: 'hecha', datos: r.datos })
+    else setPrueba({ estado: 'error', detalle: r.datos?.detalle ?? (r.error === 'red' ? 'No hay conexión con la API.' : 'La API ha dado un error.') })
+  }
 
   useEffect(() => {
     let vivo = true
@@ -94,28 +117,76 @@ export default function CV() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [intento])
 
-  const cabecera = (
+  const cabecera = (total = 0) => (
     <Cabecera
       titulo="CV"
       texto={
         <>
           Tus textos del CV, resumidos y adaptados a las ofertas. <b>Las fechas no se escriben aquí:</b> salen de tus empleos
-          y formación. El PDF se genera al publicar (llega en ADM-05); hasta entonces, con <code>pipenv run generar-cv</code>.
+          y formación. El PDF de la web se genera al publicar.
         </>
       }
     >
       {IDIOMAS.map((l) => (
-        <a key={l} className="boton suave" href={PDF(l)} target="_blank" rel="noopener">
+        <a key={l} className="boton suave" href={PDF(l)} target="_blank" rel="noopener" title="El PDF publicado en la web">
           PDF · {l.toUpperCase()} ↓
         </a>
       ))}
+      <button
+        className="boton azul"
+        type="button"
+        onClick={generarPrueba}
+        disabled={prueba.estado === 'generando' || total > 0 || carga !== 'lista'}
+        title={total > 0 ? 'Guarda antes de generar el PDF' : 'Genera el PDF y lo prueba, sin publicarlo'}
+      >
+        {prueba.estado === 'generando' ? 'Generando…' : 'Generar PDF'}
+      </button>
     </Cabecera>
   )
+
+  const bandaPrueba = () => {
+    if (prueba.estado === 'generando') {
+      return (
+        <Banda tipo="info">
+          <b>Generando el PDF…</b> Español e inglés, con la prueba ATS. Tarda unos 10 segundos.
+        </Banda>
+      )
+    }
+    if (prueba.estado === 'error') {
+      return (
+        <Banda tipo="error">
+          <b>No se ha podido generar el PDF.</b> {prueba.detalle}
+        </Banda>
+      )
+    }
+    if (prueba.estado !== 'hecha') return null
+    const { ok, detalle, prueba: pdfs } = prueba.datos
+    const enlaces = IDIOMAS.filter((l) => pdfs[l]).map((l) => (
+      <a key={l} className="enlace" href={urlPanel(`/cv/prueba/${l}.pdf`)} target="_blank" rel="noopener">
+        Ver la prueba · {l.toUpperCase()} ↗
+      </a>
+    ))
+    const tamanos = IDIOMAS.filter((l) => pdfs[l])
+      .map((l) => `${l.toUpperCase()} ${Math.round(pdfs[l].tamano / 1024)} KB`)
+      .join(' · ')
+    return ok ? (
+      <Banda tipo="ok" acciones={enlaces}>
+        ✓ <b>Prueba generada {elDiaALas(pdfs.es.fecha)}.</b> Prueba ATS superada · {tamanos} · {pdfs.es.paginas === 1 ? '1 página' : `${pdfs.es.paginas} páginas`}.
+        Al publicar se generará el de la web.
+      </Banda>
+    ) : (
+      <Banda tipo="error" acciones={enlaces}>
+        <b>No pasa la prueba ATS.</b>{' '}
+        {detalle ?? IDIOMAS.flatMap((l) => pdfs[l]?.problemas ?? []).join('; ')}. Recorta el perfil o quita algún punto. Es solo una
+        prueba: <b>el PDF publicado no cambia.</b>
+      </Banda>
+    )
+  }
 
   if (carga !== 'lista') {
     return (
       <>
-        {cabecera}
+        {cabecera()}
         {carga === 'cargando' ? (
           <Esqueleto etiqueta="Cargando el CV" />
         ) : (
@@ -288,7 +359,8 @@ export default function CV() {
 
   return (
     <>
-      {cabecera}
+      {cabecera(total)}
+      {bandaPrueba()}
 
       {total > 0 && (
         <Banda
@@ -304,7 +376,7 @@ export default function CV() {
             </>
           }
         >
-          <b>Tienes {cambios(total)} sin guardar</b>. Están marcados en ámbar; si sales ahora, te avisaré.
+          <b>Tienes {cambios(total)} sin guardar</b>. Están marcados en ámbar; guarda antes de generar el PDF.
         </Banda>
       )}
       {numErrores > 0 && (
