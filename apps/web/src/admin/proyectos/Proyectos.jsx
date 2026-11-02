@@ -3,11 +3,14 @@ import { Link, useOutletContext } from 'react-router'
 import { pedir } from '@/admin/api.js'
 import { useAvisar } from '@/admin/comun/avisos.js'
 import { Banda, Cabecera, Vacio } from '@/admin/comun/Estados.jsx'
+import { ordenarPor, useGuardarOrden } from '@/admin/comun/orden.js'
+import ListaOrdenable, { Asa, Ordenable } from '@/admin/comun/Ordenable.jsx'
 import { rutaProyecto } from '@/admin/proyectos/campos.js'
 import DialogoBorrar from '@/admin/proyectos/DialogoBorrar.jsx'
 import { RUTA_PANEL } from '@/admin/ruta.js'
 import { ponerTitulo } from '@/i18n/documento.js'
 
+const nombreDe = (p) => p.name.es || p.slug
 const FILTROS = [
   { id: 'todos', nombre: 'Todos', vale: () => true },
   { id: 'published', nombre: 'Publicados', vale: (p) => p.status === 'published' },
@@ -15,7 +18,8 @@ const FILTROS = [
 ]
 
 // 4 · Proyectos (aprobada en ADM-00): todos, en el orden de la web, con su estado y la
-// estrella de destacado, que se guarda al pulsarla. Arrastrar para ordenar llega en ADM-09.
+// estrella de destacado, que se guarda al pulsarla. El orden se cambia arrastrando el asa
+// ⋮⋮ (ADM-09), solo viéndolos todos: con un filtro no se sabe dónde caen los ocultos.
 export default function Proyectos() {
   const avisar = useAvisar()
   const { cargarResumen } = useOutletContext()
@@ -46,6 +50,15 @@ export default function Proyectos() {
     setIntento((n) => n + 1)
   }, [])
 
+  const guardarOrden = useGuardarOrden({ alGuardar: cargarResumen, alDesfasar: recargar })
+  const mover = (ids) =>
+    guardarOrden({
+      ruta: '/projects/orden',
+      ids,
+      antes: lista.map((p) => p.id),
+      poner: (orden) => setLista((l) => ordenarPor(l, orden)),
+    })
+
   // La estrella: cambia al momento y, si la API falla, vuelve a como estaba.
   const destacar = async (p) => {
     const nuevo = !p.is_featured
@@ -63,7 +76,7 @@ export default function Proyectos() {
   const cabecera = (
     <Cabecera
       titulo="Proyectos"
-      texto="En el orden de la web. Cámbialo con «Posición» al editar un proyecto. Los borradores no se ven en la web."
+      texto="En el orden de la web: arrástralos por ⋮⋮ para cambiarlo. Los borradores no se ven en la web."
     >
       <Link className="boton" to={`${RUTA_PANEL}/proyectos/nuevo`}>
         + Nuevo proyecto
@@ -134,6 +147,7 @@ export default function Proyectos() {
           </button>
         ))}
       </div>
+      {filtro !== 'todos' && visibles.length > 0 && <p className="nota-lista">Para cambiar el orden, vuelve a «Todos».</p>}
       {visibles.length === 0 ? (
         <p className="nota-vacia">No hay ninguno con este estado.</p>
       ) : (
@@ -141,7 +155,7 @@ export default function Proyectos() {
           <thead>
             <tr>
               <th>
-                <span className="solo-lector">Posición</span>
+                <span className="solo-lector">Ordenar</span>
               </th>
               <th>Proyecto</th>
               <th className="ocultar-movil">Tipo</th>
@@ -153,58 +167,65 @@ export default function Proyectos() {
             </tr>
           </thead>
           <tbody>
-            {visibles.map((p) => {
-              const nombre = p.name.es || p.slug
-              return (
-                <tr key={p.id}>
-                  <td className="posicion" aria-label={`Posición ${p.posicion}`}>
-                    {p.posicion}
-                  </td>
-                  <td>
-                    <p className="nom">
-                      <Link to={rutaProyecto(p.id)}>{nombre}</Link>
-                    </p>
-                    <p className="sub">
-                      /proyectos/{p.slug} · {p.tecnologias === 1 ? '1 tecnología' : `${p.tecnologias} tecnologías`}
-                    </p>
-                  </td>
-                  <td className="gris ocultar-movil">{p.label?.es || '—'}</td>
-                  <td>
-                    {p.status === 'published' ? (
-                      <span className="chip pub">
-                        <i />
-                        Publicado
-                      </span>
-                    ) : (
-                      <span className="chip bor">
-                        <i />
-                        Borrador
-                      </span>
-                    )}
-                  </td>
-                  <td>
-                    <button
-                      className={`estrella${p.is_featured ? '' : ' off'}`}
-                      type="button"
-                      aria-pressed={p.is_featured}
-                      aria-label={`Destacado: ${nombre}`}
-                      disabled={p.guardando}
-                      onClick={() => destacar(p)}
-                    >
-                      {p.is_featured ? '★' : '☆'}
-                    </button>
-                  </td>
-                  <td className="der">
-                    <Link className="boton pequeno" to={rutaProyecto(p.id)} aria-label={`Editar ${nombre}`}>
-                      Editar
-                    </Link>
-                    <button className="enlace borrar" type="button" onClick={() => setABorrar(p)} aria-label={`Borrar ${nombre}`}>
-                      Borrar
-                    </button>
-                  </td>
-                </tr>
-              )
-            })}
+            <ListaOrdenable
+              ids={visibles.map((p) => p.id)}
+              nombre={(id) => nombreDe(lista.find((p) => p.id === id))}
+              alMover={mover}
+              apagada={filtro === 'todos' ? null : 'quita el filtro para ordenar'}
+            >
+              {visibles.map((p) => {
+                const nombre = nombreDe(p)
+                return (
+                  <Ordenable key={p.id} id={p.id} como="tr">
+                    <td className="posicion">
+                      <Asa nombre={nombre} />
+                    </td>
+                    <td>
+                      <p className="nom">
+                        <Link to={rutaProyecto(p.id)}>{nombre}</Link>
+                      </p>
+                      <p className="sub">
+                        /proyectos/{p.slug} · {p.tecnologias === 1 ? '1 tecnología' : `${p.tecnologias} tecnologías`}
+                      </p>
+                    </td>
+                    <td className="gris ocultar-movil">{p.label?.es || '—'}</td>
+                    <td>
+                      {p.status === 'published' ? (
+                        <span className="chip pub">
+                          <i />
+                          Publicado
+                        </span>
+                      ) : (
+                        <span className="chip bor">
+                          <i />
+                          Borrador
+                        </span>
+                      )}
+                    </td>
+                    <td>
+                      <button
+                        className={`estrella${p.is_featured ? '' : ' off'}`}
+                        type="button"
+                        aria-pressed={p.is_featured}
+                        aria-label={`Destacado: ${nombre}`}
+                        disabled={p.guardando}
+                        onClick={() => destacar(p)}
+                      >
+                        {p.is_featured ? '★' : '☆'}
+                      </button>
+                    </td>
+                    <td className="der">
+                      <Link className="boton pequeno" to={rutaProyecto(p.id)} aria-label={`Editar ${nombre}`}>
+                        Editar
+                      </Link>
+                      <button className="enlace borrar" type="button" onClick={() => setABorrar(p)} aria-label={`Borrar ${nombre}`}>
+                        Borrar
+                      </button>
+                    </td>
+                  </Ordenable>
+                )
+              })}
+            </ListaOrdenable>
           </tbody>
         </table>
       )}
