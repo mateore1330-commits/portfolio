@@ -6,8 +6,8 @@ import { conError } from '@/admin/comun/useFormulario.js'
 import { GRUPOS, NIVELES, mensaje } from '@/admin/conocimientos/datos.js'
 
 // El diálogo de una tecnología (aprobado en ADM-00): nombre, grupo, nivel y si sale en
-// Conocimientos. Más el nombre en inglés, opcional (decidido en ADM-07), y la posición en
-// su grupo. fila: la tecnología que se edita, o null para una nueva.
+// Conocimientos. Más el nombre en inglés, opcional (decidido en ADM-07). Una nueva va al
+// final de su grupo; el orden se cambia arrastrando (ADM-09). fila: la que se edita, o null.
 export default function DialogoTecnologia({ fila, alCerrar, alGuardar }) {
   const [v, setV] = useState({
     name: fila?.name ?? '',
@@ -15,7 +15,6 @@ export default function DialogoTecnologia({ fila, alCerrar, alGuardar }) {
     category: fila?.category ?? 'frontend',
     level: fila?.level ?? null,
     is_skill: fila?.is_skill ?? true,
-    posicion: fila ? String(fila.posicion) : '',
   })
   const [errores, setErrores] = useState({})
   const [guardando, setGuardando] = useState(false)
@@ -29,10 +28,9 @@ export default function DialogoTecnologia({ fila, alCerrar, alGuardar }) {
   const guardar = async (e) => {
     e.preventDefault()
     setGuardando(true)
-    const posicion = v.posicion.trim() === '' ? null : /^\d+$/.test(v.posicion) ? Number(v.posicion) : v.posicion
     const r = await pedir(fila ? `/technologies/${fila.id}` : '/technologies', {
       method: fila ? 'PUT' : 'POST',
-      body: JSON.stringify({ ...v, posicion }),
+      body: JSON.stringify(v),
     })
     setGuardando(false)
     if (r.ok) alGuardar(r.datos)
@@ -53,29 +51,20 @@ export default function DialogoTecnologia({ fila, alCerrar, alGuardar }) {
         >
           <input id="t-ingles" type="text" value={v.nombre_en} onChange={(e) => poner('nombre_en', e.target.value)} />
         </Campo>
-        <div className="fila-campos">
-          <Campo etiqueta="Grupo" id="t-grupo" error={error('category')}>
-            <select id="t-grupo" value={v.category} onChange={(e) => poner('category', e.target.value)}>
-              {Object.entries(GRUPOS).map(([valor, nombre]) => (
-                <option key={valor} value={valor}>
-                  {nombre}
-                </option>
-              ))}
-            </select>
-          </Campo>
-          <Campo etiqueta="Posición en su grupo" id="t-posicion" error={error('posicion')}>
-            <input
-              id="t-posicion"
-              type="number"
-              min={1}
-              inputMode="numeric"
-              placeholder="Al final"
-              value={v.posicion}
-              onChange={(e) => poner('posicion', e.target.value)}
-              {...conError('t-posicion', error('posicion'))}
-            />
-          </Campo>
-        </div>
+        <Campo
+          etiqueta="Grupo"
+          id="t-grupo"
+          error={error('category')}
+          ayuda={fila && v.category !== fila.category ? 'Pasa al final de su grupo nuevo.' : undefined}
+        >
+          <select id="t-grupo" value={v.category} onChange={(e) => poner('category', e.target.value)}>
+            {Object.entries(GRUPOS).map(([valor, nombre]) => (
+              <option key={valor} value={valor}>
+                {nombre}
+              </option>
+            ))}
+          </select>
+        </Campo>
         <Campo etiqueta="Nivel" error={error('level')}>
           <div className="segmento" role="group" aria-label="Nivel">
             {NIVELES.map((n) => (

@@ -18,7 +18,7 @@ from sqlalchemy import func, select
 from .admin import admin, admin_required
 from .extensions import db
 from .models import Link, LinkType, Project, ProjectTechnology, TechCategory, Technology
-from .proyectos import IDIOMAS, Invalido, _cadena, _numero, _texto
+from .proyectos import IDIOMAS, Invalido, _cadena, _texto
 
 NIVELES = {
     33: {"es": "Lo he usado", "en": "Familiar"},
@@ -35,13 +35,10 @@ def _invalido(error):
     return jsonify(error="validacion", errores=error.errores), 400
 
 
-def _colocar(lista, objeto, posicion):
-    """Lo pone en esa posición de la lista (1 es la primera) y numera todos: 0, 1, 2…"""
+def _al_final(lista, objeto):
+    """Lo nuevo (o lo que cambia de grupo) va al final; desde ahí se mueve arrastrando (ADM-09)."""
     resto = [o for o in lista if o is not objeto]
-    indice = len(resto) if posicion is None else min(posicion - 1, len(resto))
-    resto.insert(indice, objeto)
-    for i, o in enumerate(resto):
-        o.sort_order = i
+    objeto.sort_order = max((o.sort_order for o in resto), default=-1) + 1
 
 
 # ================================================================ Tecnologías
@@ -114,10 +111,6 @@ def limpiar_tecnologia(datos, actual=None):
     if nivel is not None and nivel not in NIVELES:
         errores["level"] = "formato"
 
-    posicion = _numero(datos.get("posicion"), 1, 100000)
-    if posicion is False:
-        errores["posicion"] = "numero"
-
     if errores:
         raise Invalido(errores)
 
@@ -131,19 +124,17 @@ def limpiar_tecnologia(datos, actual=None):
         "level": nivel,
         "level_label": NIVELES.get(nivel),
         "is_skill": datos.get("is_skill") is True,
-        "posicion": posicion,
     }
 
 
 def _aplicar_tecnologia(t, campos):
-    posicion = campos.pop("posicion")
     cambia_de_grupo = t.category != campos["category"]
     nueva = t.technology_id is None
     with db.session.no_autoflush:
         for campo, valor in campos.items():
             setattr(t, campo, valor)
-        if posicion is not None or nueva or cambia_de_grupo:
-            _colocar(_del_grupo(t.category), t, posicion)
+        if nueva or cambia_de_grupo:
+            _al_final(_del_grupo(t.category), t)
 
 
 @admin.get("/technologies")
@@ -273,10 +264,6 @@ def limpiar_enlace(datos):
         if etiqueta[otro] and not etiqueta[lang]:
             errores[f"label.{lang}"] = "falta"
 
-    posicion = _numero(datos.get("posicion"), 1, 100000)
-    if posicion is False:
-        errores["posicion"] = "numero"
-
     if errores:
         raise Invalido(errores)
     return {
@@ -284,18 +271,16 @@ def limpiar_enlace(datos):
         "url": url,
         "label": etiqueta if any(etiqueta[lang] for lang in IDIOMAS) else None,
         "is_visible": datos.get("is_visible", True) is True,
-        "posicion": posicion,
     }
 
 
 def _aplicar_enlace(e, campos):
-    posicion = campos.pop("posicion")
     nuevo = e.link_id is None
     with db.session.no_autoflush:
         for campo, valor in campos.items():
             setattr(e, campo, valor)
-        if posicion is not None or nuevo:
-            _colocar(_enlaces(), e, posicion)
+        if nuevo:
+            _al_final(_enlaces(), e)
 
 
 @admin.get("/links")

@@ -152,20 +152,15 @@ def test_editar_cambia_las_tecnologias_y_su_orden(cliente, csrf, tecnologias):
     assert [x["name"] for x in p["technologies"]] == ["Alembic", "React"]
 
 
-def test_la_posicion_corre_a_los_demas(cliente, csrf):
+def test_uno_nuevo_va_al_final_y_guardar_no_lo_mueve(cliente, csrf):
     for nombre in ("Uno", "Dos", "Tres"):
         crear(cliente, csrf, name=ambos(nombre, ""))
     lista = cliente.get(f"{RUTA}/projects").json
     assert [(x["slug"], x["posicion"]) for x in lista] == [("uno", 1), ("dos", 2), ("tres", 3)]
-
-    tres = lista[2]
-    cliente.put(f"{RUTA}/projects/{tres['id']}", json={**tres, "posicion": 1}, headers=csrf)
-    assert [x["slug"] for x in cliente.get(f"{RUTA}/projects").json] == ["tres", "uno", "dos"]
-
-    # Uno nuevo con posición entra ahí; sin ella, al final.
-    crear(cliente, csrf, name=ambos("Cuatro", ""), posicion=2)
-    orden = [x["slug"] for x in cliente.get(f"{RUTA}/projects").json]
-    assert orden == ["tres", "cuatro", "uno", "dos"]
+    # Una "posicion" que llegue ya no se mira: el orden se cambia arrastrando (test_orden.py).
+    uno = lista[0]
+    cliente.put(f"{RUTA}/projects/{uno['id']}", json={**uno, "posicion": 3}, headers=csrf)
+    assert [x["slug"] for x in cliente.get(f"{RUTA}/projects").json] == ["uno", "dos", "tres"]
 
 
 def test_la_estrella(cliente, csrf):

@@ -4,16 +4,20 @@ import { pedir } from '@/admin/api.js'
 import { useAvisar } from '@/admin/comun/avisos.js'
 import Dialogo from '@/admin/comun/Dialogo.jsx'
 import { Banda, Cabecera, Vacio } from '@/admin/comun/Estados.jsx'
+import { ordenarPor, useGuardarOrden } from '@/admin/comun/orden.js'
+import ListaOrdenable, { Asa, Ordenable } from '@/admin/comun/Ordenable.jsx'
 import DialogoEnlace from '@/admin/conocimientos/DialogoEnlace.jsx'
 import DialogoTecnologia from '@/admin/conocimientos/DialogoTecnologia.jsx'
 import { GRUPOS, NIVELES } from '@/admin/conocimientos/datos.js'
 import { ponerTitulo } from '@/i18n/documento.js'
 
+const nombreEnlace = (e) => e.label?.es || e.type
 const proyectos = (n) => (n === 0 ? 'Ningún proyecto' : n === 1 ? 'En 1 proyecto' : `En ${n} proyectos`)
 
 // 11 · Conocimientos y enlaces (aprobada en ADM-00): la lista maestra de tecnologías, por
 // grupos, y los enlaces de contacto. Se edita en diálogos encima de la lista. "En
-// Conocimientos" y "Ocultar" se guardan al pulsarlos. La pestaña va en la dirección.
+// Conocimientos" y "Ocultar" se guardan al pulsarlos. La pestaña va en la dirección. El
+// orden se cambia arrastrando el asa ⋮⋮ (ADM-09): las tecnologías, dentro de su grupo.
 export default function Conocimientos() {
   const avisar = useAvisar()
   const { cargarResumen } = useOutletContext()
@@ -47,6 +51,17 @@ export default function Conocimientos() {
     setError(null)
     setIntento((n) => n + 1)
   }, [])
+
+  // clave: 'tecnologias' | 'enlaces'. Las tecnologías de los otros grupos no se mueven.
+  const guardarOrden = useGuardarOrden({ alGuardar: cargarResumen, alDesfasar: recargar })
+  const mover = (clave, ruta, antes, cuerpo) => (ids) =>
+    guardarOrden({
+      ruta,
+      ids,
+      cuerpo,
+      antes,
+      poner: (orden) => setDatos((d) => ({ ...d, [clave]: ordenarPor(d[clave], orden) })),
+    })
 
   const guardado = (texto) => {
     avisar('ok', texto ?? 'Guardado. Se verá en la web al publicar.')
@@ -133,6 +148,7 @@ export default function Conocimientos() {
           alEditar={(fila) => setEditando({ tipo: 'enlace', fila })}
           alBorrar={(fila) => setABorrar({ tipo: 'enlace', fila })}
           alOcultar={(fila) => alternar(`/links/${fila.id}`, 'is_visible', !fila.is_visible)}
+          alMover={mover('enlaces', '/links/orden', datos.enlaces.map((e) => e.id))}
         />
       ) : (
         <Tecnologias
@@ -140,6 +156,7 @@ export default function Conocimientos() {
           alEditar={(fila) => setEditando({ tipo: 'tecnologia', fila })}
           alBorrar={(fila) => setABorrar({ tipo: 'tecnologia', fila })}
           alAlternar={(fila) => alternar(`/technologies/${fila.id}`, 'is_skill', !fila.is_skill)}
+          alMover={(grupo, ids) => mover('tecnologias', '/technologies/orden', ids, { category: grupo })}
         />
       )}
 
@@ -201,7 +218,7 @@ export default function Conocimientos() {
   )
 }
 
-function Tecnologias({ lista, alEditar, alBorrar, alAlternar }) {
+function Tecnologias({ lista, alEditar, alBorrar, alAlternar, alMover }) {
   if (lista.length === 0) {
     return (
       <Vacio icono="▢" titulo="Sin tecnologías">
@@ -224,7 +241,7 @@ function Tecnologias({ lista, alEditar, alBorrar, alAlternar }) {
               <thead>
                 <tr>
                   <th>
-                    <span className="solo-lector">Posición</span>
+                    <span className="solo-lector">Ordenar</span>
                   </th>
                   <th>Tecnología</th>
                   <th>Nivel</th>
@@ -235,48 +252,54 @@ function Tecnologias({ lista, alEditar, alBorrar, alAlternar }) {
                 </tr>
               </thead>
               <tbody>
-                {del.map((t) => (
-                  <tr key={t.id} className={t.is_skill ? undefined : 'atenuada'}>
-                    <td className="posicion" aria-label={`Posición ${t.posicion}`}>
-                      {t.posicion}
-                    </td>
-                    <td>
-                      <p className="nom">{t.name}</p>
-                      <p className="sub">
-                        {t.nombre_en && `EN: ${t.nombre_en} · `}
-                        {proyectos(t.proyectos.length)}
-                      </p>
-                    </td>
-                    <td>
-                      {t.level ? (
-                        <>
-                          <span className="nivel" aria-hidden="true">
-                            {[33, 67, 100].map((n) => (
-                              <i key={n} className={t.level >= n ? 'on' : undefined} />
-                            ))}
-                          </span>{' '}
-                          <span className="mono">{NIVELES.find((x) => x.valor === t.level)?.largo}</span>
-                        </>
-                      ) : (
-                        <span className="mono gris">Sin nivel</span>
-                      )}
-                    </td>
-                    <td>
-                      <label className="interruptor">
-                        <input type="checkbox" checked={t.is_skill} onChange={() => alAlternar(t)} />
-                        <span className="solo-lector">{`${t.name} en Conocimientos`}</span>
-                      </label>
-                    </td>
-                    <td className="der">
-                      <button className="boton pequeno" type="button" onClick={() => alEditar(t)} aria-label={`Editar ${t.name}`}>
-                        Editar
-                      </button>
-                      <button className="enlace borrar" type="button" onClick={() => alBorrar(t)} aria-label={`Borrar ${t.name}`}>
-                        Borrar
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                <ListaOrdenable
+                  ids={del.map((t) => t.id)}
+                  nombre={(id) => del.find((t) => t.id === id).name}
+                  alMover={alMover(grupo, del.map((t) => t.id))}
+                >
+                  {del.map((t) => (
+                    <Ordenable key={t.id} id={t.id} como="tr" className={t.is_skill ? undefined : 'atenuada'}>
+                      <td className="posicion">
+                        <Asa nombre={t.name} />
+                      </td>
+                      <td>
+                        <p className="nom">{t.name}</p>
+                        <p className="sub">
+                          {t.nombre_en && `EN: ${t.nombre_en} · `}
+                          {proyectos(t.proyectos.length)}
+                        </p>
+                      </td>
+                      <td>
+                        {t.level ? (
+                          <>
+                            <span className="nivel" aria-hidden="true">
+                              {[33, 67, 100].map((n) => (
+                                <i key={n} className={t.level >= n ? 'on' : undefined} />
+                              ))}
+                            </span>{' '}
+                            <span className="mono">{NIVELES.find((x) => x.valor === t.level)?.largo}</span>
+                          </>
+                        ) : (
+                          <span className="mono gris">Sin nivel</span>
+                        )}
+                      </td>
+                      <td>
+                        <label className="interruptor">
+                          <input type="checkbox" checked={t.is_skill} onChange={() => alAlternar(t)} />
+                          <span className="solo-lector">{`${t.name} en Conocimientos`}</span>
+                        </label>
+                      </td>
+                      <td className="der">
+                        <button className="boton pequeno" type="button" onClick={() => alEditar(t)} aria-label={`Editar ${t.name}`}>
+                          Editar
+                        </button>
+                        <button className="enlace borrar" type="button" onClick={() => alBorrar(t)} aria-label={`Borrar ${t.name}`}>
+                          Borrar
+                        </button>
+                      </td>
+                    </Ordenable>
+                  ))}
+                </ListaOrdenable>
               </tbody>
             </table>
           </section>
@@ -286,7 +309,7 @@ function Tecnologias({ lista, alEditar, alBorrar, alAlternar }) {
   )
 }
 
-function TablaEnlaces({ lista, alEditar, alBorrar, alOcultar }) {
+function TablaEnlaces({ lista, alEditar, alBorrar, alOcultar, alMover }) {
   if (lista.length === 0) {
     return (
       <Vacio icono="▢" titulo="Sin enlaces">
@@ -299,7 +322,7 @@ function TablaEnlaces({ lista, alEditar, alBorrar, alOcultar }) {
       <thead>
         <tr>
           <th>
-            <span className="solo-lector">Posición</span>
+            <span className="solo-lector">Ordenar</span>
           </th>
           <th>Tipo</th>
           <th className="ocultar-movil">Dirección</th>
@@ -311,42 +334,46 @@ function TablaEnlaces({ lista, alEditar, alBorrar, alOcultar }) {
         </tr>
       </thead>
       <tbody>
-        {lista.map((e) => (
-          <tr key={e.id} className={e.is_visible ? undefined : 'atenuada'}>
-            <td className="posicion">{e.posicion}</td>
-            <td>
-              <span className="chip gris">{e.type}</span>
-            </td>
-            <td className="gris ocultar-movil direccion">{e.url}</td>
-            <td>{e.label?.es ?? '—'}</td>
-            <td>
-              {e.is_visible ? (
-                <span className="chip pub">
-                  <i />
-                  Visible
-                </span>
-              ) : (
-                <span className="chip bor">
-                  <i />
-                  Oculto
-                </span>
-              )}
-            </td>
-            <td className="der">
-              <button className="boton pequeno" type="button" onClick={() => alEditar(e)}>
-                Editar
-              </button>
-              <button className="enlace gris" type="button" onClick={() => alOcultar(e)}>
-                {e.is_visible ? 'Ocultar' : 'Mostrar'}
-              </button>
-              {!e.necesario && (
-                <button className="enlace borrar" type="button" onClick={() => alBorrar(e)}>
-                  Borrar
+        <ListaOrdenable ids={lista.map((e) => e.id)} nombre={(id) => nombreEnlace(lista.find((e) => e.id === id))} alMover={alMover}>
+          {lista.map((e) => (
+            <Ordenable key={e.id} id={e.id} como="tr" className={e.is_visible ? undefined : 'atenuada'}>
+              <td className="posicion">
+                <Asa nombre={nombreEnlace(e)} />
+              </td>
+              <td>
+                <span className="chip gris">{e.type}</span>
+              </td>
+              <td className="gris ocultar-movil direccion">{e.url}</td>
+              <td>{e.label?.es ?? '—'}</td>
+              <td>
+                {e.is_visible ? (
+                  <span className="chip pub">
+                    <i />
+                    Visible
+                  </span>
+                ) : (
+                  <span className="chip bor">
+                    <i />
+                    Oculto
+                  </span>
+                )}
+              </td>
+              <td className="der">
+                <button className="boton pequeno" type="button" onClick={() => alEditar(e)}>
+                  Editar
                 </button>
-              )}
-            </td>
-          </tr>
-        ))}
+                <button className="enlace gris" type="button" onClick={() => alOcultar(e)}>
+                  {e.is_visible ? 'Ocultar' : 'Mostrar'}
+                </button>
+                {!e.necesario && (
+                  <button className="enlace borrar" type="button" onClick={() => alBorrar(e)}>
+                    Borrar
+                  </button>
+                )}
+              </td>
+            </Ordenable>
+          ))}
+        </ListaOrdenable>
       </tbody>
     </table>
   )

@@ -68,7 +68,11 @@ def test_sin_sesion_nada(cliente, metodo, ruta):
     assert getattr(cliente, metodo)(f"{RUTA}{ruta}").status_code == 401
 
 
-def test_sin_cloudinary_503(cliente, csrf, proyecto):
+def test_sin_cloudinary_503(cliente, csrf, proyecto, monkeypatch):
+    from api import medios
+
+    # Sin Cloudinary aunque el .env de quien lo pasa tenga su clave.
+    monkeypatch.setattr(medios, "nube", lambda: None)
     respuesta = subir(cliente, csrf, f"{RUTA}/projects/{proyecto}/media", PNG)
     assert respuesta.status_code == 503
     assert respuesta.json == {"error": "sin_cloudinary"}

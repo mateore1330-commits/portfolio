@@ -64,12 +64,10 @@ def test_orden_dentro_del_grupo_y_al_cambiar_de_grupo(cliente, csrf):
         crear(cliente, csrf, "technologies", tecnologia(name=nombre))
     flask = crear(cliente, csrf, "technologies", tecnologia(name="Flask", category="backend")).json
     assert flask["posicion"] == 1
-    css = next(t for t in cliente.get(f"{RUTA}/technologies").json if t["name"] == "CSS")
-    cliente.put(f"{RUTA}/technologies/{css['id']}", json=tecnologia(name="CSS", posicion=1),
-                headers=csrf)
     frontend = [t["name"] for t in cliente.get(f"{RUTA}/technologies").json
                 if t["category"] == "frontend"]
-    assert frontend == ["CSS", "React", "Vite"]
+    # Las nuevas, al final de su grupo (el orden se cambia arrastrando: test_orden.py).
+    assert frontend == ["React", "Vite", "CSS"]
     # Pasar React a backend: al final de su grupo nuevo.
     react = next(t for t in cliente.get(f"{RUTA}/technologies").json if t["name"] == "React")
     movida = cliente.put(f"{RUTA}/technologies/{react['id']}",
@@ -149,12 +147,9 @@ def test_los_que_necesita_el_cv_no_se_borran(cliente, csrf):
     assert cliente.delete(f"{RUTA}/links/{otro['id']}", headers=csrf).status_code == 200
 
 
-def test_el_orden_de_los_enlaces(cliente, csrf):
+def test_un_enlace_nuevo_va_al_final(cliente, csrf):
     for url in ("https://a.com", "https://b.com", "https://c.com"):
         crear(cliente, csrf, "links", enlace(type="other", url=url))
-    c = cliente.get(f"{RUTA}/links").json[2]
-    cliente.put(f"{RUTA}/links/{c['id']}", json=enlace(type="other", url="https://c.com",
-                                                        posicion=1), headers=csrf)
     assert [e["url"] for e in cliente.get(f"{RUTA}/links").json] == [
-        "https://c.com", "https://a.com", "https://b.com",
+        "https://a.com", "https://b.com", "https://c.com",
     ]

@@ -3,6 +3,8 @@ import { Link, useOutletContext, useSearchParams } from 'react-router'
 import { pedir } from '@/admin/api.js'
 import { useAvisar } from '@/admin/comun/avisos.js'
 import { Banda, Cabecera, Vacio } from '@/admin/comun/Estados.jsx'
+import { ordenarPor, useGuardarOrden } from '@/admin/comun/orden.js'
+import ListaOrdenable, { Asa, Ordenable } from '@/admin/comun/Ordenable.jsx'
 import { TIPOS, fechas } from '@/admin/trayectoria/campos.js'
 import { ponerTitulo } from '@/i18n/documento.js'
 
@@ -14,7 +16,8 @@ const TIPO_FORMACION = { program: 'Formación', course: 'Curso' }
 
 // 9 · Trayectoria (aprobada en ADM-00): los empleos y la formación en dos pestañas. Ocultar
 // quita algo de la web sin borrarlo, y se guarda al pulsarlo. Los solapes de fechas se
-// avisan, sin impedir nada. La pestaña va en la dirección (?ver=formacion).
+// avisan, sin impedir nada. La pestaña va en la dirección (?ver=formacion). El orden de
+// cada pestaña se cambia arrastrando el asa ⋮⋮ (ADM-09).
 export default function Trayectoria() {
   const avisar = useAvisar()
   const { cargarResumen } = useOutletContext()
@@ -46,6 +49,16 @@ export default function Trayectoria() {
     setIntento((n) => n + 1)
   }, [])
 
+  const guardarOrden = useGuardarOrden({ alGuardar: cargarResumen, alDesfasar: recargar })
+  const mover = (pestana) => (ids) =>
+    guardarOrden({
+      ruta: `${pestana.tipo.api}/orden`,
+      ids,
+      antes: datos[pestana.id].lista.map((f) => f.id),
+      poner: (orden) =>
+        setDatos((d) => ({ ...d, [pestana.id]: { ...d[pestana.id], lista: ordenarPor(d[pestana.id].lista, orden) } })),
+    })
+
   // Ocultar o mostrar: al momento, como la estrella de Proyectos.
   const verEnLaWeb = async (pestana, fila) => {
     const r = await pedir(`${pestana.tipo.api}/${fila.id}`, { method: 'PATCH', body: JSON.stringify({ is_visible: !fila.is_visible }) })
@@ -59,7 +72,7 @@ export default function Trayectoria() {
   }
 
   const cabecera = (
-    <Cabecera titulo="Trayectoria" texto="Tus empleos y tu formación. Ocultar quita algo de la web sin borrarlo.">
+    <Cabecera titulo="Trayectoria" texto="Tus empleos y tu formación, en el orden de la web: arrástralos por ⋮⋮ para cambiarlo. Ocultar quita algo de la web sin borrarlo.">
       <Link className="boton" to={`${TIPOS.empleo.ruta}/nuevo`}>
         + Nuevo empleo
       </Link>
@@ -134,21 +147,22 @@ export default function Trayectoria() {
               se solapan. Es solo un aviso: puede ser correcto.
             </Banda>
           )}
-          <Tabla pestana={actual} lista={cargado.lista} alVerEnLaWeb={verEnLaWeb} />
+          <Tabla pestana={actual} lista={cargado.lista} alVerEnLaWeb={verEnLaWeb} alMover={mover(actual)} />
         </>
       )}
     </>
   )
 }
 
-function Tabla({ pestana, lista, alVerEnLaWeb }) {
+function Tabla({ pestana, lista, alVerEnLaWeb, alMover }) {
   const formacion = pestana.id === 'formacion'
+  const nombreDe = (f) => (formacion ? f.title : f.position)?.es || f.slug
   return (
     <table className="tabla">
       <thead>
         <tr>
           <th>
-            <span className="solo-lector">Posición</span>
+            <span className="solo-lector">Ordenar</span>
           </th>
           <th>{formacion ? 'Título' : 'Puesto'}</th>
           {formacion && <th className="ocultar-movil">Tipo</th>}
@@ -161,57 +175,59 @@ function Tabla({ pestana, lista, alVerEnLaWeb }) {
         </tr>
       </thead>
       <tbody>
-        {lista.map((f) => {
-          const nombre = (formacion ? f.title : f.position)?.es || f.slug
-          const sub = formacion
-            ? [f.institution ?? 'Por mi cuenta', f.hours && `${f.hours} h`].filter(Boolean).join(' · ')
-            : [f.company, f.location].filter(Boolean).join(' · ')
-          const certificado = [f.certificate_url && 'enlace', f.certificate_file && 'PDF'].filter(Boolean).join(' · ')
-          const ruta = `${pestana.tipo.ruta}/${f.id}`
-          return (
-            <tr key={f.id} className={f.is_visible ? undefined : 'atenuada'}>
-              <td className="posicion" aria-label={`Posición ${f.posicion}`}>
-                {f.posicion}
-              </td>
-              <td>
-                <p className="nom">
-                  <Link to={ruta}>{nombre}</Link>
-                </p>
-                <p className="sub">{sub}</p>
-              </td>
-              {formacion && (
-                <td className="ocultar-movil">
-                  <span className="chip gris">{TIPO_FORMACION[f.kind]}</span>
+        <ListaOrdenable ids={lista.map((f) => f.id)} nombre={(id) => nombreDe(lista.find((f) => f.id === id))} alMover={alMover}>
+          {lista.map((f) => {
+            const nombre = nombreDe(f)
+            const sub = formacion
+              ? [f.institution ?? 'Por mi cuenta', f.hours && `${f.hours} h`].filter(Boolean).join(' · ')
+              : [f.company, f.location].filter(Boolean).join(' · ')
+            const certificado = [f.certificate_url && 'enlace', f.certificate_file && 'PDF'].filter(Boolean).join(' · ')
+            const ruta = `${pestana.tipo.ruta}/${f.id}`
+            return (
+              <Ordenable key={f.id} id={f.id} como="tr" className={f.is_visible ? undefined : 'atenuada'}>
+                <td className="posicion">
+                  <Asa nombre={nombre} />
                 </td>
-              )}
-              <td className="fecha">{fechas(f.start_date, f.end_date)}</td>
-              {formacion && (
-                <td className={`ocultar-movil certificado${certificado ? ' con' : ''}`}>{certificado ? `✓ ${certificado}` : '—'}</td>
-              )}
-              <td>
-                {f.is_visible ? (
-                  <span className="chip pub">
-                    <i />
-                    Visible
-                  </span>
-                ) : (
-                  <span className="chip bor">
-                    <i />
-                    Oculta
-                  </span>
+                <td>
+                  <p className="nom">
+                    <Link to={ruta}>{nombre}</Link>
+                  </p>
+                  <p className="sub">{sub}</p>
+                </td>
+                {formacion && (
+                  <td className="ocultar-movil">
+                    <span className="chip gris">{TIPO_FORMACION[f.kind]}</span>
+                  </td>
                 )}
-              </td>
-              <td className="der">
-                <Link className="boton pequeno" to={ruta} aria-label={`Editar ${nombre}`}>
-                  Editar
-                </Link>
-                <button className="enlace gris" type="button" onClick={() => alVerEnLaWeb(pestana, f)}>
-                  {f.is_visible ? 'Ocultar' : 'Mostrar'}
-                </button>
-              </td>
-            </tr>
-          )
-        })}
+                <td className="fecha">{fechas(f.start_date, f.end_date)}</td>
+                {formacion && (
+                  <td className={`ocultar-movil certificado${certificado ? ' con' : ''}`}>{certificado ? `✓ ${certificado}` : '—'}</td>
+                )}
+                <td>
+                  {f.is_visible ? (
+                    <span className="chip pub">
+                      <i />
+                      Visible
+                    </span>
+                  ) : (
+                    <span className="chip bor">
+                      <i />
+                      Oculta
+                    </span>
+                  )}
+                </td>
+                <td className="der">
+                  <Link className="boton pequeno" to={ruta} aria-label={`Editar ${nombre}`}>
+                    Editar
+                  </Link>
+                  <button className="enlace gris" type="button" onClick={() => alVerEnLaWeb(pestana, f)}>
+                    {f.is_visible ? 'Ocultar' : 'Mostrar'}
+                  </button>
+                </td>
+              </Ordenable>
+            )
+          })}
+        </ListaOrdenable>
       </tbody>
     </table>
   )

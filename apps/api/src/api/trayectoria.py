@@ -177,16 +177,11 @@ def limpiar(tipo, datos, actual=None):
     if desde and hasta and hasta < desde:
         errores["end_date"] = "antes"
 
-    posicion = _numero(datos.get("posicion"), 1, 100000)
-    if posicion is False:
-        errores["posicion"] = "numero"
-
     salida = {
         "is_visible": visible,
         "location": _cadena(datos.get("location")) or None,
         "start_date": desde or None,
         "end_date": hasta or None,
-        "posicion": posicion,
     }
 
     if tipo is EMPLEOS:
@@ -244,16 +239,13 @@ def _clave_nueva(tipo, campos):
     return clave
 
 
-def _colocar(tipo, objeto, posicion):
+def _al_final(tipo, objeto):
+    """Lo nuevo va al final; desde ahí se mueve arrastrando (ADM-09, orden.py)."""
     resto = [o for o in tipo.ordenados() if o is not objeto]
-    indice = len(resto) if posicion is None else min(posicion - 1, len(resto))
-    resto.insert(indice, objeto)
-    for i, o in enumerate(resto):
-        o.sort_order = i
+    objeto.sort_order = max((o.sort_order for o in resto), default=-1) + 1
 
 
 def _aplicar(tipo, objeto, campos):
-    posicion = campos.pop("posicion")
     nuevo = getattr(objeto, tipo.pk) is None
     # Sin guardar a medias: las consultas de aquí (la clave, el orden) no tienen que escribir
     # un objeto nuevo que todavía no tiene clave.
@@ -262,8 +254,8 @@ def _aplicar(tipo, objeto, campos):
             objeto.slug = _clave_nueva(tipo, campos)
         for campo, valor in campos.items():
             setattr(objeto, campo, valor)
-        if posicion is not None or nuevo:
-            _colocar(tipo, objeto, posicion)
+        if nuevo:
+            _al_final(tipo, objeto)
 
 
 def _invalido(error):

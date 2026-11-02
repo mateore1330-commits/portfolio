@@ -23,7 +23,7 @@ export const CLAVES_PARRAFOS = PARRAFOS.flatMap(({ campo }) => [`${campo}.es`, `
 // Qué claves van en cada bloque, para el "N cambios" de su título.
 export const BLOQUES = {
   textos: (clave) => /\.(es|en)$/.test(clave),
-  ficha: (clave) => ['slug', 'posicion', 'is_team_project', 'team_size', 'commits_share', 'is_featured'].includes(clave),
+  ficha: (clave) => ['slug', 'is_team_project', 'team_size', 'commits_share', 'is_featured'].includes(clave),
   enlaces: (clave) => clave === 'demo_url' || clave === 'repo_url',
   tecnologias: (clave) => clave === 'technologies',
 }
@@ -34,7 +34,6 @@ export function aFormulario(p = {}) {
   const f = {
     status: p.status ?? 'draft',
     slug: p.slug ?? '',
-    posicion: texto(p.posicion),
     is_featured: Boolean(p.is_featured),
     is_team_project: Boolean(p.is_team_project),
     team_size: texto(p.team_size),
@@ -58,7 +57,6 @@ export function aApi(f) {
   return {
     status: f.status,
     slug: f.slug,
-    posicion: numero(f.posicion),
     is_featured: f.is_featured,
     is_team_project: f.is_team_project,
     team_size: numero(f.team_size),

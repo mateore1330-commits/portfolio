@@ -362,21 +362,12 @@ function Formulario({ tipo, id }) {
             </Campo>
           </div>
           {empleo && campoTexto('tools', 'Herramientas', { ayuda: 'Opcional. Sale en pequeño debajo del puesto.' })}
-          <div className="fila-campos">
-            <Campo etiqueta="En la web" {...marca('is_visible')}>
-              <label className="interruptor">
-                <input type="checkbox" checked={valores.is_visible} aria-label="Visible en la web" onChange={(e) => cambiar('is_visible', e.target.checked)} />
-                {valores.is_visible ? 'Visible' : `Ocult${tipo.o}`}
-              </label>
-            </Campo>
-            {campoTexto('posicion', 'Posición', {
-              tipo: 'number',
-              min: 1,
-              inputMode: 'numeric',
-              placeholder: nuevo ? 'Al final' : undefined,
-              ayuda: '1 es el primero en la web.',
-            })}
-          </div>
+          <Campo etiqueta="En la web" {...marca('is_visible')}>
+            <label className="interruptor">
+              <input type="checkbox" checked={valores.is_visible} aria-label="Visible en la web" onChange={(e) => cambiar('is_visible', e.target.checked)} />
+              {valores.is_visible ? 'Visible' : `Ocult${tipo.o}`}
+            </label>
+          </Campo>
           {!nuevo && (
             <Campo etiqueta="Clave" id="c-clave" ayuda={`No se cambia: el CV la usa para engancharse a ${empleo ? 'este empleo' : 'esta formación'}.`}>
               <input id="c-clave" type="text" value={detalle.slug} readOnly />

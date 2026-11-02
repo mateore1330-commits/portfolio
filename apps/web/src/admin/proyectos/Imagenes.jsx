@@ -6,6 +6,8 @@ import { useAvisar } from '@/admin/comun/avisos.js'
 import Campo from '@/admin/comun/Campo.jsx'
 import Dialogo from '@/admin/comun/Dialogo.jsx'
 import { Banda, Cabecera, Vacio } from '@/admin/comun/Estados.jsx'
+import { ordenarPor, useGuardarOrden } from '@/admin/comun/orden.js'
+import ListaOrdenable, { Asa, Ordenable } from '@/admin/comun/Ordenable.jsx'
 import SubirImagenes from '@/admin/comun/SubirImagenes.jsx'
 import { useFormulario } from '@/admin/comun/useFormulario.js'
 import { NoEncontrado } from '@/admin/Proximamente.jsx'
@@ -17,13 +19,15 @@ const IDIOMAS = [
   ['es', 'Texto alternativo · ES'],
   ['en', 'Alt text · EN'],
 ]
+// Para el asa y el lector de pantalla: "la imagen 2" (las fotos no tienen nombre).
+const nombreFoto = (imagenes, id) => `la imagen ${imagenes.findIndex((i) => i.id === id) + 1}`
 const cambios = (n) => (n === 1 ? '1 cambio' : `${n} cambios`)
 const aFormulario = (imagenes) =>
   Object.fromEntries(imagenes.flatMap((i) => IDIOMAS.map(([lang]) => [`${i.id}.${lang}`, i.alt?.[lang] ?? ''])))
 
 // 6 · Imágenes de un proyecto (aprobada en ADM-00). Subir, hacer portada y borrar se
-// guardan al momento; los textos alternativos, con la barra de guardar. La primera es la
-// portada si no se elige otra. Ordenarlas arrastrando llega en ADM-09.
+// guardan al momento, y también el orden al soltar (se arrastran por ⋮⋮, ADM-09); los
+// textos alternativos, con la barra de guardar. La primera es la portada si no se elige otra.
 export default function Imagenes() {
   const { id } = useParams()
   if (!/^\d+$/.test(id)) return <NoEncontrado />
@@ -65,6 +69,28 @@ function Pantalla({ id }) {
     if (datos) ponerTitulo(`Imágenes · ${datos.nombre} · Panel`)
   }, [datos])
 
+  // Lo que cambia al momento (subir, portada, borrar) actualiza la galería sin tocar los
+  // textos alternativos que estés escribiendo.
+  const ponerImagenes = (imagenes) => {
+    setDatos((d) => ({ ...d, imagenes }))
+    for (const i of imagenes) {
+      for (const [lang] of IDIOMAS) {
+        const clave = `${i.id}.${lang}`
+        if (!(clave in valores)) form.fijar(clave, i.alt?.[lang] ?? '')
+      }
+    }
+    cargarResumen()
+  }
+
+  // Si la galería había cambiado en otra pestaña, se vuelve a pedir (sin perder lo escrito).
+  const guardarOrden = useGuardarOrden({
+    alGuardar: cargarResumen,
+    alDesfasar: async () => {
+      const r = await pedir(`/projects/${id}/media`)
+      if (r.ok) ponerImagenes(r.datos.imagenes)
+    },
+  })
+
   if (carga === 'no_existe') return <NoEncontrado />
 
   const volver = (
@@ -95,19 +121,6 @@ function Pantalla({ id }) {
     )
   }
 
-  // Lo que cambia al momento (subir, portada, borrar) actualiza la galería sin tocar los
-  // textos alternativos que estés escribiendo.
-  const ponerImagenes = (imagenes) => {
-    setDatos((d) => ({ ...d, imagenes }))
-    for (const i of imagenes) {
-      for (const [lang] of IDIOMAS) {
-        const clave = `${i.id}.${lang}`
-        if (!(clave in valores)) form.fijar(clave, i.alt?.[lang] ?? '')
-      }
-    }
-    cargarResumen()
-  }
-
   // Una recién subida: al final, con sus textos alternativos vacíos (ya está guardada).
   // Con la lista más reciente: si se suben varias, cada una se añade a la anterior.
   const anadir = (imagen) => {
@@ -115,6 +128,14 @@ function Pantalla({ id }) {
     for (const [lang] of IDIOMAS) form.fijar(`${imagen.id}.${lang}`, '')
     cargarResumen()
   }
+
+  const mover = (ids) =>
+    guardarOrden({
+      ruta: `/projects/${id}/media/orden`,
+      ids,
+      antes: datos.imagenes.map((i) => i.id),
+      poner: (orden) => setDatos((d) => ({ ...d, imagenes: ordenarPor(d.imagenes, orden) })),
+    })
 
   const portada = async (imagen) => {
     const r = await pedir(`/media/${imagen.id}`, { method: 'PATCH', body: JSON.stringify({ is_cover: true }) })
@@ -207,56 +228,59 @@ function Pantalla({ id }) {
         </Vacio>
       ) : (
         <div className="galeria">
-          {imagenes.map((imagen, i) => {
-            const esPortada = imagen.is_cover || (!hayPortada && i === 0)
-            return (
-              <article className="foto" key={imagen.id}>
-                <div className="img">
-                  <img src={imagen.url} alt={valores[`${imagen.id}.es`] || ''} loading="lazy" />
-                  {esPortada && <span className="chip nuevo">Portada</span>}
-                </div>
-                <div className="datos">
-                  {IDIOMAS.map(([lang, etiqueta]) => {
-                    const clave = `${imagen.id}.${lang}`
-                    const idCampo = `alt-${imagen.id}-${lang}`
-                    const error = errores[clave] ? 'Hace falta: el proyecto está publicado.' : null
-                    return (
-                      <Campo
-                        key={lang}
-                        etiqueta={etiqueta}
-                        id={idCampo}
-                        error={error}
-                        cambiado={form.cambiado(clave)}
-                        alDeshacer={() => form.deshacer(clave)}
-                      >
-                        <input
-                          id={idCampo}
-                          type="text"
-                          value={valores[clave] ?? ''}
-                          onChange={(e) => {
-                            form.poner(clave, e.target.value)
-                            setErrores((x) => Object.fromEntries(Object.entries(x).filter(([k]) => k !== clave)))
-                          }}
-                        />
-                      </Campo>
-                    )
-                  })}
-                  <div className="pie-foto">
-                    {esPortada ? (
-                      <span className="mono">Es la portada</span>
-                    ) : (
-                      <button className="enlace" type="button" onClick={() => portada(imagen)}>
-                        Hacer portada
-                      </button>
-                    )}
-                    <button className="enlace borrar" type="button" onClick={() => setABorrar(imagen)}>
-                      Borrar
-                    </button>
+          <ListaOrdenable ids={imagenes.map((i) => i.id)} nombre={(ident) => nombreFoto(imagenes, ident)} alMover={mover} rejilla>
+            {imagenes.map((imagen, i) => {
+              const esPortada = imagen.is_cover || (!hayPortada && i === 0)
+              return (
+                <Ordenable className="foto" key={imagen.id} id={imagen.id} como="article">
+                  <div className="img">
+                    <img src={imagen.url} alt={valores[`${imagen.id}.es`] || ''} loading="lazy" />
+                    {esPortada && <span className="chip nuevo">Portada</span>}
+                    <Asa nombre={nombreFoto(imagenes, imagen.id)} className="asa asa-foto" />
                   </div>
-                </div>
-              </article>
-            )
-          })}
+                  <div className="datos">
+                    {IDIOMAS.map(([lang, etiqueta]) => {
+                      const clave = `${imagen.id}.${lang}`
+                      const idCampo = `alt-${imagen.id}-${lang}`
+                      const error = errores[clave] ? 'Hace falta: el proyecto está publicado.' : null
+                      return (
+                        <Campo
+                          key={lang}
+                          etiqueta={etiqueta}
+                          id={idCampo}
+                          error={error}
+                          cambiado={form.cambiado(clave)}
+                          alDeshacer={() => form.deshacer(clave)}
+                        >
+                          <input
+                            id={idCampo}
+                            type="text"
+                            value={valores[clave] ?? ''}
+                            onChange={(e) => {
+                              form.poner(clave, e.target.value)
+                              setErrores((x) => Object.fromEntries(Object.entries(x).filter(([k]) => k !== clave)))
+                            }}
+                          />
+                        </Campo>
+                      )
+                    })}
+                    <div className="pie-foto">
+                      {esPortada ? (
+                        <span className="mono">Es la portada</span>
+                      ) : (
+                        <button className="enlace" type="button" onClick={() => portada(imagen)}>
+                          Hacer portada
+                        </button>
+                      )}
+                      <button className="enlace borrar" type="button" onClick={() => setABorrar(imagen)}>
+                        Borrar
+                      </button>
+                    </div>
+                  </div>
+                </Ordenable>
+              )
+            })}
+          </ListaOrdenable>
         </div>
       )}
 

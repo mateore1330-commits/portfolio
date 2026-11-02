@@ -890,11 +890,71 @@
   background: var(--blue-wash);
 }
 
-/* La posición, donde irá el asa ⋮⋮ de ADM-09. */
+/* La columna del asa ⋮⋮ de reordenar (ADM-09). */
 .panel-app .tabla .posicion {
+  width: 34px;
+  padding-right: 0;
+}
+
+/* El asa: coge la fila (o el párrafo, o la foto) con el ratón, el dedo o el teclado.
+   touch-action: none → en el móvil, arrastrar desde aquí mueve; desde el resto, scroll. */
+.panel-app .asa {
+  display: inline-grid;
+  place-items: center;
   width: 26px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: none;
   color: var(--ink-3);
-  font: 500 11px var(--f-mono);
+  font: 500 14px var(--f-mono);
+  letter-spacing: -2px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.panel-app .asa:hover {
+  color: var(--ink);
+  background: var(--blue-wash);
+}
+
+.panel-app .asa:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 1px;
+}
+
+.panel-app .asa[aria-disabled="true"] {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.panel-app .asa[aria-disabled="true"]:hover {
+  background: none;
+}
+
+/* Lo que se está arrastrando, como en la maqueta. */
+.panel-app .arrastrando {
+  position: relative;
+  z-index: 2;
+  outline: 2px dashed var(--blue);
+  outline-offset: -2px;
+  background: var(--blue-wash);
+}
+
+.panel-app .arrastrando td {
+  background: transparent !important;
+}
+
+.panel-app .arrastrando .asa {
+  cursor: grabbing;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel-app [data-ordenable] {
+    transition: none !important;
+  }
 }
 
 .panel-app .tabla .nom {
@@ -1225,15 +1285,9 @@
 
 .panel-app .lista-editable .item {
   display: grid;
-  grid-template-columns: 22px minmax(0, 1fr) auto;
-  gap: 8px;
+  grid-template-columns: 26px minmax(0, 1fr) auto;
+  gap: 6px;
   align-items: start;
-}
-
-.panel-app .lista-editable .item > span {
-  padding-top: 11px;
-  color: var(--ink-3);
-  font: 11px var(--f-mono);
 }
 
 .panel-app .lista-editable .item textarea {
@@ -1251,6 +1305,16 @@
 
 .panel-app .lista-editable .item > button:hover {
   color: var(--error);
+}
+
+/* El asa de un párrafo (es un botón de la fila, como la ×, pero no se pinta de rojo). */
+.panel-app .lista-editable .item > .asa {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.panel-app .lista-editable .item > .asa:hover {
+  color: var(--ink);
 }
 
 /* La marca y el error de un párrafo, debajo del cuadro, a la derecha. */
@@ -1513,8 +1577,9 @@
 
   .panel-app .tabla .posicion {
     position: absolute;
-    top: 16px;
-    left: 4px;
+    top: 10px;
+    left: 0;
+    width: auto;
   }
 
   .panel-app .tabla .der {
@@ -2027,6 +2092,21 @@
   position: absolute;
   top: 8px;
   left: 8px;
+}
+
+/* El asa de una foto, en su esquina: sobre papel para verse encima de cualquier imagen. */
+.panel-app .foto .img .asa-foto {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--rule);
+}
+
+.panel-app .foto .img .asa-foto:hover {
+  background: var(--paper);
+  color: var(--blue);
 }
 
 .panel-app .foto .datos {

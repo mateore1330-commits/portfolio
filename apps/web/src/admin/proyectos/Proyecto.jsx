@@ -367,17 +367,7 @@ function Formulario({ id }) {
               </button>
             </div>
           </Campo>
-          <div className="fila-campos">
-            {campoTexto('posicion', {
-              etiqueta: 'Posición',
-              tipo: 'number',
-              min: 1,
-              inputMode: 'numeric',
-              placeholder: nuevo ? 'Al final' : undefined,
-              ayuda: '1 es el primero en la web. Los demás se corren solos.',
-            })}
-            {interruptor('is_featured', 'Destacado', 'En la portada')}
-          </div>
+          {interruptor('is_featured', 'Destacado', 'En la portada')}
           <div className="fila-campos">
             {interruptor('is_team_project', 'En equipo', 'Sí')}
             {valores.is_team_project && (
