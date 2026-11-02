@@ -57,11 +57,12 @@ def _fila(obj):
     }
 
 
-def generar_instantanea(incluir=None):
+def generar_instantanea(incluir=None, empleo=None, formacion=None):
     """Todo lo publicado, en los dos idiomas, sin borradores ni ocultos y en orden fijo.
 
-    incluir: el id de un proyecto que entra aunque sea borrador. Solo para la vista previa
-    del panel (ADM-03); lo que se publica nunca lo usa.
+    incluir, empleo, formacion: el id de un proyecto, un empleo o una formación que entra
+    aunque sea borrador u oculto. Solo para las vistas previas del panel (ADM-03 y ADM-06);
+    lo que se publica nunca lo usa.
     """
     visible = Project.status == ContentStatus.PUBLISHED
     if incluir is not None:
@@ -88,8 +89,11 @@ def generar_instantanea(incluir=None):
     ]
     tecnologias.sort(key=lambda t: (orden_categoria[t.category], t.sort_order, t.name))
 
-    def visibles(modelo, *orden):
-        consulta = select(modelo).where(modelo.is_visible.is_(True)).order_by(*orden)
+    def visibles(modelo, *orden, ademas=None):
+        visible = modelo.is_visible.is_(True)
+        if ademas is not None:
+            visible = visible | (modelo.__table__.primary_key.columns.values()[0] == ademas)
+        consulta = select(modelo).where(visible).order_by(*orden)
         return [_fila(o) for o in db.session.scalars(consulta)]
 
     return {
@@ -102,8 +106,10 @@ def generar_instantanea(incluir=None):
         "links": visibles(Link, Link.sort_order, Link.link_id),
         "technologies": [_fila(t) for t in tecnologias],
         "projects": projects,
-        "jobs": visibles(Job, Job.sort_order, Job.start_date.desc()),
-        "education": visibles(Education, Education.sort_order, Education.education_id),
+        "jobs": visibles(Job, Job.sort_order, Job.start_date.desc(), ademas=empleo),
+        "education": visibles(
+            Education, Education.sort_order, Education.education_id, ademas=formacion
+        ),
     }
 
 
