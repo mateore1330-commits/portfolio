@@ -1876,3 +1876,36 @@
     margin: 0;
   }
 }
+
+/* ============================================================
+   TRAYECTORIA (ADM-06)
+   ============================================================ */
+.panel-app .tabla tr.atenuada td {
+  opacity: .55;
+}
+
+.panel-app .tabla td.certificado {
+  color: var(--ink-3);
+  font: 400 10px var(--f-mono);
+  white-space: nowrap;
+}
+
+.panel-app .tabla td.certificado.con {
+  color: var(--ok);
+}
+
+.panel-app .solo-lectura .acciones-archivo {
+  display: inline-flex;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.panel-app .campo-panel input[readonly] {
+  border-style: dashed;
+  background: transparent;
+  color: var(--ink-2);
+}
+
+.panel-app .campo-panel input:disabled {
+  opacity: .5;
+}
