@@ -1,10 +1,5 @@
 // Lo que comparten las tarjetas de la portada y la página de cada proyecto.
 
-// El orden de la portada: el de la API (solo publicados, por sort_order), con el
-// destacado primero. sort es estable: los demás no cambian de sitio.
-export const ordenProyectos = (proyectos) =>
-  [...proyectos].sort((a, b) => Number(b.is_featured) - Number(a.is_featured))
-
 // /proyectos/cleanflow o /en/proyectos/cleanflow: el trozo "proyectos" no se traduce,
 // como los id de las secciones.
 export const rutaProyecto = (lang, slug) => `${lang === 'en' ? '/en' : ''}/proyectos/${slug}`

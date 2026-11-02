@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link, useParams } from 'react-router'
 import Marcado from '@/content/Marcado.jsx'
-import { ordenProyectos, portadaDe, porcentaje, rutaProyecto } from '@/content/proyectos.js'
+import { portadaDe, porcentaje, rutaProyecto } from '@/content/proyectos.js'
 import { useContent } from '@/content/useContent.js'
 import { useNombreTecnologia } from '@/content/useNombreTecnologia.js'
 import { ponerDescripcion, ponerTitulo } from '@/i18n/documento.js'
@@ -29,7 +29,8 @@ export default function ProjectPage({ slug: slugFijo }) {
   const nombreTec = useNombreTecnologia()
   const { projects } = useContent()
 
-  const orden = ordenProyectos(projects)
+  // El orden de la API: el destacado ya es el primero (#154).
+  const orden = projects
   const indice = orden.findIndex((x) => x.slug === slug)
   const proyecto = orden[indice]
   // Desde el último, "Siguiente" vuelve al primero: nunca un callejón sin salida.
