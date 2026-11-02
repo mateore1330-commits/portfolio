@@ -211,6 +211,7 @@ def resumen():
             "sin_leer": _contar(ContactMessage, ContactMessage.status == MessageStatus.NEW),
             "ultimos": [
                 {
+                    "id": m.message_id,
                     "nombre": m.name,
                     "asunto": m.subject,
                     "fecha": m.created_at.isoformat(),

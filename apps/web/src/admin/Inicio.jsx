@@ -71,11 +71,11 @@ function Tarjetas({ resumen: { mensajes, contenido, ultima_publicacion: ultima }
         {mensajes.ultimos.length > 0 ? (
           <ul>
             {mensajes.ultimos.map((m) => (
-              <li key={m.fecha}>
-                <span>
+              <li key={m.id}>
+                <Link to={`${RUTA_PANEL}/mensajes?estado=todos&ver=${m.id}`}>
                   {m.nombre}
                   {m.asunto && ` · ${m.asunto}`}
-                </span>
+                </Link>
                 <small>{haceCuanto(m.fecha)}</small>
               </li>
             ))}
