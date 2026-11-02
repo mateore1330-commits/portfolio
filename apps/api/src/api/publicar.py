@@ -11,6 +11,7 @@ Son tres pasos y tres llamadas, en este orden; el panel pinta cada uno al termin
 publicada, no con fechas: si algo se cambia y se deja como estaba, no cuenta.
 """
 
+import json
 import urllib.error
 import urllib.request
 from datetime import UTC, datetime
@@ -22,6 +23,7 @@ from sqlalchemy import select
 from .admin import admin, admin_required
 from .cv.generar import CVError, datos_cv, generar_pdfs, huella
 from .extensions import db
+from .medios import limpiar_al_publicar
 from .models import CvPdf, CvStatus, DeployStatus, Snapshot
 from .snapshot import InstantaneaError, generar_instantanea, publicar, ultima_instantanea
 
@@ -166,6 +168,8 @@ def paso_foto():
     if not lista:
         return jsonify(error="sin_cambios"), 409
     cv_cambiado = _cv_cambiado()
+    anterior = ultima_instantanea()
+    antes = json.dumps(anterior.payload) if anterior else None
     # publicar() lee con REPEATABLE READ y tiene que empezar su propia transacción.
     db.session.rollback()
     try:
@@ -178,6 +182,8 @@ def paso_foto():
     snapshot.cv_status = CvStatus.PENDING if cv_cambiado else CvStatus.UNCHANGED
     snapshot.deploy_status = DeployStatus.PENDING
     db.session.commit()
+    # Lo de Cloudinary que la web ya no enseña ni usa el panel, fuera (ADM-08).
+    limpiar_al_publicar(antes, snapshot.payload)
     return jsonify(_publicacion(snapshot)), 201
 
 

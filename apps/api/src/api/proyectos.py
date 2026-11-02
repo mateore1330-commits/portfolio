@@ -340,6 +340,13 @@ def guardar_proyecto(project_id):
         campos = limpiar(request.get_json(silent=True) or {}, actual=proyecto)
     except Invalido as error:
         return _invalido(error)
+    # Publicado, con todas sus fotos con texto alternativo en los dos idiomas (ADM-08).
+    from .medios import alt_completo
+
+    if campos["status"] == ContentStatus.PUBLISHED and not all(
+        alt_completo(m.alt) for m in proyecto.media
+    ):
+        return _invalido(Invalido({"imagenes": "alt"}))
     if campos["slug"] != proyecto.slug:
         _renombrar_en_cv(proyecto.slug, campos["slug"])
     _aplicar(proyecto, campos)
@@ -367,14 +374,20 @@ def cambiar_proyecto(project_id):
 def borrar_proyecto(project_id):
     """Borrar. Sus tecnologías dejan de estar asociadas (la lista maestra no se toca). Si el
     CV lo engancha, el enganche se queda y hay que cambiarlo en el CV (el diálogo lo avisa)."""
+    from .medios import soltar
+
     proyecto, falla = _buscar(project_id)
     if falla:
         return falla
+    fotos = [m.url for m in proyecto.media]
     db.session.delete(proyecto)
     db.session.flush()
     for i, p in enumerate(_ordenados()):
         p.sort_order = i
     db.session.commit()
+    # Sus fotos, fuera de Cloudinary (ya, o al publicar si la web las enseña: ADM-08).
+    for url in fotos:
+        soltar(url)
     return jsonify(ok=True)
 
 
