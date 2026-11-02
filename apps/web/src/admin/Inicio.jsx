@@ -8,9 +8,10 @@ import { ponerTitulo } from '@/i18n/documento.js'
 const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`
 
 // La pantalla 2 · Inicio de la maqueta, con lo que ya funciona de verdad. Las visitas
-// llegan con ADM-10 y Publicar con ADM-05, cada uno en su sitio.
+// llegan con ADM-10.
 export default function Inicio() {
-  const { resumen, cargarResumen } = useOutletContext()
+  const { resumen, cargarResumen, publicar, abrirPublicar } = useOutletContext()
+  const pendientes = publicar?.pendientes?.length ?? 0
 
   useEffect(() => {
     ponerTitulo('Inicio · Panel')
@@ -19,6 +20,21 @@ export default function Inicio() {
   return (
     <>
       <Cabecera titulo="Hola, Mateo" texto="Esto es lo que tienes entre manos." />
+      {pendientes > 0 && (
+        <Banda
+          tipo="aviso"
+          acciones={
+            <button className="boton azul pequeno" type="button" onClick={abrirPublicar}>
+              Publicar →
+            </button>
+          }
+        >
+          <b>{plural(pendientes, 'cambio sin publicar', 'cambios sin publicar')}.</b>{' '}
+          {publicar.ultima
+            ? `La web todavía muestra lo del ${diaYHora(publicar.ultima.fecha).replace(', ', ' a las ')}.`
+            : 'La web todavía no tiene nada publicado desde el panel.'}
+        </Banda>
+      )}
       {!resumen && <TarjetasCargando />}
       {resumen?.error && (
         <Banda

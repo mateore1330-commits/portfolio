@@ -1744,3 +1744,135 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ============================================================
+   PUBLICAR (ADM-05)
+   ============================================================ */
+
+/* --- La línea de estado de la barra de arriba -------------- */
+.panel-app .barra-arriba .estado {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  color: var(--ink-2);
+  font: 500 10px var(--f-mono);
+  letter-spacing: .04em;
+}
+
+.panel-app .estado .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--punto-aviso);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--punto-aviso) 20%, transparent);
+}
+
+.panel-app .estado.al-dia .dot {
+  background: var(--ok);
+  box-shadow: 0 0 0 4px var(--ok-bg);
+}
+
+/* --- Los pasos del diálogo --------------------------------- */
+.panel-app .pasos {
+  display: grid;
+  margin: 18px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+  list-style: none;
+}
+
+.panel-app .pasos li {
+  display: grid;
+  grid-template-columns: 26px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 15px;
+}
+
+.panel-app .pasos .ic {
+  font: 500 13px var(--f-mono);
+}
+
+.panel-app .pasos .ok .ic {
+  color: var(--ok);
+}
+
+.panel-app .pasos .curso .ic {
+  color: var(--blue);
+  animation: panel-gira 1s linear infinite;
+  display: inline-block;
+}
+
+.panel-app .pasos .mal .ic {
+  color: var(--error);
+}
+
+.panel-app .pasos .espera,
+.panel-app .pasos .nada {
+  color: var(--ink-3);
+}
+
+.panel-app .pasos small {
+  color: var(--ink-3);
+  font: 400 10px var(--f-mono);
+  text-align: right;
+}
+
+@keyframes panel-gira {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel-app .pasos .curso .ic {
+    animation: none;
+  }
+}
+
+.panel-app .dialogo .banda {
+  margin-top: 16px;
+}
+
+/* --- Publicaciones ------------------------------------------ */
+.panel-app .chip.mal {
+  background: var(--error-bg);
+  color: var(--error);
+}
+
+.panel-app .tabla .fecha {
+  color: var(--ink-2);
+  font: 400 11px var(--f-mono);
+  white-space: nowrap;
+}
+
+.panel-app .tabla .nota-celda {
+  margin-top: 4px;
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  /* Como en la maqueta: en el móvil, la línea de estado baja a su propia fila y la barra
+     deja de decir en qué sección estás, para hacer sitio a Publicar. */
+  .panel-app .barra-arriba {
+    flex-wrap: wrap;
+  }
+
+  .panel-app .barra-arriba .miga {
+    display: none;
+  }
+
+  .panel-app .barra-arriba .boton.azul {
+    margin-left: auto;
+  }
+
+  .panel-app .barra-arriba .estado {
+    order: 3;
+    width: 100%;
+    margin: 0;
+  }
+}

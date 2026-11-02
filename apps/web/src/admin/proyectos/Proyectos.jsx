@@ -53,7 +53,10 @@ export default function Proyectos() {
     setLista((l) => l.map((x) => (x.id === p.id ? { ...x, is_featured: nuevo, guardando: true } : x)))
     const r = await pedir(`/projects/${p.id}`, { method: 'PATCH', body: JSON.stringify({ is_featured: nuevo }) })
     poner(r.ok ? nuevo : !nuevo)
-    if (r.ok) avisar('ok', 'Guardado. Se verá en la web al publicar.')
+    if (r.ok) {
+      avisar('ok', 'Guardado. Se verá en la web al publicar.')
+      cargarResumen()
+    }
     else avisar('error', 'No se ha guardado la estrella. Ha vuelto a como estaba.')
   }
 
