@@ -104,6 +104,8 @@ def test_los_solapes_se_avisan_y_no_bloquean(cliente, csrf):
                                               end_date="2020-07"))
     assert otro.status_code == 201
     crear(cliente, csrf, "jobs", empleo(company="WeTaxi", start_date="2022-06", end_date=""))
+    # Terminar uno en enero y empezar otro en enero no es un solape.
+    crear(cliente, csrf, "jobs", empleo(company="We Art", start_date="2017-03", end_date="2018-01"))
     solapes = cliente.get(f"{RUTA}/jobs").json["solapes"]
     assert [[a["empresa"], b["empresa"]] for a, b in solapes] == [["Rolling Tours", "Century 21"]]
     # Al guardar uno que se solapa, también lo dice.

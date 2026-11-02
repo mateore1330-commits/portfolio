@@ -77,7 +77,8 @@ def _iso(d):
 
 
 def solapes():
-    """Los pares de empleos visibles cuyas fechas se pisan. Sin fin = hasta hoy."""
+    """Los pares de empleos visibles cuyas fechas se pisan. Sin fin = hasta hoy.
+    Terminar uno y empezar otro el mismo mes no cuenta: es cambiar de trabajo."""
     empleos = db.session.scalars(
         select(Job).where(Job.is_visible.is_(True)).order_by(Job.start_date)
     ).all()
@@ -85,7 +86,7 @@ def solapes():
     pares = []
     for i, a in enumerate(empleos):
         for b in empleos[i + 1:]:
-            if b.start_date <= (a.end_date or hoy) and a.start_date <= (b.end_date or hoy):
+            if b.start_date < (a.end_date or hoy) and a.start_date < (b.end_date or hoy):
                 pares.append([_resumen_solape(a), _resumen_solape(b)])
     return pares
 
