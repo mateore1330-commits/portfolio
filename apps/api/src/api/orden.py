@@ -13,6 +13,7 @@ from sqlalchemy import select
 from .admin import admin, admin_required
 from .extensions import db
 from .models import Link, Project, ProjectMedia, TechCategory, Technology
+from .proyectos import un_destacado
 from .trayectoria import EMPLEOS, FORMACION
 
 
@@ -23,8 +24,10 @@ def _ids():
     return None
 
 
-def _ordenar(lista, pk):
-    """Numera `lista` (los objetos de ahora) con el orden de los ids recibidos: 0, 1, 2…"""
+def _ordenar(lista, pk, despues=None):
+    """Numera `lista` (los objetos de ahora) con el orden de los ids recibidos: 0, 1, 2…
+    despues(): lo que haya que hacer luego (los proyectos: la regla del destacado); lo que
+    devuelva va en la respuesta."""
     ids = _ids()
     if ids is None:
         return jsonify(error="validacion", errores={"ids": "forma"}), 400
@@ -33,14 +36,18 @@ def _ordenar(lista, pk):
         return jsonify(error="desfasado"), 409
     for i, ident in enumerate(ids):
         por_id[ident].sort_order = i
+    extra = despues() if despues else {}
     db.session.commit()
-    return jsonify(ok=True)
+    return jsonify(ok=True, **extra)
 
 
 @admin.put("/projects/orden")
 @admin_required
 def ordenar_proyectos():
-    return _ordenar(db.session.scalars(select(Project)).all(), "project_id")
+    """El primer publicado del orden nuevo pasa a ser el destacado y va el primero (#154): un
+    borrador puesto arriba queda segundo. El panel lo confirma antes de mandarlo."""
+    lista = db.session.scalars(select(Project)).all()
+    return _ordenar(lista, "project_id", lambda: {"cambio_destacado": un_destacado()})
 
 
 @admin.put("/jobs/orden")

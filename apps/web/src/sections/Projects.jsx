@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import { ordenProyectos } from '@/content/proyectos.js'
 import { useContent } from '@/content/useContent.js'
 import ProjectCard from '@/sections/ProjectCard.jsx'
 import SectionHead from '@/sections/SectionHead.jsx'
@@ -67,7 +66,8 @@ export default function Projects() {
   const pila = useRef(null)
   usePila(pila)
 
-  const orden = ordenProyectos(projects)
+  // El orden de la API: el destacado ya es el primero (#154).
+  const orden = projects
 
   return (
     <section id="proyectos" className="seccion projects">

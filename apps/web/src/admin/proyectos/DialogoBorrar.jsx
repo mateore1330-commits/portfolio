@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { pedir } from '@/admin/api.js'
 import Dialogo from '@/admin/comun/Dialogo.jsx'
 import { useAvisar } from '@/admin/comun/avisos.js'
+import { avisoDestacado } from '@/admin/proyectos/campos.js'
 
 const plural = (n, uno, varios) => (n === 1 ? `1 ${uno}` : `${n} ${varios}`)
 
@@ -32,6 +33,8 @@ export default function DialogoBorrar({ proyecto, alCerrar, alBorrar }) {
       return
     }
     avisar('ok', `${nombre} borrado`)
+    // Si era el destacado, pasa a serlo el siguiente publicado (#154).
+    if (r.datos.cambio_destacado) avisar('ok', avisoDestacado(r.datos.cambio_destacado))
     alBorrar()
   }
 

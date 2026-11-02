@@ -1004,8 +1004,13 @@
   color: var(--ink-3);
 }
 
-.panel-app .estrella[disabled] {
-  cursor: progress;
+.panel-app .estrella[aria-disabled="true"] {
+  cursor: default;
+}
+
+/* La de un borrador: no se puede destacar (#154). */
+.panel-app .estrella.off[aria-disabled="true"] {
+  opacity: 0.4;
 }
 
 /* Editar como botón; Borrar en rojo suave, visible pero sin competir. */

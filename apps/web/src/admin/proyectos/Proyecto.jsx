@@ -13,8 +13,19 @@ import SelectorTecnologias from '@/admin/comun/SelectorTecnologias.jsx'
 import { conError, useFormulario } from '@/admin/comun/useFormulario.js'
 import { cuandoSeGuardo, elDiaALas } from '@/admin/fechas.js'
 import { NoEncontrado } from '@/admin/Proximamente.jsx'
-import { BLOQUES, CLAVES_PARRAFOS, PARRAFOS, TEXTOS, aApi, aFormulario, mensaje, rutaProyecto } from '@/admin/proyectos/campos.js'
+import {
+  BLOQUES,
+  CLAVES_PARRAFOS,
+  PARRAFOS,
+  TEXTOS,
+  aApi,
+  aFormulario,
+  avisoDestacado,
+  mensaje,
+  rutaProyecto,
+} from '@/admin/proyectos/campos.js'
 import DialogoBorrar from '@/admin/proyectos/DialogoBorrar.jsx'
+import DialogoDestacado from '@/admin/proyectos/DialogoDestacado.jsx'
 import { RUTA_PANEL } from '@/admin/ruta.js'
 import { FORMATO_SLUG, aSlug } from '@/admin/slug.js'
 import { ponerTitulo } from '@/i18n/documento.js'
@@ -53,19 +64,23 @@ function Formulario({ id }) {
   const [comprobacion, setComprobacion] = useState(null) // { slug, libre, de }
   const [borrar, setBorrar] = useState(false)
   const [irA, setIrA] = useState(null)
+  const [destacado, setDestacado] = useState(null) // el nombre del destacado de ahora (#154)
+  const [preguntar, setPreguntar] = useState(false) // la ventana de cambiar el destacado
 
   useEffect(() => {
     let vivo = true
     const proyecto = nuevo ? Promise.resolve({ ok: true, datos: null }) : pedir(`/projects/${id}`)
-    Promise.all([pedir('/technologies'), proyecto]).then(([t, p]) => {
+    Promise.all([pedir('/technologies'), proyecto, pedir('/projects')]).then(([t, p, todos]) => {
       if (!vivo) return
-      const falla = [p, t].find((r) => !r.ok)
+      const falla = [p, t, todos].find((r) => !r.ok)
       if (falla) {
         setCarga(falla.error === 'no_existe' || falla.error === 'red' ? falla.error : 'servidor')
         return
       }
       setTodas(t.datos)
       setDetalle(p.datos)
+      const actual = todos.datos.find((x) => x.is_featured)
+      setDestacado(actual ? actual.name.es || actual.slug : null)
       form.cargar(aFormulario(p.datos ?? {}))
       setCarga('lista')
     })
@@ -187,6 +202,10 @@ function Formulario({ id }) {
       'ok',
       r.datos.status === 'published' ? 'Guardado. Se verá en la web al publicar.' : 'Guardado como borrador: no sale en la web.',
     )
+    if (r.datos.cambio_destacado) {
+      setDestacado(r.datos.cambio_destacado.ahora)
+      avisar('ok', avisoDestacado(r.datos.cambio_destacado))
+    }
     if (nuevo) setIrA(rutaProyecto(r.datos.id))
   }
 
@@ -231,6 +250,40 @@ function Formulario({ id }) {
       </label>
     </Campo>
   )
+
+  // El destacado (#154): siempre uno, publicado y el primero. Encenderlo en otro pregunta
+  // antes (la misma ventana que la estrella y el arrastre) y se aplica al guardar. En el
+  // destacado y en los borradores, bloqueado y con el motivo.
+  const interruptorDestacado = () => {
+    const esElDestacado = Boolean(detalle?.is_featured)
+    const bloqueado = esElDestacado || !publicado
+    const encendido = publicado && (esElDestacado || valores.is_featured)
+    let ayuda
+    if (esElDestacado) {
+      ayuda = publicado
+        ? 'Es el destacado. Para cambiarlo, marca otro.'
+        : 'Si lo guardas como borrador, dejará de ser el destacado: pasará a serlo el siguiente publicado.'
+    } else if (!publicado) ayuda = 'Publícalo para poder destacarlo.'
+    else if (valores.is_featured) ayuda = 'Pasará a ser el destacado al guardar.'
+    return (
+      <Campo etiqueta="Destacado" ayuda={ayuda} cambiado={form.cambiado('is_featured')} alDeshacer={() => deshacer('is_featured')}>
+        <label className="interruptor">
+          <input
+            type="checkbox"
+            checked={encendido}
+            disabled={bloqueado}
+            aria-label="Destacado"
+            onChange={(e) => {
+              if (!e.target.checked) cambiar('is_featured', false)
+              else if (destacado) setPreguntar(true)
+              else cambiar('is_featured', true)
+            }}
+          />
+          En la portada
+        </label>
+      </Campo>
+    )
+  }
 
   const erroresParrafos = (clave) =>
     Object.fromEntries(
@@ -367,7 +420,7 @@ function Formulario({ id }) {
               </button>
             </div>
           </Campo>
-          {interruptor('is_featured', 'Destacado', 'En la portada')}
+          {interruptorDestacado()}
           <div className="fila-campos">
             {interruptor('is_team_project', 'En equipo', 'Sí')}
             {valores.is_team_project && (
@@ -466,6 +519,15 @@ function Formulario({ id }) {
       </div>
 
       <AvisoSalir cuantos={total} />
+      <DialogoDestacado
+        cambio={preguntar ? { nuevo: valores['name.es'] || 'Este proyecto', anterior: destacado } : null}
+        alGuardar
+        alAceptar={() => {
+          setPreguntar(false)
+          cambiar('is_featured', true)
+        }}
+        alCancelar={() => setPreguntar(false)}
+      />
       <DialogoBorrar
         proyecto={borrar ? { id: Number(id), slug: detalle.slug, name: detalle.name } : null}
         alCerrar={() => setBorrar(false)}
