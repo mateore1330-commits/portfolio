@@ -43,8 +43,9 @@ const panel = RUTA_PANEL
       HydrateFallback: () => null,
       children: [
         { path: 'entrar', lazy: delPanel(() => import('@/admin/Entrar.jsx')) },
-        // La vista previa, en su pestaña y sin el panel alrededor (la sesión la pide la API).
+        // Las vistas previas, en su pestaña y sin el panel alrededor (la sesión la pide la API).
         { path: 'proyectos/:id/vista-previa', lazy: delPanel(() => import('@/admin/proyectos/VistaPrevia.jsx')) },
+        { path: 'textos/vista-previa', lazy: delPanel(() => import('@/admin/textos/VistaPreviaTextos.jsx')) },
         {
           lazy: delPanel(() => import('@/admin/RutaProtegida.jsx')),
           children: [
@@ -52,6 +53,8 @@ const panel = RUTA_PANEL
             { path: 'proyectos', lazy: delPanel(() => import('@/admin/proyectos/Proyectos.jsx')) },
             { path: 'proyectos/nuevo', lazy: delPanel(() => import('@/admin/proyectos/Proyecto.jsx')) },
             { path: 'proyectos/:id', lazy: delPanel(() => import('@/admin/proyectos/Proyecto.jsx')) },
+            { path: 'textos', lazy: delPanel(() => import('@/admin/textos/Textos.jsx')) },
+            { path: 'cv', lazy: delPanel(() => import('@/admin/cv/CV.jsx')) },
             { path: ':seccion', lazy: delPanel(() => import('@/admin/Proximamente.jsx')) },
             { path: '*', lazy: delPanel(() => import('@/admin/Proximamente.jsx'), 'NoEncontrado') },
           ],
