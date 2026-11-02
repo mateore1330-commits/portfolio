@@ -6,7 +6,7 @@ export const GRUPOS = [
     titulo: 'General',
     secciones: [
       { ruta: '', n: '00', nombre: 'Inicio' },
-      { ruta: 'publicaciones', n: '··', nombre: 'Publicaciones', issue: 'ADM-05', que: 'Publicar los cambios en la web y el historial de publicaciones.' },
+      { ruta: 'publicaciones', n: '··', nombre: 'Publicaciones' },
     ],
   },
   {
