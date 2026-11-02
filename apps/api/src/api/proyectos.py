@@ -1,4 +1,5 @@
 """Los proyectos en el panel (ADM-03): la lista, crear, editar, borrar y la vista previa.
+La lista de tecnologías para elegir está en conocimientos.py (ADM-07).
 
 Guardar no publica: la web enseña la última instantánea (snapshot.py), que solo recoge los
 proyectos publicados. Un borrador se guarda con lo que tenga; para marcarlo publicado tiene
@@ -23,7 +24,6 @@ from .models import (
     ProjectMedia,
     ProjectTechnology,
     SiteText,
-    TechCategory,
     Technology,
 )
 from .snapshot import generar_instantanea
@@ -401,17 +401,3 @@ def vista_previa(project_id):
     if falla:
         return falla
     return jsonify(slug=proyecto.slug, contenido=generar_instantanea(incluir=proyecto.project_id))
-
-
-@admin.get("/technologies")
-@admin_required
-def lista_tecnologias():
-    """La lista maestra, para elegir de ella (editarla es ADM-07)."""
-    orden = {c: i for i, c in enumerate(TechCategory)}
-    tecnologias = sorted(
-        db.session.scalars(select(Technology)),
-        key=lambda t: (orden[t.category], t.sort_order, t.name),
-    )
-    return jsonify([
-        {"id": t.technology_id, "name": t.name, "category": t.category.value} for t in tecnologias
-    ])
