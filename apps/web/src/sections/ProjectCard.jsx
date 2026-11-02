@@ -4,6 +4,7 @@ import Marcado from '@/content/Marcado.jsx'
 import { portadaDe, porcentaje, rutaProyecto } from '@/content/proyectos.js'
 import { useNombreTecnologia } from '@/content/useNombreTecnologia.js'
 import { useLang, usePick, useT } from '@/i18n/useLang.js'
+import { medir } from '@/medir.js'
 import EnlaceFuera from '@/sections/EnlaceFuera.jsx'
 import Portada from '@/sections/Portada.jsx'
 import { useMagnetic } from '@/sections/useMagnetic.js'
@@ -44,12 +45,16 @@ export default function ProjectCard({ proyecto, numero }) {
         {/* Solo los enlaces que existen: un botón que no lleva a nada resta. */}
         <div className="proj-links">
           {proyecto.demo_url && (
-            <EnlaceFuera className="btn" href={proyecto.demo_url}>
+            <EnlaceFuera className="btn" href={proyecto.demo_url} onClick={() => medir('demo-abierta', { proyecto: proyecto.slug, donde: 'portada' })}>
               {t('proyectos.demo')}
             </EnlaceFuera>
           )}
           {proyecto.repo_url && (
-            <EnlaceFuera className="btn btn--ghost" href={proyecto.repo_url}>
+            <EnlaceFuera
+              className="btn btn--ghost"
+              href={proyecto.repo_url}
+              onClick={() => medir('repo-abierto', { proyecto: proyecto.slug, donde: 'portada' })}
+            >
               {t('proyectos.repo')}
             </EnlaceFuera>
           )}

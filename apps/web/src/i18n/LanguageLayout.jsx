@@ -10,12 +10,16 @@ import Footer from '@/layout/Footer.jsx'
 import Header from '@/layout/Header.jsx'
 import ProgressRail from '@/layout/ProgressRail.jsx'
 import Revelado from '@/layout/Revelado.jsx'
+import { cargarMedicion } from '@/medir.js'
 import '@/i18n/language-switch.css'
 import '@/layout/layout.css'
 
 // El idioma lo decide la ruta: este layout lo recibe y lo reparte al resto, junto
 // con la cabecera y el raíl, que están en todas las páginas (también en la 404).
 export default function LanguageLayout({ lang }) {
+  // Medir las visitas (ADM-10): solo la web pública carga Umami; el panel, nunca.
+  useEffect(() => cargarMedicion(), [])
+
   return (
     <LanguageContext.Provider value={lang}>
       <Documento />

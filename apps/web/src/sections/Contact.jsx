@@ -1,6 +1,7 @@
 import Marcado from '@/content/Marcado.jsx'
 import { useContent } from '@/content/useContent.js'
 import { useLang, usePick, useT } from '@/i18n/useLang.js'
+import { medir } from '@/medir.js'
 import BotonCopiar from '@/sections/BotonCopiar.jsx'
 import ContactForm from '@/sections/ContactForm.jsx'
 import DotField from '@/sections/DotField.jsx'
@@ -58,17 +59,26 @@ export default function Contact() {
                 return (
                   <li key={enlace.url} className="con-copiar">
                     <span className="k">{t('contacto.canal_email')}</span>
-                    <a className="v" href={enlace.url}>
+                    <a className="v" href={enlace.url} onClick={() => medir('correo-pulsado', { donde: 'contacto' })}>
                       {correo}
                     </a>
-                    <BotonCopiar texto={correo} etiqueta={t('contacto.copiar')} nombre={t('contacto.copiar_correo')} />
+                    <BotonCopiar
+                      texto={correo}
+                      etiqueta={t('contacto.copiar')}
+                      nombre={t('contacto.copiar_correo')}
+                      alCopiar={() => medir('correo-copiado', { donde: 'contacto' })}
+                    />
                   </li>
                 )
               }
               const fuera = !enlace.url.startsWith('mailto:')
               return (
                 <li key={enlace.url}>
-                  <a href={enlace.url} {...(fuera && { target: '_blank', rel: 'noopener noreferrer' })}>
+                  <a
+                    href={enlace.url}
+                    {...(fuera && { target: '_blank', rel: 'noopener noreferrer' })}
+                    onClick={() => medir('perfil-abierto', { red: enlace.type, seccion: 'contacto' })}
+                  >
                     <span className="k">{t(`contacto.canal_${enlace.type}`)}</span>
                     <span className="v">{datoDe(enlace, nombre)}</span>
                     <span className="f" aria-hidden="true">
@@ -80,7 +90,7 @@ export default function Contact() {
               )
             })}
             <li>
-              <a href={rutaCv(lang)} download type="application/pdf">
+              <a href={rutaCv(lang)} download type="application/pdf" onClick={() => medir('cv-descargado', { idioma: lang })}>
                 <span className="k">{t('contacto.canal_cv')}</span>
                 <span className="v">{t('contacto.cv_descargar')}</span>
                 <span className="f" aria-hidden="true">

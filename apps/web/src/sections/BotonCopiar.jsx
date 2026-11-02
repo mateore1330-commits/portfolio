@@ -6,7 +6,8 @@ const DURACION_MS = 2000
 // Copia un texto (el correo) y dice "¡Copiado!" dos segundos. Existe porque el enlace
 // mailto: depende de que cada ordenador tenga una app de correo; si no la tiene, no pasa
 // nada al pulsarlo. Copiar funciona siempre. Sin portapapeles disponible, no se pinta.
-export default function BotonCopiar({ texto, etiqueta, nombre }) {
+// alCopiar: lo que pasa además al copiar (medirlo, ADM-10).
+export default function BotonCopiar({ texto, etiqueta, nombre, alCopiar }) {
   const t = useT()
   const [copiado, setCopiado] = useState(false)
   const temporizador = useRef(0)
@@ -22,6 +23,7 @@ export default function BotonCopiar({ texto, etiqueta, nombre }) {
       return
     }
     setCopiado(true)
+    alCopiar?.()
     clearTimeout(temporizador.current)
     temporizador.current = setTimeout(() => setCopiado(false), DURACION_MS)
   }
