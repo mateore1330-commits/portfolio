@@ -40,7 +40,6 @@ const mes = (iso) => (iso ? iso.slice(0, 7) : '')
 export function aFormulario(tipo, d = {}) {
   const f = {
     is_visible: d.is_visible ?? true,
-    posicion: texto(d.posicion),
     location: texto(d.location),
     start_date: mes(d.start_date),
     end_date: mes(d.end_date),
@@ -68,7 +67,6 @@ export function aApi(tipo, f) {
   const ambos = (campo) => ({ es: f[`${campo}.es`], en: f[`${campo}.en`] })
   const salida = {
     is_visible: f.is_visible,
-    posicion: numero(f.posicion),
     location: f.location,
     start_date: f.start_date,
     end_date: f.end_date,
