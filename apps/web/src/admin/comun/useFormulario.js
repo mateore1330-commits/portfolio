@@ -9,9 +9,11 @@ import { useCallback, useMemo, useState } from 'react'
 // cada párrafo lleva su propia marca.
 const igual = (a, b) => JSON.stringify(a) === JSON.stringify(b)
 
+// Elemento a elemento: un párrafo, un par dato · valor o un bloque entero (se compara el
+// contenido, así un bloque que vuelve a como estaba deja de contar).
 export function parrafosCambiados(ahora = [], antes = []) {
   const largo = Math.max(ahora.length, antes.length)
-  return Array.from({ length: largo }, (_, i) => ahora[i] !== antes[i])
+  return Array.from({ length: largo }, (_, i) => !igual(ahora[i], antes[i]))
 }
 
 export function useFormulario(porElementos = []) {

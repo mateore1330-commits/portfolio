@@ -10,7 +10,17 @@ const normal = (texto) => texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLower
 // su orden y un campo que sugiere mientras escribes. No se puede escribir una que no esté
 // en la lista. Teclado: flechas para elegir, Intro para añadir, Esc para cerrar y, con el
 // campo vacío, Borrar quita la última.
-export default function SelectorTecnologias({ id, todas, valor, alCambiar, describir }) {
+// También sirve para elegir otras cosas de una lista (los empleos que engancha el CV):
+// `category` es lo que sale a la derecha de cada sugerencia.
+export default function SelectorTecnologias({
+  id,
+  todas,
+  valor,
+  alCambiar,
+  describir,
+  placeholder = 'Añadir tecnología…',
+  sinResultados = 'No está en la lista. Añádela en Conocimientos (ADM-07).',
+}) {
   const lista = useId()
   const [texto, setTexto] = useState('')
   const [abierta, setAbierta] = useState(false)
@@ -69,7 +79,7 @@ export default function SelectorTecnologias({ id, todas, valor, alCambiar, descr
           type="text"
           role="combobox"
           autoComplete="off"
-          placeholder="Añadir tecnología…"
+          placeholder={placeholder}
           value={texto}
           aria-expanded={visible}
           aria-controls={lista}
@@ -105,7 +115,7 @@ export default function SelectorTecnologias({ id, todas, valor, alCambiar, descr
         ))}
         {sugerencias.length === 0 && (
           <li className="nada" role="option" aria-disabled="true" aria-selected="false">
-            No está en la lista. Añádela en Conocimientos (ADM-07).
+            {sinResultados}
           </li>
         )}
       </ul>
