@@ -6,6 +6,9 @@ let csrf = ''
 
 export const hayApi = Boolean(API)
 
+// La dirección completa de una ruta del panel: para enlaces que abre el navegador (un PDF).
+export const urlPanel = (ruta) => new URL(`/api/admin${ruta}`, API).href
+
 export function ponerCsrf(codigo) {
   csrf = codigo || ''
 }
