@@ -68,11 +68,14 @@ class Cloudinary:
             "secure": True,
         }
 
-    def subir(self, contenido, carpeta, tipo):
+    def subir(self, contenido, carpeta, tipo, nombre=None):
         import cloudinary.uploader
 
+        # Con el nombre del archivo (y unas letras al final para que no choque): en el panel
+        # se lee "titulo-full-stack_x7k2.pdf" y no solo letras al azar.
         resultado = cloudinary.uploader.upload(
-            io.BytesIO(contenido), folder=carpeta, resource_type=tipo, **self.cuenta
+            io.BytesIO(contenido), folder=carpeta, resource_type=tipo, filename=nombre,
+            use_filename=bool(nombre), unique_filename=True, **self.cuenta
         )
         return resultado["secure_url"]
 
@@ -165,14 +168,14 @@ def _archivo(permitidos):
     tipo = formato(contenido)
     if tipo not in permitidos:
         return None, (jsonify(error="formato"), 400)
-    return (contenido, tipo), None
+    return (contenido, tipo, archivo.filename), None
 
 
-def _subir(contenido, tipo, carpeta):
+def _subir(contenido, tipo, carpeta, nombre=None):
     conexion = nube()
     try:
         # Los PDF como archivo (raw): las cuentas nuevas de Cloudinary no sirven PDF como imagen.
-        url = conexion.subir(contenido, carpeta, "raw" if tipo == "pdf" else "image")
+        url = conexion.subir(contenido, carpeta, "raw" if tipo == "pdf" else "image", nombre=nombre)
     except Exception:  # noqa: BLE001
         log.exception("No se ha podido subir a Cloudinary")
         return None
@@ -234,7 +237,8 @@ def subir_imagen(project_id):
     archivo, falla = _archivo(IMAGENES)
     if falla:
         return falla
-    url = _subir(*archivo, f"portfolio/proyectos/{proyecto.slug}")
+    contenido, tipo, nombre = archivo
+    url = _subir(contenido, tipo, f"portfolio/proyectos/{proyecto.slug}", nombre)
     if url is None:
         return jsonify(error="cloudinary"), 502
     siguiente = db.session.scalar(
@@ -330,7 +334,8 @@ def subir_certificado(ident):
     archivo, falla = _archivo(CERTIFICADOS)
     if falla:
         return falla
-    url = _subir(*archivo, "portfolio/certificados")
+    contenido, tipo, nombre = archivo
+    url = _subir(contenido, tipo, "portfolio/certificados", nombre)
     if url is None:
         return jsonify(error="cloudinary"), 502
     anterior = formacion.certificate_file

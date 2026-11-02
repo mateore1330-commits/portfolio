@@ -23,7 +23,7 @@ class NubeDeMentira:
     def __init__(self):
         self.subidas, self.borradas, self.n = [], [], 0
 
-    def subir(self, contenido, carpeta, tipo):
+    def subir(self, contenido, carpeta, tipo, nombre=None):
         self.n += 1
         ext = "pdf" if tipo == "raw" else "png"
         self.subidas.append((carpeta, tipo))
