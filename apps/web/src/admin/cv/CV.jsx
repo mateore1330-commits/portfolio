@@ -248,6 +248,11 @@ export default function CV() {
     for (const l of IDIOMAS) form.poner(`${l}.${bloque}`, valores[`${l}.${bloque}`].filter((_, j) => j !== i))
     setErrores({})
   }
+  // Arrastrar un bloque lo mueve en los dos idiomas: el CV en inglés sigue al español.
+  const mover = (bloque, permutar) => {
+    for (const l of IDIOMAS) form.poner(`${l}.${bloque}`, permutar(valores[`${l}.${bloque}`]))
+    setErrores({})
+  }
 
   const guardar = async () => {
     setGuardando(true)
@@ -350,6 +355,7 @@ export default function CV() {
       anadir={textoAnadir}
       alQuitar={(i) => quitar(bloque, i)}
       alAnadir={() => anadir(bloque)}
+      alMover={(permutar) => mover(bloque, permutar)}
     >
       {children}
     </ListaBloques>
