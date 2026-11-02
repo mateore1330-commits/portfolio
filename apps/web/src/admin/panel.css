@@ -1909,3 +1909,51 @@
 .panel-app .campo-panel input:disabled {
   opacity: .5;
 }
+
+/* ============================================================
+   CONOCIMIENTOS Y ENLACES (ADM-07)
+   ============================================================ */
+.panel-app .nota-lista {
+  color: var(--ink-3);
+  font-size: 14px;
+}
+
+.panel-app .titulo-grupo {
+  margin: 26px 0 8px;
+  color: var(--ink-2);
+}
+
+.panel-app .nivel {
+  display: inline-grid;
+  grid-template-columns: repeat(3, 18px);
+  gap: 3px;
+  vertical-align: middle;
+}
+
+.panel-app .nivel i {
+  height: 3px;
+  background: var(--paper-3);
+}
+
+.panel-app .nivel i.on {
+  background: var(--blue);
+}
+
+.panel-app .tabla .mono.gris {
+  color: var(--ink-3);
+}
+
+.panel-app .tabla td.direccion {
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panel-app .dialogo .segmento {
+  flex-wrap: wrap;
+}
+
+.panel-app .dialogo .campos .interruptor {
+  justify-self: start;
+}

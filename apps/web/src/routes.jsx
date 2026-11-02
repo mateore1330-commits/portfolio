@@ -59,6 +59,7 @@ const panel = RUTA_PANEL
             { path: 'cv', lazy: delPanel(() => import('@/admin/cv/CV.jsx')) },
             { path: 'publicaciones', lazy: delPanel(() => import('@/admin/publicar/Publicaciones.jsx')) },
             { path: 'trayectoria', lazy: delPanel(() => import('@/admin/trayectoria/Trayectoria.jsx')) },
+            { path: 'conocimientos', lazy: delPanel(() => import('@/admin/conocimientos/Conocimientos.jsx')) },
             { path: 'trayectoria/empleo/nuevo', lazy: delPanel(() => import('@/admin/trayectoria/Entrada.jsx'), 'Empleo') },
             { path: 'trayectoria/empleo/:id', lazy: delPanel(() => import('@/admin/trayectoria/Entrada.jsx'), 'Empleo') },
             { path: 'trayectoria/formacion/nuevo', lazy: delPanel(() => import('@/admin/trayectoria/Entrada.jsx'), 'Formacion') },
