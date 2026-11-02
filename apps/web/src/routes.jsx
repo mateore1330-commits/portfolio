@@ -55,6 +55,7 @@ const panel = RUTA_PANEL
             { path: 'proyectos', lazy: delPanel(() => import('@/admin/proyectos/Proyectos.jsx')) },
             { path: 'proyectos/nuevo', lazy: delPanel(() => import('@/admin/proyectos/Proyecto.jsx')) },
             { path: 'proyectos/:id', lazy: delPanel(() => import('@/admin/proyectos/Proyecto.jsx')) },
+            { path: 'proyectos/:id/imagenes', lazy: delPanel(() => import('@/admin/proyectos/Imagenes.jsx')) },
             { path: 'textos', lazy: delPanel(() => import('@/admin/textos/Textos.jsx')) },
             { path: 'cv', lazy: delPanel(() => import('@/admin/cv/CV.jsx')) },
             { path: 'publicaciones', lazy: delPanel(() => import('@/admin/publicar/Publicaciones.jsx')) },

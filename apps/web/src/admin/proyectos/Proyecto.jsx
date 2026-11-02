@@ -421,13 +421,22 @@ function Formulario({ id }) {
           </Campo>
         </Bloque>
 
-        <Bloque n="05" titulo="Imágenes" texto="La primera es la portada en la tarjeta y en la página.">
+        <Bloque n="05" titulo="Imágenes" texto="La primera es la portada en la tarjeta y en la página, si no eliges otra.">
           <div className="solo-lectura">
-            {detalle?.imagenes
-              ? `${detalle.imagenes === 1 ? '1 imagen' : `${detalle.imagenes} imágenes`}.`
-              : 'Sin imágenes todavía: en la web se ve el hueco con la cámara.'}
-            <span className="chip bor">Subirlas llega en ADM-08</span>
+            {nuevo
+              ? 'Guarda el proyecto para poder añadirle imágenes.'
+              : detalle?.imagenes
+                ? `${detalle.imagenes === 1 ? '1 imagen' : `${detalle.imagenes} imágenes`}.`
+                : 'Sin imágenes todavía: en la web se ve el hueco con la cámara.'}
+            {!nuevo && (
+              <Link className="boton pequeno" to={`${rutaProyecto(id)}/imagenes`} style={{ marginLeft: 'auto' }}>
+                Gestionar imágenes →
+              </Link>
+            )}
           </div>
+          {errores.imagenes && (
+            <p className="err">Hay imágenes sin texto alternativo en los dos idiomas: complétalo en «Gestionar imágenes».</p>
+          )}
         </Bloque>
 
         {!nuevo && (
