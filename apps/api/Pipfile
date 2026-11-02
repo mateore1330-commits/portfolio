@@ -18,6 +18,8 @@ pypdf = "==6.21.0"
 pillow = "==12.3.0"
 fonttools = "==4.67.0"
 brotli = "==1.2.0"
+# Las imágenes de los proyectos y los certificados (ADM-08).
+cloudinary = "==1.46.3"
 
 [dev-packages]
 ruff = "==0.17.1"

@@ -1957,3 +1957,122 @@
 .panel-app .dialogo .campos .interruptor {
   justify-self: start;
 }
+
+/* ============================================================
+   IMÁGENES (ADM-08)
+   ============================================================ */
+.panel-app .zona-subida {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding: 34px 20px;
+  border: 1.5px dashed var(--rule);
+  text-align: center;
+  transition: border-color .15s, background .15s;
+}
+
+.panel-app .zona-subida.encima {
+  border-color: var(--blue);
+  background: var(--blue-wash);
+}
+
+.panel-app .zona-subida.apagada {
+  opacity: .55;
+}
+
+.panel-app .zona-subida b {
+  font-family: var(--f-display);
+  font-size: 17px;
+  font-variation-settings: "wdth" 108, "wght" 700;
+}
+
+.panel-app .zona-subida p {
+  color: var(--ink-3);
+  font-size: 14px;
+}
+
+.panel-app .galeria {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.panel-app .foto {
+  border: 1px solid var(--rule);
+  background: var(--caja);
+}
+
+.panel-app .foto .img {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--paper-3);
+  color: var(--ink-2);
+  font: 500 10px var(--f-mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.panel-app .foto .img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.panel-app .foto .img .chip {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+
+.panel-app .foto .datos {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
+.panel-app .foto .datos .campo-panel input:not([type="checkbox"]) {
+  padding: 7px 9px;
+  font-size: 14px;
+}
+
+.panel-app .foto .pie-foto {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-app .progreso {
+  height: 4px;
+  background: var(--paper-3);
+}
+
+.panel-app .progreso i {
+  display: block;
+  height: 100%;
+  background: var(--blue);
+  transition: width .2s;
+}
+
+.panel-app .chip.nuevo {
+  background: var(--blue);
+  color: var(--on-blue);
+}
+
+.panel-app label.enlace {
+  cursor: pointer;
+}
+
+.panel-app label.enlace:focus-within {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.panel-app .enlace.apagado {
+  opacity: .5;
+  cursor: progress;
+}

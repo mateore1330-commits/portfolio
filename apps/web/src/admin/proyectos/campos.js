@@ -83,6 +83,7 @@ export function mensaje(clave, codigo, extra = {}) {
   if (codigo === 'formato' && campo === 'slug') return 'Solo minúsculas, números y guiones: sin tildes ni espacios.'
   if (codigo === 'url') return 'Tiene que ser una dirección completa, que empiece por https://.'
   if (codigo === 'no_existe') return 'Alguna ya no está en la lista de Conocimientos. Recarga la página.'
+  if (codigo === 'alt') return 'Hay imágenes sin texto alternativo en los dos idiomas.'
   if (codigo === 'numero') {
     if (campo === 'team_size') return 'Un número, de 2 en adelante.'
     if (campo === 'commits_share') return 'Un número del 0 al 100.'

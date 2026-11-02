@@ -77,7 +77,10 @@ def generar_instantanea(incluir=None, empleo=None, formacion=None):
         fila = _fila(p)
         fila["technologies"] = [pt.technology.name for pt in p.technologies]
         # A igual sort_order, PostgreSQL no garantiza el orden: se desempata por URL.
-        fila["media"] = [_fila(m) for m in sorted(p.media, key=lambda m: (m.sort_order, m.url))]
+        # Una foto sin texto alternativo en los dos idiomas no sale en la web (ADM-08).
+        completas = [m for m in p.media if m.alt and all((m.alt.get(lang) or "").strip()
+                                                         for lang in ("es", "en"))]
+        fila["media"] = [_fila(m) for m in sorted(completas, key=lambda m: (m.sort_order, m.url))]
         usadas.update(fila["technologies"])
         projects.append(fila)
 

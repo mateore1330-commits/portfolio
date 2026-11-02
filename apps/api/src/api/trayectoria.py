@@ -20,6 +20,12 @@ from .models import Education, EducationKind, Job, SiteText
 from .proyectos import IDIOMAS, Invalido, _cadena, _numero, _parrafos, _texto, _url, a_slug
 from .snapshot import generar_instantanea
 
+
+def soltar(url):
+    from .medios import soltar as soltar_medio
+
+    soltar_medio(url)
+
 LARGO_SLUG = 80
 
 
@@ -303,8 +309,12 @@ def _rutas(tipo, prefijo, nombre):
             campos = limpiar(tipo, request.get_json(silent=True) or {}, actual=objeto)
         except Invalido as error:
             return _invalido(error)
+        archivo = getattr(objeto, "certificate_file", None)
         _aplicar(tipo, objeto, campos)
         db.session.commit()
+        # Un certificado quitado, fuera de Cloudinary (ya, o al publicar: ADM-08).
+        if archivo and archivo != getattr(objeto, "certificate_file", None):
+            soltar(archivo)
         datos = _entero(tipo, objeto, _posiciones(tipo)[ident])
         if tipo is EMPLEOS:
             datos["solapes"] = [p for p in solapes() if ident in (p[0]["id"], p[1]["id"])]
@@ -339,11 +349,13 @@ def _rutas(tipo, prefijo, nombre):
         usos = tipo.usos_en_cv(objeto.slug)
         if usos:
             return jsonify(error="en_cv", usos=usos), 409
+        archivo = getattr(objeto, "certificate_file", None)
         db.session.delete(objeto)
         db.session.flush()
         for i, o in enumerate(tipo.ordenados()):
             o.sort_order = i
         db.session.commit()
+        soltar(archivo)
         return jsonify(ok=True)
 
     @admin.get(f"/{prefijo}/<int:ident>/vista-previa", endpoint=f"vista_previa_{nombre}")

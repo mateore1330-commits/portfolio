@@ -46,6 +46,11 @@ def load_config():
         # Opcional: el gancho de despliegue de Vercel (GO-02). Al publicar desde el panel
         # (ADM-05), se llama para que Vercel vuelva a construir la web. Es secreta: solo aquí.
         "VERCEL_DEPLOY_HOOK": os.getenv("VERCEL_DEPLOY_HOOK", "").strip(),
+        # Opcional: Cloudinary, donde van las fotos de los proyectos y los certificados
+        # (ADM-08). Sin ella, subir responde 503. Es secreta: solo aquí.
+        "CLOUDINARY_URL": os.getenv("CLOUDINARY_URL", "").strip(),
+        # Nada mayor de 6 MB llega a la API (los archivos, 5 MB como mucho).
+        "MAX_CONTENT_LENGTH": 6 * 1024 * 1024,
         # La sesión del panel (ADM-01): un JWT en una cookie que el JavaScript no puede leer
         # (httpOnly), que solo viaja por HTTPS (Secure; en local, Chrome la acepta también
         # en http://localhost) y solo a las rutas del panel. Dura 8 horas.

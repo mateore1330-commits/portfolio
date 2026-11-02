@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useOutletContext, useParams } from 'react-router'
-import { pedir } from '@/admin/api.js'
+import { pedir, subir } from '@/admin/api.js'
 import AvisoSalir from '@/admin/comun/AvisoSalir.jsx'
 import { useAvisar } from '@/admin/comun/avisos.js'
 import Bloque, { Esqueleto } from '@/admin/comun/Bloque.jsx'
@@ -55,6 +55,7 @@ function Formulario({ tipo, id }) {
   const [borrar, setBorrar] = useState(false)
   const [borrando, setBorrando] = useState(false)
   const [irA, setIrA] = useState(null)
+  const [subiendo, setSubiendo] = useState(null) // % del certificado que se sube, o null
 
   useEffect(() => {
     let vivo = true
@@ -167,6 +168,32 @@ function Formulario({ tipo, id }) {
     form.descartar()
     setErrores({})
     setFallo(null)
+  }
+
+  // El certificado (ADM-08): se sube a Cloudinary y queda guardado al momento.
+  const subirCertificado = async (archivo) => {
+    if (!archivo) return
+    const permitido = ['application/pdf', 'image/jpeg', 'image/png'].includes(archivo.type)
+    if (!permitido || archivo.size > 5 * 1024 * 1024) {
+      avisar('error', permitido ? 'El certificado pesa más de 5 MB.' : 'El certificado tiene que ser PDF, JPG o PNG.')
+      return
+    }
+    setSubiendo(0)
+    const r = await subir(`${tipo.api}/${id}/certificado`, archivo, setSubiendo)
+    setSubiendo(null)
+    if (!r.ok) {
+      const motivos = {
+        sin_cloudinary: 'Falta configurar Cloudinary en el servidor.',
+        grande: 'Pesa más de 5 MB.',
+        formato: 'No es un PDF, JPG o PNG.',
+        red: 'No hay conexión con la API.',
+      }
+      avisar('error', `El certificado no se ha subido. ${motivos[r.error] ?? 'Vuelve a probar.'}`)
+      return
+    }
+    form.fijar('certificate_file', r.datos.certificate_file)
+    cargarResumen()
+    avisar('ok', 'Certificado subido. Se verá en la web al publicar.')
   }
 
   const confirmarBorrar = async () => {
@@ -375,23 +402,44 @@ function Formulario({ tipo, id }) {
             {campoTexto('certificate_url', 'Enlace de verificación', { tipo: 'url', placeholder: 'https://…', spellCheck: false })}
             <Campo etiqueta="Archivo" {...marca('certificate_file')}>
               <div className="solo-lectura">
-                {archivo ? (
-                  <>
-                    {archivo.split('/').at(-1)}
-                    <span className="acciones-archivo">
-                      <a className="enlace" href={archivo} target="_blank" rel="noopener">
-                        Ver ↗
-                      </a>
-                      <button className="enlace gris" type="button" onClick={() => cambiar('certificate_file', null)}>
-                        Quitar
-                      </button>
-                    </span>
-                  </>
+                {subiendo !== null ? (
+                  `Subiendo… ${subiendo} %`
+                ) : archivo ? (
+                  archivo.split('/').at(-1)
+                ) : nuevo ? (
+                  'Guarda la formación para poder subir su certificado.'
                 ) : (
                   'Sin archivo.'
                 )}
-                <span className="chip bor">Subirlo llega en ADM-08</span>
+                <span className="acciones-archivo">
+                  {archivo && subiendo === null && (
+                    <a className="enlace" href={archivo} target="_blank" rel="noopener">
+                      Ver ↗
+                    </a>
+                  )}
+                  {!nuevo && (
+                    <label className={`enlace${subiendo !== null ? ' apagado' : ''}`}>
+                      {archivo ? 'Cambiar' : 'Subir'}
+                      <input
+                        className="solo-lector"
+                        type="file"
+                        accept="application/pdf,image/jpeg,image/png"
+                        disabled={subiendo !== null}
+                        onChange={(e) => {
+                          subirCertificado(e.target.files[0])
+                          e.target.value = ''
+                        }}
+                      />
+                    </label>
+                  )}
+                  {archivo && subiendo === null && (
+                    <button className="enlace gris" type="button" onClick={() => cambiar('certificate_file', null)}>
+                      Quitar
+                    </button>
+                  )}
+                </span>
               </div>
+              <p className="ayuda">PDF, JPG o PNG, hasta 5 MB. Subir y cambiar se guardan al momento; quitar, al guardar.</p>
             </Campo>
           </Bloque>
         )}

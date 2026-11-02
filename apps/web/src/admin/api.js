@@ -72,3 +72,36 @@ export async function pedir(ruta, opciones = {}) {
   if (r.estado >= 200 && r.estado < 300) return { ok: true, datos: r.datos }
   return { ok: false, error: r.datos.error || 'servidor', datos: r.datos }
 }
+
+// --- Subir un archivo (ADM-08) --------------------------------------------------------
+// Con XMLHttpRequest y no con fetch: fetch no dice cuánto se ha subido. alProgreso(0…100).
+// Igual que pedir(): si la sesión ha caducado, espera al diálogo y lo repite.
+function enviar(ruta, archivo, alProgreso) {
+  return new Promise((resolver) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open('POST', new URL(`/api/admin${ruta}`, API))
+    xhr.withCredentials = true
+    if (csrf) xhr.setRequestHeader('X-CSRF-TOKEN', csrf)
+    xhr.upload.onprogress = (e) => e.lengthComputable && alProgreso?.(Math.round((e.loaded / e.total) * 100))
+    xhr.onload = () => {
+      let datos = {}
+      try {
+        datos = JSON.parse(xhr.responseText)
+      } catch {
+        // Sin JSON (un error del servidor): datos vacíos.
+      }
+      resolver({ estado: xhr.status, datos })
+    }
+    xhr.onerror = () => resolver({ estado: 0, datos: { error: 'red' } })
+    const cuerpo = new FormData()
+    cuerpo.append('archivo', archivo)
+    xhr.send(cuerpo)
+  })
+}
+
+export async function subir(ruta, archivo, alProgreso) {
+  let r = await enviar(ruta, archivo, alProgreso)
+  if (r.estado === 401 && (await esperarSesion(r.datos.error))) r = await enviar(ruta, archivo, alProgreso)
+  if (r.estado >= 200 && r.estado < 300) return { ok: true, datos: r.datos }
+  return { ok: false, error: r.datos.error || 'servidor', datos: r.datos }
+}

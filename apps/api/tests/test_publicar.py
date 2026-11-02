@@ -6,7 +6,7 @@ verdad se prueba a mano). Vercel también: un servidor local que contesta bien, 
 
 import threading
 import time
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 import pytest
 
@@ -222,7 +222,9 @@ def vercel(app, monkeypatch):
         def log_message(self, *args):
             pass
 
-    servidor = HTTPServer(("127.0.0.1", 0), Gancho)
+    # Cada llamada en su hilo: si no, la que llega mientras otra tarda se queda esperando y
+    # el test falla de vez en cuando (pasaba ~1 de cada 4 veces).
+    servidor = ThreadingHTTPServer(("127.0.0.1", 0), Gancho)
     threading.Thread(target=servidor.serve_forever, daemon=True).start()
     monkeypatch.setitem(app.config, "VERCEL_DEPLOY_HOOK",
                         f"http://127.0.0.1:{servidor.server_port}/gancho")

@@ -24,6 +24,12 @@ export function useFormulario(porElementos = []) {
   const poner = useCallback((clave, valor) => setEstado((e) => ({ ...e, valores: { ...e.valores, [clave]: valor } })), [])
   const deshacer = useCallback((clave) => setEstado((e) => ({ ...e, valores: { ...e.valores, [clave]: e.original[clave] } })), [])
   const descartar = useCallback(() => setEstado((e) => ({ ...e, valores: e.original })), [])
+  // Algo que ya se ha guardado por su cuenta (un archivo subido): cambia lo guardado y lo de
+  // ahora, sin tocar el resto de cambios.
+  const fijar = useCallback(
+    (clave, valor) => setEstado((e) => ({ original: { ...e.original, [clave]: valor }, valores: { ...e.valores, [clave]: valor } })),
+    [],
+  )
 
   // Cuántos cambios hay en cada clave.
   const porClave = useMemo(() => {
@@ -47,7 +53,7 @@ export function useFormulario(porElementos = []) {
     [porClave],
   )
 
-  return { valores, original, cargar, poner, deshacer, descartar, cambiado, cuantos }
+  return { valores, original, cargar, poner, deshacer, descartar, fijar, cambiado, cuantos }
 }
 
 // Lo que necesita el control para que el lector de pantalla lea también el error (Campo.jsx).

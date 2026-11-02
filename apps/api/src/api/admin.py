@@ -1,7 +1,7 @@
 """El panel de administración: entrar, salir y saber si hay sesión (ADM-01), y el resumen
 del Inicio (ADM-02). Las rutas de cada pantalla van en su módulo: proyectos.py (ADM-03),
 textos.py (ADM-04), publicar.py (ADM-05),
-trayectoria.py (ADM-06) y conocimientos.py (ADM-07).
+trayectoria.py (ADM-06), conocimientos.py (ADM-07) y medios.py (ADM-08).
 
 La sesión es un JWT en una cookie httpOnly (ver config.py). Cada pase lleva dentro la
 `token_version` del administrador: si cambia (al salir o al cambiar la contraseña),
@@ -236,9 +236,11 @@ def resumen():
 def iniciar(app):
     """Engancha el panel a la aplicación (lo llama create_app)."""
     # Las rutas de cada pantalla se añaden al blueprint al importarlas: antes de registrarlo.
-    from . import conocimientos, proyectos, textos, trayectoria  # noqa: F401
+    from . import conocimientos, medios, proyectos, textos, trayectoria  # noqa: F401
     from .publicar import cv_publico
 
     jwt.init_app(app)
     app.register_blueprint(admin)
+    # Un archivo de más de 6 MB: la respuesta en JSON, como todas las del panel.
+    app.register_error_handler(413, lambda _e: (jsonify(error="grande"), 413))
     app.register_blueprint(cv_publico)
