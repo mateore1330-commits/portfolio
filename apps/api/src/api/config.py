@@ -43,6 +43,9 @@ def load_config():
         "SMTP_USER": os.getenv("SMTP_USER", "").strip(),
         "SMTP_PASSWORD": os.getenv("SMTP_PASSWORD", ""),
         "CONTACT_TO": os.getenv("CONTACT_TO", "").strip(),
+        # Opcional: el gancho de despliegue de Vercel (GO-02). Al publicar desde el panel
+        # (ADM-05), se llama para que Vercel vuelva a construir la web. Es secreta: solo aquí.
+        "VERCEL_DEPLOY_HOOK": os.getenv("VERCEL_DEPLOY_HOOK", "").strip(),
         # La sesión del panel (ADM-01): un JWT en una cookie que el JavaScript no puede leer
         # (httpOnly), que solo viaja por HTTPS (Secure; en local, Chrome la acepta también
         # en http://localhost) y solo a las rutas del panel. Dura 8 horas.

@@ -3,6 +3,7 @@
 // bundle y las guarda en apps/web/src/content/:
 //   - snapshot.json: la última instantánea del contenido publicado.
 //   - contribuciones.json: el gráfico de contribuciones de GitHub.
+// Y el CV en PDF publicado desde el panel (ADM-05), en apps/web/public/cv/.
 //
 // NUNCA hace fallar el build. Si no hay API configurada, no contesta o contesta algo
 // raro, avisa y se queda la copia que ya está en el repo. Esa es la regla del
@@ -16,6 +17,7 @@ import { fileURLToPath } from 'node:url'
 
 const CONTENIDO = fileURLToPath(new URL('../apps/web/src/content/snapshot.json', import.meta.url))
 const CONTRIBUCIONES = fileURLToPath(new URL('../apps/web/src/content/contribuciones.json', import.meta.url))
+const CV = (lang) => fileURLToPath(new URL(`../apps/web/public/cv/CV-Mateo-Rodriguez-Escobar-${lang.toUpperCase()}.pdf`, import.meta.url))
 const ESPERA_MAXIMA_MS = 5000
 const VERSION = 1
 const SECCIONES = ['site_texts', 'links', 'technologies', 'projects', 'jobs', 'education']
@@ -97,6 +99,42 @@ async function congelarContribuciones(base) {
   await guardar(CONTRIBUCIONES, leido.datos, 'contribuciones')
 }
 
+// El CV de cada idioma. Si la API todavía no tiene ninguno publicado (404), o contesta algo
+// que no es un PDF, se queda el del repo.
+async function congelarCV(base) {
+  for (const lang of ['es', 'en']) {
+    const que = `CV en ${lang}`
+    try {
+      const respuesta = await fetch(new URL(`/api/cv/${lang}.pdf`, base), {
+        signal: AbortSignal.timeout(ESPERA_MAXIMA_MS),
+      })
+      if (respuesta.status === 404) {
+        console.log(`congelar-contenido: ${que}: la API aún no tiene uno publicado; se usa el del repo.`)
+        continue
+      }
+      if (!respuesta.ok) {
+        aviso(`la API contestó ${respuesta.status} (${que}): se usa el del repo.`)
+        continue
+      }
+      const nuevo = Buffer.from(await respuesta.arrayBuffer())
+      if (nuevo.subarray(0, 5).toString() !== '%PDF-') {
+        aviso(`la API devolvió algo que no es un PDF (${que}): se usa el del repo.`)
+        continue
+      }
+      const actual = await readFile(CV(lang)).catch(() => Buffer.alloc(0))
+      if (nuevo.equals(actual)) {
+        console.log(`congelar-contenido: ${que}: la copia del repo ya es la última.`)
+        continue
+      }
+      await writeFile(CV(lang), nuevo)
+      console.log(`congelar-contenido: ${que}: copia actualizada (${(nuevo.length / 1024).toFixed(0)} KB).`)
+    } catch (error) {
+      const motivo = error.name === 'TimeoutError' ? `no contestó en ${ESPERA_MAXIMA_MS / 1000} s` : error.message
+      aviso(`no se pudo leer la API (${que}: ${motivo}): se usa el del repo.`)
+    }
+  }
+}
+
 async function main() {
   const base = process.env.CONTENT_API_URL
   if (!base) {
@@ -105,6 +143,7 @@ async function main() {
   }
   await congelarContenido(base)
   await congelarContribuciones(base)
+  await congelarCV(base)
 }
 
 // Pase lo que pase, el build sigue.

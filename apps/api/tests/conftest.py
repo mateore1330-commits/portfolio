@@ -72,7 +72,7 @@ def base_limpia(app):
     from api.extensions import db
 
     with app.app_context():
-        for modelo in (m.Snapshot, m.AuthAttempt, m.AdminUser, m.ContactMessage, m.Project,
+        for modelo in (m.CvPdf, m.Snapshot, m.AuthAttempt, m.AdminUser, m.ContactMessage, m.Project,
                        m.Technology, m.Job, m.Education, m.SiteText):
             db.session.query(modelo).delete()
         db.session.commit()
