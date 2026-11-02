@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useOutletContext, useParams } from 'react-router'
 import { pedir } from '@/admin/api.js'
+import AreaTexto from '@/admin/comun/AreaTexto.jsx'
 import AvisoSalir from '@/admin/comun/AvisoSalir.jsx'
+import Bloque, { Esqueleto } from '@/admin/comun/Bloque.jsx'
 import { useAvisar } from '@/admin/comun/avisos.js'
 import Campo from '@/admin/comun/Campo.jsx'
 import { Banda, Cabecera } from '@/admin/comun/Estados.jsx'
@@ -111,7 +113,7 @@ function Formulario({ id }) {
         {volver}
         <Cabecera titulo={nuevo ? 'Nuevo proyecto' : 'Proyecto'} />
         {carga === 'cargando' ? (
-          <Esqueleto />
+          <Esqueleto etiqueta="Cargando el proyecto" />
         ) : (
           <Banda
             tipo="error"
@@ -198,7 +200,7 @@ function Formulario({ id }) {
   const campoTexto = (clave, { etiqueta, ayuda, largo, tipo = 'text', ...resto }) => {
     const idCampo = `c-${clave.replace('.', '-')}`
     const error = errorDe(clave)
-    const Control = largo ? 'textarea' : 'input'
+    const Control = largo ? AreaTexto : 'input'
     return (
       <Campo
         key={clave}
@@ -212,7 +214,6 @@ function Formulario({ id }) {
         <Control
           id={idCampo}
           type={largo ? undefined : tipo}
-          rows={largo ? 3 : undefined}
           value={valores[clave]}
           onChange={(e) => cambiar(clave, e.target.value)}
           {...conError(idCampo, error)}
@@ -476,44 +477,5 @@ function Formulario({ id }) {
         }}
       />
     </>
-  )
-}
-
-function Bloque({ n, titulo, texto, cambios: cuantosCambios = 0, children }) {
-  return (
-    <section className="bloque">
-      <header>
-        <h2>
-          <b>{n}</b>
-          {titulo}
-          {cuantosCambios > 0 && <span className="cuenta-cambios">{cambios(cuantosCambios)}</span>}
-        </h2>
-        {texto && <p>{texto}</p>}
-      </header>
-      <div className="campos">{children}</div>
-    </section>
-  )
-}
-
-function Esqueleto() {
-  return (
-    <div className="esqueleto" aria-busy="true" aria-label="Cargando el proyecto">
-      {Array.from({ length: 3 }, (_, i) => (
-        <section className="bloque" key={i}>
-          <header>
-            <span className="hueco grande" />
-            <span className="hueco corto" />
-          </header>
-          <div className="campos">
-            {Array.from({ length: 3 }, (_, j) => (
-              <div key={j}>
-                <span className="hueco mini" />
-                <span className="hueco alto" />
-              </div>
-            ))}
-          </div>
-        </section>
-      ))}
-    </div>
   )
 }

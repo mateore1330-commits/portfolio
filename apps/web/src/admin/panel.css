@@ -1038,9 +1038,11 @@
   transition: border-color .15s;
 }
 
+/* Los cuadros crecen solos con el texto (AreaTexto): sin asa para estirarlos ni barra. */
 .panel-app .campo-panel textarea {
-  min-height: 96px;
-  resize: vertical;
+  min-height: 72px;
+  overflow: hidden;
+  resize: none;
 }
 
 .panel-app .campo-panel textarea:hover {
@@ -1236,8 +1238,6 @@
 
 .panel-app .lista-editable .item textarea {
   min-height: 72px;
-  /* El cuadro crece con el párrafo (donde el navegador lo sabe hacer), sin barra interior. */
-  field-sizing: content;
 }
 
 .panel-app .lista-editable .item > button {
@@ -1576,4 +1576,171 @@
 /* Con la barra de guardar abajo, los avisos van encima: así no tapan "Guardar". */
 .panel-app:has(.barra-guardar) .toasts {
   bottom: 84px;
+}
+
+/* ============================================================
+   TEXTOS Y CV (ADM-04)
+   ============================================================ */
+
+/* --- Textos: las secciones a la izquierda ------------------ */
+.panel-app .dos-col {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+  margin-top: 26px;
+}
+
+.panel-app .subnav {
+  position: sticky;
+  top: 76px;
+  display: grid;
+  gap: 2px;
+}
+
+.panel-app .subnav a {
+  grid-template-columns: 26px 1fr auto;
+}
+
+/* El punto ámbar de la sección con cambios sin guardar. */
+.panel-app .subnav .punto {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--punto-aviso);
+}
+
+.panel-app .seccion-txt > h2 {
+  margin-bottom: 4px;
+  font-size: 22px;
+  font-variation-settings: "wdth" 112, "wght" 800;
+}
+
+.panel-app .seccion-txt > p {
+  margin-bottom: 18px;
+  color: var(--ink-3);
+  font-size: 14.5px;
+}
+
+.panel-app .contador {
+  color: var(--ink-3);
+  font: 500 9.5px var(--f-mono);
+  letter-spacing: .04em;
+  text-transform: none;
+}
+
+.panel-app .contador.pasado {
+  color: var(--aviso);
+}
+
+/* Los pares dato · valor de una lista, en fila. */
+.panel-app .lista-editable .par {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: 8px;
+}
+
+.panel-app .lista-editable .item.cambiado input {
+  border-left: 3px solid var(--punto-aviso);
+}
+
+.panel-app .lista-editable .item.mal input {
+  border-color: var(--error);
+}
+
+/* --- Bloques que se repiten (apartados, proyectos del CV…) -- */
+.panel-app .lista-bloques {
+  display: grid;
+  gap: 14px;
+}
+
+.panel-app .bloque-lista {
+  display: grid;
+  gap: 18px;
+  padding: 18px;
+}
+
+.panel-app .bloque-lista.cambiado {
+  border-left: 3px solid var(--punto-aviso);
+}
+
+.panel-app .cab-bloque {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  color: var(--ink-3);
+}
+
+.panel-app .cab-bloque .marca-cambio {
+  margin-left: 0;
+}
+
+.panel-app .cab-bloque .borrar {
+  margin-left: auto;
+}
+
+.panel-app .mono {
+  font: 500 9.5px var(--f-mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.panel-app .chip.gris {
+  background: var(--paper-3);
+  color: var(--ink-2);
+}
+
+.panel-app .campo-panel select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--rule);
+  background: var(--campo);
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.panel-app .campo-panel select:focus {
+  border-color: var(--blue);
+  outline: 0;
+  box-shadow: 0 0 0 3px var(--blue-wash);
+}
+
+.panel-app .campo-panel.cambiado select {
+  border-left: 3px solid var(--punto-aviso);
+}
+
+.panel-app .campo-panel.mal select {
+  border-color: var(--error);
+}
+
+.panel-app .campo-panel.mal .fichas {
+  border-color: var(--error);
+}
+
+/* La pestaña de idioma del CV, por encima de los bloques. */
+.panel-app .form > .tabs {
+  margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+  .panel-app .dos-col {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .panel-app .subnav {
+    position: static;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+  }
+
+  .panel-app .subnav a {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .panel-app .lista-editable .par {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
