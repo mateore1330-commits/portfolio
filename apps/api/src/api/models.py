@@ -8,7 +8,8 @@ con SQL a mano.
 import enum
 from datetime import date, datetime
 
-from sqlalchemy import CheckConstraint, Enum, ForeignKey, Index, Text, func, text
+from sqlalchemy import CheckConstraint, Enum, ForeignKey, Index, LargeBinary, Text, func, text
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .extensions import db
@@ -63,6 +64,24 @@ class LinkType(enum.Enum):
     EMAIL = "email"
     CV = "cv"
     OTHER = "other"
+
+
+class DeployStatus(enum.Enum):
+    """El paso 3 de publicar: el gancho de despliegue de Vercel (ADM-05)."""
+
+    PENDING = "pending"
+    DEPLOYED = "deployed"
+    FAILED = "failed"
+    NOT_CONFIGURED = "not_configured"
+
+
+class CvStatus(enum.Enum):
+    """El paso 2 de publicar: el CV en PDF (ADM-05)."""
+
+    PENDING = "pending"
+    GENERATED = "generated"
+    UNCHANGED = "unchanged"
+    FAILED = "failed"
 
 
 class MessageStatus(enum.Enum):
@@ -293,6 +312,34 @@ class Snapshot(db.Model):
     etag: Mapped[str]
     published_at: Mapped[datetime] = created_at()
     published_by: Mapped[int] = mapped_column(ForeignKey("admin_users.admin_id"))
+    # Qué cambió respecto a la anterior, en frases: ["Proyecto CleanFlow · editado", …].
+    changes: Mapped[list | None] = mapped_column(JSONB(none_as_null=True))
+    size_bytes: Mapped[int | None]
+    cv_status: Mapped[CvStatus] = mapped_column(
+        pg_enum(CvStatus, "cv_status"), server_default="pending"
+    )
+    cv_detail: Mapped[str | None] = mapped_column(Text)
+    deploy_status: Mapped[DeployStatus] = mapped_column(
+        pg_enum(DeployStatus, "deploy_status"), server_default="pending"
+    )
+    deploy_detail: Mapped[str | None] = mapped_column(Text)
+    deployed_at: Mapped[datetime | None]
+
+
+class CvPdf(db.Model):
+    """El último CV en PDF de cada idioma: el publicado y el de prueba (ADM-05).
+    Lo sirve /api/cv/<lang>.pdf y la web lo incrusta al construirse en Vercel."""
+
+    __tablename__ = "cv_pdfs"
+
+    lang: Mapped[str] = mapped_column(primary_key=True)
+    is_test: Mapped[bool] = mapped_column(primary_key=True)
+    content: Mapped[bytes] = mapped_column(LargeBinary)
+    pages: Mapped[int]
+    # La huella de lo que sale en el PDF (cv/generar.py): si no cambia, no se regenera.
+    cv_hash: Mapped[str]
+    ats_problems: Mapped[list] = mapped_column(JSONB, server_default=text("'[]'::jsonb"))
+    generated_at: Mapped[datetime] = created_at()
 
 
 # =====================================================================

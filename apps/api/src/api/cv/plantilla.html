@@ -9,7 +9,7 @@
      Educación y Habilidades. En el HTML va primero la columna izquierda entera y luego
      la derecha: es el orden en que el PDF guarda el texto y en el que lo lee un ATS.
      Diseño aprobado: Recursos/Maquetas/cv-ats.html. */
-  /* Fuentes fijas, una por estilo (generar_cv.py): así van al PDF como TrueType. */
+  /* Fuentes fijas, una por estilo (cv/generar.py): así van al PDF como TrueType. */
   @font-face { font-family: Titulo; src: url("{{ fuentes.titulo }}"); }
   @font-face { font-family: Seccion; src: url("{{ fuentes.seccion }}"); }
   @font-face { font-family: Fuerte; src: url("{{ fuentes.fuerte }}"); }
@@ -32,7 +32,7 @@
   .contacto { margin-top: 3mm; color: var(--ink-2); font-family: Contacto, sans-serif; font-size: 8.6pt; line-height: 1.65; }
   .contacto a { text-decoration: underline; text-decoration-color: rgba(30, 63, 176, .5); text-underline-offset: 1.5px; }
   .foto { position: relative; width: 26mm; height: 26mm; overflow: hidden; border-radius: 50%; background: #000; }
-  /* La foto llega ya en duotono (generar_cv.py): con filtros CSS, el PDF pesaría el triple. */
+  /* La foto llega ya en duotono (cv/generar.py): con filtros CSS, el PDF pesaría el triple. */
   .foto img { width: 100%; height: 100%; object-fit: cover; }
 
   main { display: grid; grid-template-columns: 1fr 64mm; gap: 8mm; flex: 1; }
