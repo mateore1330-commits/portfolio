@@ -466,11 +466,12 @@
   font-size: 14.5px;
 }
 
+/* Lo pequeño de la derecha se parte si la tarjeta es estrecha (cuatro en fila, ADM-10). */
 .panel-app .tarjeta li small {
+  min-width: 0;
   color: var(--ink-3);
   font: 400 10px var(--f-mono);
   text-align: right;
-  white-space: nowrap;
 }
 
 /* --- Bandas, vacío y cargando ----------------------------- */
@@ -2324,4 +2325,139 @@
   .panel-app .meta-msg {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+/* --- 13 · Visitas (ADM-10) ----------------------------------- */
+.panel-app .tarjeta.destacada {
+  border-color: var(--punto-aviso);
+  background: var(--aviso-bg);
+}
+
+.panel-app .tarjeta.separada {
+  margin-top: 16px;
+}
+
+.panel-app .tarjeta .sube {
+  color: var(--ok);
+}
+
+.panel-app .tarjeta .baja {
+  color: var(--error);
+}
+
+.panel-app .tarjeta h2 .leyenda {
+  margin-left: auto;
+  letter-spacing: .08em;
+}
+
+.panel-app .leyenda .v {
+  color: var(--blue);
+}
+
+.panel-app .leyenda .p {
+  color: var(--paper-3);
+}
+
+/* Barras: páginas vistas detrás (gris) y visitantes delante (azul). */
+.panel-app .barras {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  align-items: end;
+  gap: 4px;
+  height: 180px;
+  margin-top: 16px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.panel-app .barras.dobles span {
+  position: relative;
+  display: block;
+  height: 100%;
+}
+
+.panel-app .barras.dobles i {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  min-height: 2px;
+  background: var(--blue);
+  opacity: .85;
+}
+
+.panel-app .barras.dobles i.pv {
+  background: var(--paper-3);
+  opacity: 1;
+}
+
+.panel-app .barras.dobles span:hover i:not(.pv) {
+  opacity: 1;
+}
+
+.panel-app .eje {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  color: var(--ink-3);
+  font: 400 10px var(--f-mono);
+}
+
+.panel-app .lista-cifras {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.panel-app .tarjeta .lista-cifras li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px 12px;
+  align-items: baseline;
+  padding: 9px 0;
+}
+
+.panel-app .lista-cifras li > span {
+  overflow-wrap: anywhere;
+}
+
+.panel-app .lista-cifras li small {
+  color: var(--ink-3);
+  font: 400 10px var(--f-mono);
+}
+
+.panel-app .lista-cifras b {
+  color: var(--ink);
+}
+
+.panel-app .lista-cifras .progreso {
+  grid-column: 1 / -1;
+  height: 3px;
+  background: var(--paper-3);
+}
+
+.panel-app .lista-cifras .progreso i {
+  display: block;
+  height: 100%;
+  background: var(--blue);
+}
+
+.panel-app .nota-navegador {
+  margin-top: 22px;
+  color: var(--ink-3);
+  letter-spacing: .04em;
+  text-transform: none;
+}
+
+/* Los mensajes del Inicio llevan a cada uno (ADM-10): texto normal, subrayado al pasar. */
+.panel-app .tarjeta li a:not(.enlace) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.panel-app .tarjeta li a:not(.enlace):hover,
+.panel-app .tarjeta li a:not(.enlace):focus-visible {
+  text-decoration: underline;
 }
