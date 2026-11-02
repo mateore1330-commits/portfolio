@@ -49,6 +49,12 @@ def load_config():
         # Opcional: Cloudinary, donde van las fotos de los proyectos y los certificados
         # (ADM-08). Sin ella, subir responde 503. Es secreta: solo aquí.
         "CLOUDINARY_URL": os.getenv("CLOUDINARY_URL", "").strip(),
+        # Opcional: Umami, en nuestro servidor (ADM-10), para la pantalla Visitas. Sin ellas,
+        # el panel dice que las visitas no están configuradas. La contraseña es secreta.
+        "UMAMI_URL": os.getenv("UMAMI_URL", "").strip().rstrip("/"),
+        "UMAMI_USUARIO": os.getenv("UMAMI_USUARIO", "").strip(),
+        "UMAMI_CONTRASENA": os.getenv("UMAMI_CONTRASENA", ""),
+        "UMAMI_WEBSITE_ID": os.getenv("UMAMI_WEBSITE_ID", "").strip(),
         # Nada mayor de 6 MB llega a la API (los archivos, 5 MB como mucho).
         "MAX_CONTENT_LENGTH": 6 * 1024 * 1024,
         # La sesión del panel (ADM-01): un JWT en una cookie que el JavaScript no puede leer

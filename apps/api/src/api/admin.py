@@ -237,7 +237,16 @@ def resumen():
 def iniciar(app):
     """Engancha el panel a la aplicación (lo llama create_app)."""
     # Las rutas de cada pantalla se añaden al blueprint al importarlas: antes de registrarlo.
-    from . import conocimientos, medios, mensajes, orden, proyectos, textos, trayectoria  # noqa: F401
+    from . import (  # noqa: F401
+        conocimientos,
+        medios,
+        mensajes,
+        orden,
+        proyectos,
+        textos,
+        trayectoria,
+        visitas,
+    )
     from .publicar import cv_publico
 
     jwt.init_app(app)
