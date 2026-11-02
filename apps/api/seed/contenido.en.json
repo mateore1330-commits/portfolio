@@ -100,7 +100,7 @@
     "pie.texto": [
       "Designed and developed by Mateo Rodríguez"
     ],
-    "legal.actualizado": "31 October 2026",
+    "legal.actualizado": "2 November 2026",
     "legal.aviso": {
       "titulo": "Legal notice",
       "bloques": [
@@ -173,9 +173,17 @@
           ]
         },
         {
+          "titulo": "Visit statistics",
+          "texto": [
+            "To know how many people visit the website, where they come from and what they are interested in, I use **Umami**, installed on the same server as the API: the data is not sent to any other company.",
+            "It counts which pages are viewed, which website you come from (for example, LinkedIn), the country, the type of device, the browser and some actions, such as downloading the CV or opening a project demo. **No cookies are used and nothing is stored on your device**, nor is your IP address: Umami groups visits with an anonymous identifier that is renewed periodically and does not reveal who you are.",
+            "These are anonymous statistics: they are used to improve the website and for nothing else. The legal basis is my legitimate interest in knowing how it is used. If your browser blocks the measurement, the website works just the same."
+          ]
+        },
+        {
           "titulo": "Cookies",
           "texto": [
-            "This website does not use tracking cookies or third-party analytics. It only stores in your browser the theme (light or dark) and the language you choose, to remember them."
+            "This website does not use cookies, and the visit statistics do not store anything in your browser either. The only things stored in it are the theme (light or dark) and the language you choose, to remember them."
           ]
         }
       ]

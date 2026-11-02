@@ -100,7 +100,7 @@
     "pie.texto": [
       "Diseñado y desarrollado por Mateo Rodríguez"
     ],
-    "legal.actualizado": "31 de octubre de 2026",
+    "legal.actualizado": "2 de noviembre de 2026",
     "legal.aviso": {
       "titulo": "Aviso legal",
       "bloques": [
@@ -173,9 +173,17 @@
           ]
         },
         {
+          "titulo": "Medición de visitas",
+          "texto": [
+            "Para saber cuántas personas visitan la web, de dónde llegan y qué les interesa, uso **Umami**, instalado en el mismo servidor que la API: los datos no se envían a ninguna otra empresa.",
+            "Se cuenta qué páginas se ven, desde qué web llegas (por ejemplo, LinkedIn), el país, el tipo de dispositivo, el navegador y algunas acciones, como descargar el CV o abrir la demo de un proyecto. **No se usan cookies ni se guarda nada en tu dispositivo**, y tampoco tu dirección IP: Umami agrupa las visitas con un identificador anónimo que se renueva periódicamente y no permite saber quién eres.",
+            "Son estadísticas anónimas: sirven para mejorar la web y no se usan para nada más. La base legal es mi interés legítimo en saber cómo se usa. Si tu navegador bloquea la medición, la web funciona igual."
+          ]
+        },
+        {
           "titulo": "Cookies",
           "texto": [
-            "Esta web no usa cookies de seguimiento ni analítica de terceros. Solo guarda en tu navegador el tema (claro u oscuro) y el idioma que eliges, para recordarlos."
+            "Esta web no usa cookies, y la medición de visitas tampoco guarda nada en tu navegador. Lo único que se guarda en él es el tema (claro u oscuro) y el idioma que eliges, para recordarlos."
           ]
         }
       ]
