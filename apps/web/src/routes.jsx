@@ -46,6 +46,8 @@ const panel = RUTA_PANEL
         // Las vistas previas, en su pestaña y sin el panel alrededor (la sesión la pide la API).
         { path: 'proyectos/:id/vista-previa', lazy: delPanel(() => import('@/admin/proyectos/VistaPrevia.jsx')) },
         { path: 'textos/vista-previa', lazy: delPanel(() => import('@/admin/textos/VistaPreviaTextos.jsx')) },
+        { path: 'trayectoria/empleo/:id/vista-previa', lazy: delPanel(() => import('@/admin/trayectoria/VistaPreviaTrayectoria.jsx'), 'VistaPreviaEmpleo') },
+        { path: 'trayectoria/formacion/:id/vista-previa', lazy: delPanel(() => import('@/admin/trayectoria/VistaPreviaTrayectoria.jsx'), 'VistaPreviaFormacion') },
         {
           lazy: delPanel(() => import('@/admin/RutaProtegida.jsx')),
           children: [
@@ -56,6 +58,11 @@ const panel = RUTA_PANEL
             { path: 'textos', lazy: delPanel(() => import('@/admin/textos/Textos.jsx')) },
             { path: 'cv', lazy: delPanel(() => import('@/admin/cv/CV.jsx')) },
             { path: 'publicaciones', lazy: delPanel(() => import('@/admin/publicar/Publicaciones.jsx')) },
+            { path: 'trayectoria', lazy: delPanel(() => import('@/admin/trayectoria/Trayectoria.jsx')) },
+            { path: 'trayectoria/empleo/nuevo', lazy: delPanel(() => import('@/admin/trayectoria/Entrada.jsx'), 'Empleo') },
+            { path: 'trayectoria/empleo/:id', lazy: delPanel(() => import('@/admin/trayectoria/Entrada.jsx'), 'Empleo') },
+            { path: 'trayectoria/formacion/nuevo', lazy: delPanel(() => import('@/admin/trayectoria/Entrada.jsx'), 'Formacion') },
+            { path: 'trayectoria/formacion/:id', lazy: delPanel(() => import('@/admin/trayectoria/Entrada.jsx'), 'Formacion') },
             { path: ':seccion', lazy: delPanel(() => import('@/admin/Proximamente.jsx')) },
             { path: '*', lazy: delPanel(() => import('@/admin/Proximamente.jsx'), 'NoEncontrado') },
           ],
