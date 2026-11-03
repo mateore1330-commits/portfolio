@@ -2,10 +2,10 @@
 #
 #   cd /srv/portfolio/infra && sudo docker compose up -d --build
 #
-# Solo caddy tiene puertos hacia fuera (80 y 443). OJO: Docker se salta ufw con los puertos
-# publicados, así que nadie más publica ninguno (la API, la base y Umami se hablan por la red
-# interna de Docker). El cortafuegos de Hostinger, que Docker no puede tocar, es la red de
-# seguridad.
+# Solo caddy tiene puertos hacia fuera (80 y 443; el 8081, solo dentro del servidor). OJO:
+# Docker se salta ufw con los puertos publicados, así que nadie más publica ninguno (la API, la
+# base y Umami se hablan por la red interna de Docker). El cortafuegos de Hostinger, que Docker
+# no puede tocar, es la red de seguridad.
 #
 # Los secretos no están aquí: .env (las contraseñas de la base y de Umami, para este archivo)
 # y api.env (la configuración de la API). Plantillas: .env.example y api.env.example.
@@ -27,6 +27,11 @@ services:
     ports:
       - "${PUERTO_HTTP:-80}:80"
       - "${PUERTO_HTTPS:-443}:443"
+      # El panel de Umami: solo en la "puerta de dentro" (127.0.0.1), para el túnel SSH.
+      - "127.0.0.1:${PUERTO_UMAMI:-8081}:8081"
+    environment:
+      DOMINIO_API: ${DOMINIO_API:-api.mateorodriguez.solutions}
+      DOMINIO_VISITAS: ${DOMINIO_VISITAS:-visitas.mateorodriguez.solutions}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-datos:/data
