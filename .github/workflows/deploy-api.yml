@@ -1,0 +1,94 @@
+# Despliega la API al fusionar en main (INFRA-06): construye la imagen, la sube a ghcr.io y
+# avisa al servidor por SSH. El servidor hace el resto (copia, migraciones, salud y vuelta
+# atrás): infra/despliegue/portfolio-desplegar. Cómo funciona: docs/DESPLIEGUE.md.
+name: Desplegar API
+
+on:
+  push:
+    branches: [main]
+    # Solo si cambia lo que va en la imagen o lo que usa el servidor. Si solo cambia la web
+    # (apps/web), no: la despliega Vercel (GO-02).
+    paths:
+      - "apps/api/**"
+      - "apps/web/src/assets/retrato/**"
+      - "scripts/comprobar-idiomas.py"
+      - "infra/docker-compose.yml"
+      - "infra/Caddyfile"
+      - "infra/db/**"
+      - ".dockerignore"
+      - ".github/workflows/deploy-api.yml"
+  # A mano (Actions → Desplegar API → Run workflow), para repetir el último de main.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Uno detrás de otro, nunca dos a la vez, y sin cancelar uno a medias.
+concurrency:
+  group: desplegar-api
+  cancel-in-progress: false
+
+env:
+  IMAGEN: ghcr.io/mateore1330-commits/portfolio-api
+
+jobs:
+  construir:
+    name: Construir y subir la imagen
+    # Solo desde main, también a mano.
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      # Acciones fijadas por hash: una etiqueta se puede mover, un hash no.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Entrar en ghcr.io
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACTOR: ${{ github.actor }}
+        run: printf '%s' "$TOKEN" | docker login ghcr.io -u "$ACTOR" --password-stdin
+      - name: Construir
+        run: |
+          docker build \
+            --file apps/api/Dockerfile \
+            --label "org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}" \
+            --label "org.opencontainers.image.revision=${GITHUB_SHA}" \
+            --tag "$IMAGEN:$GITHUB_SHA" \
+            .
+      - name: Subir
+        run: docker push "$IMAGEN:$GITHUB_SHA"
+      - if: always()
+        run: docker logout ghcr.io
+
+  desplegar:
+    name: Desplegar en el servidor
+    needs: construir
+    runs-on: ubuntu-latest
+    # Los secretos del servidor viven en este entorno (Settings → Environments → produccion).
+    environment: produccion
+    permissions: {}
+    steps:
+      - name: Llave y huella del servidor
+        env:
+          LLAVE: ${{ secrets.DESPLIEGUE_LLAVE }}
+          HUELLA: ${{ secrets.DESPLIEGUE_HUELLA }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$LLAVE" > ~/.ssh/despliegue
+          chmod 600 ~/.ssh/despliegue
+          # Solo se habla con TU servidor: su huella, fijada. Nunca "acepta cualquiera".
+          printf '%s\n' "$HUELLA" > ~/.ssh/known_hosts
+      - name: Desplegar
+        env:
+          HOST: ${{ secrets.DESPLIEGUE_HOST }}
+        # El servidor solo acepta el commit: lo demás lo decide él.
+        run: |
+          ssh -i ~/.ssh/despliegue \
+            -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o BatchMode=yes \
+            -o ServerAliveInterval=30 -o ConnectTimeout=20 \
+            "despliegue@$HOST" "$GITHUB_SHA"
+      - if: always()
+        run: rm -f ~/.ssh/despliegue

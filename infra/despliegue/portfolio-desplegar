@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+# Despliega una versión de la API (INFRA-06). Lo lanza GitHub Actions al fusionar en main:
+#
+#   ssh despliegue@servidor <sha de 40 caracteres>
+#
+# La llave de "despliegue" tiene una orden forzada (authorized_keys): ejecute lo que ejecute,
+# solo llega aquí, por sudo, con lo que pidió como único argumento. Por eso lo primero es
+# desconfiar de ese argumento. A mano (Mateo): sudo portfolio-desplegar <sha>
+#
+#   a. El código de main (compose, Caddyfile) hasta ese commit, que tiene que estar en main.
+#   b. La imagen ghcr.io/…/portfolio-api:<sha>.
+#   c. Una copia de la base (INFRA-05): si falla, no se despliega.
+#   d. Las migraciones, con la imagen nueva, antes de cambiar la API.
+#   e. La API nueva; Caddy relee su configuración si cambió.
+#   f. ¿/api/health responde y es la imagen nueva? Si no: vuelta atrás sola a la anterior.
+#
+# Instalado por infra/servidor/infra-06.sh en /usr/local/sbin (de root). Registro:
+# journalctl -t portfolio-desplegar. Plan: PLAN-INFRA-06.md; uso: docs/DESPLIEGUE.md.
+set -Eeuo pipefail
+
+REPO=${REPO:-/srv/portfolio}
+USUARIO=${USUARIO:-mateo}
+REGISTRO=${REGISTRO:-ghcr.io/mateore1330-commits/portfolio-api}
+ESTADO=${ESTADO:-/etc/portfolio-despliegue}
+SALUD=${SALUD:-https://api.mateorodriguez.solutions/api/health}
+# Solo para probarlo en local (certificados de Caddy de prueba): opciones extra para curl.
+read -r -a SALUD_CURL <<<"${SALUD_CURL:-}"
+COPIA=${COPIA:-systemctl start portfolio-copia.service}
+INFRA="$REPO/infra"
+
+decir() { echo "$*"; logger -t portfolio-desplegar -- "$*" 2>/dev/null || true; }
+git_() { sudo -u "$USUARIO" git -C "$REPO" "$@"; }
+compose() { (cd "$INFRA" && docker compose "$@"); }
+compose_con() { local imagen="$1"; shift; (cd "$INFRA" && API_IMAGEN="$imagen" docker compose "$@"); }
+# Cambia (o añade) API_IMAGEN en .env, sin tocar lo demás (las contraseñas).
+poner_imagen() {
+  IMAGEN="$1" awk -F= '
+    BEGIN { hecho = 0 }
+    $1 == "API_IMAGEN" { print "API_IMAGEN=" ENVIRON["IMAGEN"]; hecho = 1; next }
+    { print }
+    END { if (!hecho) print "API_IMAGEN=" ENVIRON["IMAGEN"] }
+  ' "$INFRA/.env" | (umask 077 && cat > "$INFRA/.env.nuevo")
+  chmod 600 "$INFRA/.env.nuevo"  # lleva las contraseñas de la base
+  mv "$INFRA/.env.nuevo" "$INFRA/.env"
+}
+imagen_en_marcha() { docker inspect --format '{{.Config.Image}}' "$(compose ps -q api)" 2>/dev/null || true; }
+sana() {  # la API responde por fuera (Caddy) y es la imagen que toca
+  local _
+  for _ in $(seq 1 12); do
+    if curl -fsS -m 5 "${SALUD_CURL[@]}" "$SALUD" >/dev/null 2>&1 && [ "$(imagen_en_marcha)" = "$1" ]; then
+      return 0
+    fi
+    sleep 5
+  done
+  return 1
+}
+
+# ---------------------------------------------------------------- ¿Qué versión?
+version="${1:-}"
+if ! [[ "$version" =~ ^[0-9a-f]{40}$ ]]; then
+  decir "Rechazado: «${version:0:60}» no es un commit (40 caracteres hexadecimales)."
+  exit 2
+fi
+nueva="$REGISTRO:$version"
+install -d -m 700 "$ESTADO"
+# Uno solo a la vez.
+exec 9>"$ESTADO/.cerrojo"
+flock -n 9 || { decir "Ya hay otro despliegue en marcha."; exit 3; }
+
+decir "== Desplegando $version"
+anterior=$(imagen_en_marcha)
+git_anterior=$(git_ rev-parse HEAD)
+
+# ---------------------------------------------------------------- a. El código
+git_ fetch --quiet --prune origin main
+if ! git_ merge-base --is-ancestor "$version" origin/main 2>/dev/null; then
+  decir "Rechazado: $version no está en main."
+  exit 2
+fi
+git_ checkout --quiet main
+git_ reset --quiet --hard "$version"
+decir "a. Código en $(git_ log --oneline -1)"
+
+volver_codigo() { git_ reset --quiet --hard "$git_anterior"; }
+
+# ---------------------------------------------------------------- b. La imagen
+if ! docker pull --quiet "$nueva" >/dev/null; then
+  volver_codigo
+  decir "FALLO: no se pudo bajar $nueva. No se ha cambiado nada."
+  exit 1
+fi
+decir "b. Imagen bajada: $nueva"
+
+# ---------------------------------------------------------------- c. Copia de la base
+if ! $COPIA; then
+  volver_codigo
+  decir "FALLO: la copia de la base ha fallado; sin copia no se despliega. No se ha cambiado nada."
+  exit 1
+fi
+decir "c. Copia de la base hecha."
+
+# ---------------------------------------------------------------- d. Migraciones
+# Con la imagen nueva y antes de cambiar la API. En PostgreSQL cada migración va en una
+# transacción: si falla, la base se queda como estaba.
+if ! compose_con "$nueva" run --rm --no-deps api flask --app wsgi db upgrade; then
+  volver_codigo
+  decir "FALLO: las migraciones han fallado (la base sigue como estaba). La API no se ha tocado."
+  exit 1
+fi
+decir "d. Migraciones al día."
+
+# ---------------------------------------------------------------- e. La API nueva
+poner_imagen "$nueva"
+arranca=si
+compose up -d --wait --wait-timeout 180 api caddy || arranca=no
+if [ "$arranca" = si ] && ! git_ diff --quiet "$git_anterior" HEAD -- infra/Caddyfile; then
+  compose exec -T caddy caddy reload --config /etc/caddy/Caddyfile || true
+  decir "e. Caddy ha releído su configuración."
+fi
+
+# ---------------------------------------------------------------- f. ¿Funciona?
+# Si Docker ya dice que no arranca, no hace falta esperar más.
+if [ "$arranca" = si ] && sana "$nueva"; then
+  echo "$anterior" > "$ESTADO/anterior"
+  echo "$nueva" > "$ESTADO/actual"
+  # Se guardan la nueva y la anterior; las demás versiones de la API sobran.
+  docker images --format '{{.Repository}}:{{.Tag}}' "$REGISTRO" | grep -vxF -e "$nueva" -e "$anterior" \
+    | xargs -r docker rmi --force >/dev/null 2>&1 || true
+  decir "== HECHO: en marcha $version"
+  exit 0
+fi
+
+decir "FALLO: la versión nueva no responde. Volviendo a la anterior ($anterior)…"
+volver_codigo
+if [ -n "$anterior" ]; then
+  poner_imagen "$anterior"
+  compose up -d --wait --wait-timeout 180 api caddy || true
+  if ! git_ diff --quiet "$version" "$git_anterior" -- infra/Caddyfile; then
+    compose exec -T caddy caddy reload --config /etc/caddy/Caddyfile || true
+  fi
+  if sana "$anterior"; then
+    decir "== VUELTA ATRÁS HECHA: sigue en marcha la anterior ($anterior)."
+  else
+    decir "== ¡OJO! Tampoco responde la anterior. Hay que mirarlo a mano (docs/DESPLIEGUE.md)."
+  fi
+fi
+exit 1

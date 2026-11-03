@@ -1,6 +1,9 @@
 # El servidor del portfolio (INFRA-03): Caddy, la API, PostgreSQL y Umami.
 #
-#   cd /srv/portfolio/infra && sudo docker compose up -d --build
+#   cd /srv/portfolio/infra && sudo docker compose up -d
+#
+# La API se despliega sola al fusionar en main (INFRA-06, docs/DESPLIEGUE.md). A mano, en local:
+# docker compose up -d --build.
 #
 # Solo caddy tiene puertos hacia fuera (80 y 443; el 8081, solo dentro del servidor). OJO:
 # Docker se salta ufw con los puertos publicados, así que nadie más publica ninguno (la API, la
@@ -43,10 +46,12 @@ services:
     <<: *registros
 
   api:
+    # En el servidor, la versión la pone el despliegue (INFRA-06) en .env: la imagen de ghcr.io
+    # con el commit de main. Sin ella, la que se construye aquí (para probar en local).
     build:
       context: ..
       dockerfile: apps/api/Dockerfile
-    image: portfolio-api:local
+    image: ${API_IMAGEN:-portfolio-api:local}
     restart: unless-stopped
     env_file: api.env
     depends_on:
