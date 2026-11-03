@@ -466,11 +466,12 @@
   font-size: 14.5px;
 }
 
+/* Lo pequeño de la derecha se parte si la tarjeta es estrecha (cuatro en fila, ADM-10). */
 .panel-app .tarjeta li small {
+  min-width: 0;
   color: var(--ink-3);
   font: 400 10px var(--f-mono);
   text-align: right;
-  white-space: nowrap;
 }
 
 /* --- Bandas, vacío y cargando ----------------------------- */
@@ -2160,4 +2161,303 @@
 .panel-app .enlace.apagado {
   opacity: .5;
   cursor: progress;
+}
+
+/* --- 12 · Mensajes (ADM-10) ---------------------------------- */
+.panel-app .bandeja {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  min-height: 560px;
+  margin-top: 6px;
+  border: 1px solid var(--rule);
+  background: var(--caja);
+}
+
+.panel-app .bandeja .lista {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--rule);
+}
+
+/* Cada mensaje de la lista es un botón (abre el mensaje en el mismo sitio). */
+.panel-app .bandeja .lista button {
+  display: block;
+  width: 100%;
+  padding: 14px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--rule-2);
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.panel-app .bandeja .lista button:hover {
+  background: var(--blue-wash);
+}
+
+.panel-app .bandeja .lista button[aria-current] {
+  background: var(--paper-2);
+  box-shadow: inset 3px 0 0 var(--blue);
+}
+
+.panel-app .bandeja .lista .de {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font: 600 14px var(--f-display);
+}
+
+.panel-app .bandeja .lista .de small {
+  flex: none;
+  color: var(--ink-3);
+  font: 400 10px var(--f-mono);
+}
+
+.panel-app .bandeja .lista .asunto {
+  display: block;
+  margin-top: 2px;
+  overflow: hidden;
+  color: var(--ink-2);
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Sin leer: el punto azul. */
+.panel-app .bandeja .lista .no-leido .de {
+  position: relative;
+  padding-left: 14px;
+}
+
+.panel-app .bandeja .lista .no-leido .de::before {
+  position: absolute;
+  top: 7px;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--blue);
+  content: "";
+}
+
+.panel-app .bandeja .detalle {
+  min-width: 0;
+  padding: 24px 28px;
+}
+
+.panel-app .bandeja .detalle h2 {
+  font-family: var(--f-display);
+  font-size: 24px;
+  font-variation-settings: "wdth" 112, "wght" 800;
+  line-height: 1.05;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.panel-app .meta-msg {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr);
+  gap: 6px 14px;
+  margin: 16px 0;
+  padding: 14px 0;
+  border-block: 1px solid var(--rule);
+  font-size: 14.5px;
+}
+
+.panel-app .meta-msg dt {
+  padding-top: 3px;
+  color: var(--ink-3);
+  font: 500 9.5px var(--f-mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.panel-app .meta-msg dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.panel-app .meta-msg dd.bien {
+  color: var(--ok);
+}
+
+.panel-app .meta-msg dd.mal {
+  color: var(--error);
+}
+
+.panel-app .texto-msg {
+  max-width: 66ch;
+  font-size: 16.5px;
+  line-height: 1.6;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.panel-app .acciones-msg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.panel-app .nota-msg {
+  margin-top: 14px;
+  color: var(--ink-3);
+  font: 400 10.5px/1.5 var(--f-mono);
+}
+
+@media (max-width: 900px) {
+  .panel-app .bandeja {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .panel-app .bandeja .lista {
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .panel-app .bandeja .detalle {
+    padding: 20px 16px;
+    scroll-margin-top: 70px;
+  }
+
+  .panel-app .meta-msg {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* --- 13 · Visitas (ADM-10) ----------------------------------- */
+.panel-app .tarjeta.destacada {
+  border-color: var(--punto-aviso);
+  background: var(--aviso-bg);
+}
+
+.panel-app .tarjeta.separada {
+  margin-top: 16px;
+}
+
+.panel-app .tarjeta .sube {
+  color: var(--ok);
+}
+
+.panel-app .tarjeta .baja {
+  color: var(--error);
+}
+
+.panel-app .tarjeta h2 .leyenda {
+  margin-left: auto;
+  letter-spacing: .08em;
+}
+
+.panel-app .leyenda .v {
+  color: var(--blue);
+}
+
+.panel-app .leyenda .p {
+  color: var(--paper-3);
+}
+
+/* Barras: páginas vistas detrás (gris) y visitantes delante (azul). */
+.panel-app .barras {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  align-items: end;
+  gap: 4px;
+  height: 180px;
+  margin-top: 16px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.panel-app .barras.dobles span {
+  position: relative;
+  display: block;
+  height: 100%;
+}
+
+.panel-app .barras.dobles i {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  min-height: 2px;
+  background: var(--blue);
+  opacity: .85;
+}
+
+.panel-app .barras.dobles i.pv {
+  background: var(--paper-3);
+  opacity: 1;
+}
+
+.panel-app .barras.dobles span:hover i:not(.pv) {
+  opacity: 1;
+}
+
+.panel-app .eje {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  color: var(--ink-3);
+  font: 400 10px var(--f-mono);
+}
+
+.panel-app .lista-cifras {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.panel-app .tarjeta .lista-cifras li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px 12px;
+  align-items: baseline;
+  padding: 9px 0;
+}
+
+.panel-app .lista-cifras li > span {
+  overflow-wrap: anywhere;
+}
+
+.panel-app .lista-cifras li small {
+  color: var(--ink-3);
+  font: 400 10px var(--f-mono);
+}
+
+.panel-app .lista-cifras b {
+  color: var(--ink);
+}
+
+.panel-app .lista-cifras .progreso {
+  grid-column: 1 / -1;
+  height: 3px;
+  background: var(--paper-3);
+}
+
+.panel-app .lista-cifras .progreso i {
+  display: block;
+  height: 100%;
+  background: var(--blue);
+}
+
+.panel-app .nota-navegador {
+  margin-top: 22px;
+  color: var(--ink-3);
+  letter-spacing: .04em;
+  text-transform: none;
+}
+
+/* Los mensajes del Inicio llevan a cada uno (ADM-10): texto normal, subrayado al pasar. */
+.panel-app .tarjeta li a:not(.enlace) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.panel-app .tarjeta li a:not(.enlace):hover,
+.panel-app .tarjeta li a:not(.enlace):focus-visible {
+  text-decoration: underline;
 }

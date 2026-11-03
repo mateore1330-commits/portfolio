@@ -278,19 +278,8 @@ Table contributions_cache {
   Note: 'Caché de 24 h. Si GitHub falla, se sirve esta copia aunque esté caducada.'
 }
 
-Table page_views {
-  view_id    int       [pk, increment]
-  path       varchar   [not null]
-  locale     varchar
-  referrer   varchar
-  country    varchar   [note: 'Deducido de la cabecera del proxy']
-  created_at timestamp [not null, default: `now()`]
-
-  indexes {
-    (created_at) [name: 'idx_visitas_fecha']
-  }
-  Note: 'Sin cookies, sin IP y sin identificar a nadie. Solo para saber si la web se visita.'
-}
+// Las visitas no van en esta base: las cuenta Umami, en nuestro servidor (ADM-10).
+// La tabla page_views se borró sin llegar a usarse.
 
 // =====================================================================
 // RELACIONES
@@ -330,5 +319,4 @@ TableGroup publicacion {
 TableGroup entrada {
   contact_messages
   contributions_cache
-  page_views
 }

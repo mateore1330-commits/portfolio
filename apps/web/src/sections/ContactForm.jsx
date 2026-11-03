@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { rutaEn } from '@/i18n/idiomas.js'
 import { useLang, useT } from '@/i18n/useLang.js'
+import { medir } from '@/medir.js'
 import BotonCopiar from '@/sections/BotonCopiar.jsx'
 import EnlaceFuera from '@/sections/EnlaceFuera.jsx'
 import { useMagnetic } from '@/sections/useMagnetic.js'
@@ -105,6 +106,7 @@ export default function ContactForm({ correo, boton, respaldo }) {
         signal: AbortSignal.timeout(ESPERA_MAXIMA_MS),
       })
       if (respuesta.status === 201) {
+        medir('formulario-enviado', { idioma: lang })
         setCampos(VACIO)
         setEstado('enviado')
         return
@@ -142,12 +144,22 @@ export default function ContactForm({ correo, boton, respaldo }) {
     return (
       <div className="form-contacto respaldo" role="status" data-revelar="">
         <p className="nota">{t('contacto.sin_api')}</p>
-        <a ref={principal} className="big-btn" href={enlaceRespaldo(correo, t('contacto.asunto_defecto'), campos)}>
+        <a
+          ref={principal}
+          className="big-btn"
+          href={enlaceRespaldo(correo, t('contacto.asunto_defecto'), campos)}
+          onClick={() => medir('correo-pulsado', { donde: 'formulario' })}
+        >
           {respaldo} <span aria-hidden="true">→</span>
         </a>
         <p className="o-copiar">
           {t('contacto.o')}{' '}
-          <BotonCopiar texto={correo} etiqueta={t('contacto.copia_el_correo')} nombre={t('contacto.copia_el_correo')} />
+          <BotonCopiar
+            texto={correo}
+            etiqueta={t('contacto.copia_el_correo')}
+            nombre={t('contacto.copia_el_correo')}
+            alCopiar={() => medir('correo-copiado', { donde: 'formulario' })}
+          />
         </p>
         <p className="nota peq">{t('contacto.sin_api_nota')}</p>
       </div>

@@ -384,16 +384,5 @@ class ContributionsCache(db.Model):
     longest_streak: Mapped[int | None]
     fetched_at: Mapped[datetime] = created_at()
 
-
-class PageView(db.Model):
-    """Sin cookies, sin IP y sin identificar a nadie."""
-
-    __tablename__ = "page_views"
-    __table_args__ = (Index("idx_visitas_fecha", "created_at"),)
-
-    view_id: Mapped[int] = mapped_column(primary_key=True)
-    path: Mapped[str]
-    locale: Mapped[str | None]
-    referrer: Mapped[str | None]
-    country: Mapped[str | None]
-    created_at: Mapped[datetime] = created_at()
+# Las visitas no se guardan aquí: las cuenta Umami, en nuestro servidor (ADM-10). La tabla
+# page_views, que nunca se llegó a usar, se borró (migración d5e7f9a1b3c5).

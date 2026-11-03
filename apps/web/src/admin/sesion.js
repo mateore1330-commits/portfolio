@@ -1,6 +1,7 @@
 // Entrar, saber si hay sesión y salir. Usan llamar() y no pedir(): un 401 aquí no es una
 // sesión caducada a mitad de trabajo, es la respuesta que se busca.
 import { llamar, ponerCsrf } from '@/admin/api.js'
+import { noMedirEsteNavegador } from '@/medir.js'
 
 export { hayApi } from '@/admin/api.js'
 
@@ -16,6 +17,9 @@ export async function entrar(correo, contrasena) {
   const { estado, datos } = await llamar('/login', { method: 'POST', body: JSON.stringify({ correo, contrasena }) })
   if (estado === 200) {
     ponerCsrf(datos.csrf)
+    // Las visitas de Mateo no cuentan (ADM-10): el navegador con el que entra al panel
+    // queda marcado para Umami. En Visitas se puede quitar la marca.
+    noMedirEsteNavegador()
     return { ok: true }
   }
   return { error: datos.error || 'red' }

@@ -42,6 +42,13 @@ def _url_de_pruebas():
 os.environ["DATABASE_URL"] = _url_de_pruebas()
 os.environ.setdefault("SECRET_KEY", "clave-solo-para-los-tests")
 os.environ.setdefault("CORS_ORIGINS", "http://localhost:3000")
+# Ningún servicio real en los tests, aunque el .env local los tenga: load_dotenv() no pisa
+# lo que ya está puesto, así que vacíos se quedan vacíos (ni correos de verdad, ni Cloudinary,
+# ni Vercel, ni Umami). Los tests que los necesitan usan uno de mentira.
+for _clave in ("SMTP_HOST", "SMTP_USER", "SMTP_PASSWORD", "CLOUDINARY_URL",
+               "VERCEL_DEPLOY_HOOK", "UMAMI_URL", "UMAMI_USUARIO", "UMAMI_CONTRASENA",
+               "UMAMI_WEBSITE_ID"):
+    os.environ[_clave] = ""
 
 
 @pytest.fixture(scope="session")
