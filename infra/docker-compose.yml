@@ -1,0 +1,102 @@
+# El servidor del portfolio (INFRA-03): Caddy, la API, PostgreSQL y Umami.
+#
+#   cd /srv/portfolio/infra && sudo docker compose up -d --build
+#
+# Solo caddy tiene puertos hacia fuera (80 y 443). OJO: Docker se salta ufw con los puertos
+# publicados, así que nadie más publica ninguno (la API, la base y Umami se hablan por la red
+# interna de Docker). El cortafuegos de Hostinger, que Docker no puede tocar, es la red de
+# seguridad.
+#
+# Los secretos no están aquí: .env (las contraseñas de la base y de Umami, para este archivo)
+# y api.env (la configuración de la API). Plantillas: .env.example y api.env.example.
+
+name: portfolio
+
+# Los registros de cada contenedor, con tope: como mucho 3 archivos de 10 MB.
+x-registros: &registros
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  caddy:
+    image: caddy:2.11.7-alpine
+    restart: unless-stopped
+    ports:
+      - "${PUERTO_HTTP:-80}:80"
+      - "${PUERTO_HTTPS:-443}:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-datos:/data
+      - caddy-config:/config
+    depends_on:
+      api:
+        condition: service_healthy
+    mem_limit: 256m
+    <<: *registros
+
+  api:
+    build:
+      context: ..
+      dockerfile: apps/api/Dockerfile
+    image: portfolio-api:local
+    restart: unless-stopped
+    env_file: api.env
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://127.0.0.1:8000/api/health', timeout=4)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+    # La que más: Chromium genera el CV en PDF al publicar.
+    mem_limit: 1536m
+    <<: *registros
+
+  db:
+    image: postgres:18.6-alpine
+    restart: unless-stopped
+    environment:
+      # El usuario "jefe" solo se usa al crear la base por primera vez (db/crear-bases.sh).
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?falta POSTGRES_PASSWORD en .env}
+      PORTFOLIO_DB_PASSWORD: ${PORTFOLIO_DB_PASSWORD:?falta PORTFOLIO_DB_PASSWORD en .env}
+      UMAMI_DB_PASSWORD: ${UMAMI_DB_PASSWORD:?falta UMAMI_DB_PASSWORD en .env}
+    volumes:
+      # Desde PostgreSQL 18, el volumen va en /var/lib/postgresql (no en .../data).
+      - postgres-datos:/var/lib/postgresql
+      - ./db/crear-bases.sh:/docker-entrypoint-initdb.d/crear-bases.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    mem_limit: 1g
+    <<: *registros
+
+  umami:
+    image: ghcr.io/umami-software/umami:3.4.0
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://umami:${UMAMI_DB_PASSWORD}@db:5432/umami
+      APP_SECRET: ${UMAMI_APP_SECRET:?falta UMAMI_APP_SECRET en .env}
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://127.0.0.1:3000/api/heartbeat > /dev/null"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    init: true
+    mem_limit: 768m
+    <<: *registros
+
+volumes:
+  postgres-datos:
+  caddy-datos:
+  caddy-config:

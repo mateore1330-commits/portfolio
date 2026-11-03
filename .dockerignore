@@ -1,0 +1,11 @@
+# Lo que NO entra al construir las imágenes (el contexto es la raíz del repo).
+# Nada de secretos, nada pesado: el Dockerfile copia solo lo que necesita.
+.git
+**/.env
+**/.env.*
+**/node_modules
+**/__pycache__
+**/.ruff_cache
+**/.pytest_cache
+apps/web/dist
+apps/api/cv-privado

@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from .admin import iniciar as iniciar_panel
 from .config import load_config
@@ -34,6 +35,12 @@ def create_app():
             "max_age": 86400,
         },
     })
+
+    # Detrás de Caddy (INFRA-03), la IP del visitante llega en X-Forwarded-For. Solo se cree a
+    # los proxies que dice PROXIES (1 en el servidor: Caddy); sin él (en local), a nadie, para
+    # que nadie pueda inventarse una IP. La usan el límite del formulario y el de entrar al panel.
+    if proxies := app.config["PROXIES"]:
+        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=proxies, x_proto=proxies)
 
     app.register_blueprint(api)
     iniciar_panel(app)
