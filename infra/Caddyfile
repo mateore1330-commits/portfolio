@@ -1,0 +1,13 @@
+# Provisional (INFRA-03): sin dominio ni HTTPS todavía (llegan en INFRA-04, con GO-01).
+# Solo deja pasar la comprobación de salud de la API; todo lo demás, 404. Así nada (el panel,
+# las contraseñas) viaja sin cifrar mientras tanto.
+{
+	auto_https off
+}
+
+:80 {
+	handle /api/health {
+		reverse_proxy api:8000
+	}
+	respond 404
+}

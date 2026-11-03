@@ -41,6 +41,9 @@ COPY apps/web/src/assets/retrato/retrato-400.jpg /opt/cv/retrato-400.jpg
 RUN useradd --create-home --shell /usr/sbin/nologin api
 WORKDIR /app
 COPY --chown=api:api apps/api/ /app/
+# La semilla (seed/cargar.py, para el contenido de GO-03) comprueba los idiomas con este script
+# de la raíz del repo: va donde lo busca (dos niveles por encima de seed/, aquí /).
+COPY scripts/comprobar-idiomas.py /scripts/comprobar-idiomas.py
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
