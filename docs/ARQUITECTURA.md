@@ -207,10 +207,10 @@ Cuatro contenedores con Docker Compose (`infra/docker-compose.yml`, INFRA-03), e
 
 | Contenedor | Qué es | Expuesto |
 |---|---|---|
-| `caddy` | Proxy inverso; el TLS automático de Let's Encrypt llega con INFRA-04 | 80, 443 |
+| `caddy` | Proxy inverso y HTTPS con Let's Encrypt (pide y renueva los certificados solo). `api.` → la API; `visitas.` → solo el contador de Umami | 80, 443 (y 8081 solo en `127.0.0.1`) |
 | `api` | Flask bajo Gunicorn (2 procesos × 4 hilos), con Chromium para el CV en PDF. Usuario sin privilegios | Solo red interna |
 | `db` | PostgreSQL 18 con volumen persistente. Dos bases (`portfolio`, `umami`), cada una con su usuario sin privilegios | Solo red interna |
-| `umami` | Las visitas (ADM-10) | Solo red interna |
+| `umami` | Las visitas (ADM-10). Su panel, solo por túnel SSH; la API lo lee con un usuario de solo lectura | Solo red interna |
 
 Solo Caddy ve Internet. La API, la base de datos y Umami no tienen puerto publicado: se hablan por
 la red interna de Docker. Es la diferencia entre un servidor y un servidor expuesto.
@@ -218,6 +218,13 @@ la red interna de Docker. Es la diferencia entre un servidor y un servidor expue
 - La imagen de la API se construye en el servidor (`apps/api/Dockerfile`); con INFRA-06 pasará a GitHub.
 - Al arrancar, la API aplica las migraciones pendientes. Detrás de Caddy lee la IP real del visitante (`PROXIES=1`).
 - Registros con tope (3 × 10 MB por contenedor) y `no-new-privileges` para todos (`/etc/docker/daemon.json`).
+- **HTTPS (INFRA-04)**: `infra/Caddyfile`. `http://` redirige a `https://`; TLS 1.2 y 1.3; cabeceras HSTS (un año,
+  sin `includeSubDomains`), `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, sin `Server` ni `Via`.
+  Nota A+ en SSL Labs (03/11/2026). Sin HTTP/3 (va por UDP y los cortafuegos solo abren TCP). La IP a secas no
+  sirve nada. CORS lo pone la API, no Caddy.
+- **Umami**: en `visitas.` solo `/script.js` y `/api/send`. Su panel escucha en `127.0.0.1:8081` y se entra con
+  `ssh -L 8081:127.0.0.1:8081 portfolio`. La API usa el usuario `api-portfolio`, de solo lectura y en el equipo
+  "Portfolio" con papel de solo lectura (lo crea `infra/servidor/umami-configurar.py`).
 - Todo con `restart: unless-stopped`: tras reiniciar el servidor vuelve solo (comprobado el 03/11/2026).
 - Instalado con `infra/servidor/infra-03.sh`: Docker desde su repositorio oficial, con la huella de su clave
   comprobada antes de instalar nada.
@@ -270,7 +277,8 @@ Dominio: **mateorodriguez.solutions**, registrado en Hostinger.
 |---|---|
 | `mateorodriguez.solutions` | Vercel |
 | `www` | Vercel |
-| `api.mateorodriguez.solutions` | IP del VPS |
+| `api.mateorodriguez.solutions` | IP del VPS (registro A, TTL 1 h; INFRA-04) |
+| `visitas.mateorodriguez.solutions` | IP del VPS (registro A, TTL 1 h; INFRA-04) |
 
 Los DNS se gestionan desde Hostinger. No hace falta mover el dominio de registrador.
 
