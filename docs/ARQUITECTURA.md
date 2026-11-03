@@ -12,7 +12,7 @@ Decidido el 26 de octubre de 2026. Fase 3 del plan.
 | Idiomas | **Español e inglés** | Todo el contenido por duplicado; rutas `/` y `/en` |
 | Contacto | **Formulario + correo visible** | Backend, antispam y envío de correo |
 | Hosting front | Vercel (plan Hobby) | Gratis y permitido: portfolio personal, no comercial |
-| Hosting API | **VPS propio (Hetzner CX23)** | ~5-6 €/mes. Se administra entero |
+| Hosting API | **VPS propio (Hostinger KVM 2)** | 12,09 €/mes, mes a mes. Se administra entero (INFRA-01: el Hetzner CX23 previsto estaba agotado) |
 | Base de datos | PostgreSQL en el mismo VPS | En contenedor, con backups automáticos |
 | Repositorio | Público, monorepo | `apps/web` + `apps/api` en el mismo sitio |
 
@@ -194,8 +194,8 @@ GitHub (monorepo, público)
    │
    ├── apps/web  →  Vercel (Hobby, gratis)        mateorodriguez.solutions
    │
-   └── apps/api  →  VPS Hetzner CX23              api.mateorodriguez.solutions
-                    2 vCPU · 4 GB RAM · 40 GB NVMe · ~5-6 €/mes
+   └── apps/api  →  VPS Hostinger KVM 2           api.mateorodriguez.solutions
+                    2 vCPU · 8 GB RAM · 100 GB NVMe · Ubuntu 26.04 LTS · Francia · 12,09 €/mes
 ```
 
 El VPS no duerme, así que desaparece la acción programada para despertarlo. La regla de la
@@ -217,6 +217,9 @@ la red interna de Docker. Es la diferencia entre un servidor y un servidor expue
 ### Seguridad de base
 
 - Usuario sin privilegios, **acceso solo por clave SSH**. Contraseñas desactivadas y root sin login.
+  Hecho en INFRA-01: un solo usuario de administración (`mateo`, con `sudo` **que pide su contraseña**), clave
+  ed25519 con passphrase, `AllowUsers mateo` y como mucho 3 intentos (`/etc/ssh/sshd_config.d/00-portfolio.conf`).
+  El usuario de los despliegues automáticos, sin `sudo`, llega con INFRA-06.
 - `ufw` con tres puertos abiertos: 22, 80 y 443. Nada más.
 - `fail2ban` contra fuerza bruta en SSH.
 - `unattended-upgrades` para los parches de seguridad del sistema.
