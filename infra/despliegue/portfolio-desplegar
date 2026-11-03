@@ -23,6 +23,8 @@ USUARIO=${USUARIO:-mateo}
 REGISTRO=${REGISTRO:-ghcr.io/mateore1330-commits/portfolio-api}
 ESTADO=${ESTADO:-/etc/portfolio-despliegue}
 SALUD=${SALUD:-https://api.mateorodriguez.solutions/api/health}
+# Solo para probarlo en local (certificados de Caddy de prueba): opciones extra para curl.
+read -r -a SALUD_CURL <<<"${SALUD_CURL:-}"
 COPIA=${COPIA:-systemctl start portfolio-copia.service}
 INFRA="$REPO/infra"
 
@@ -45,7 +47,7 @@ imagen_en_marcha() { docker inspect --format '{{.Config.Image}}' "$(compose ps -
 sana() {  # la API responde por fuera (Caddy) y es la imagen que toca
   local _
   for _ in $(seq 1 12); do
-    if curl -fsS -m 5 "$SALUD" >/dev/null 2>&1 && [ "$(imagen_en_marcha)" = "$1" ]; then
+    if curl -fsS -m 5 "${SALUD_CURL[@]}" "$SALUD" >/dev/null 2>&1 && [ "$(imagen_en_marcha)" = "$1" ]; then
       return 0
     fi
     sleep 5
@@ -109,14 +111,16 @@ decir "d. Migraciones al día."
 
 # ---------------------------------------------------------------- e. La API nueva
 poner_imagen "$nueva"
-compose up -d --wait --wait-timeout 180 api caddy || true
-if ! git_ diff --quiet "$git_anterior" HEAD -- infra/Caddyfile; then
+arranca=si
+compose up -d --wait --wait-timeout 180 api caddy || arranca=no
+if [ "$arranca" = si ] && ! git_ diff --quiet "$git_anterior" HEAD -- infra/Caddyfile; then
   compose exec -T caddy caddy reload --config /etc/caddy/Caddyfile || true
   decir "e. Caddy ha releído su configuración."
 fi
 
 # ---------------------------------------------------------------- f. ¿Funciona?
-if sana "$nueva"; then
+# Si Docker ya dice que no arranca, no hace falta esperar más.
+if [ "$arranca" = si ] && sana "$nueva"; then
   echo "$anterior" > "$ESTADO/anterior"
   echo "$nueva" > "$ESTADO/actual"
   # Se guardan la nueva y la anterior; las demás versiones de la API sobran.

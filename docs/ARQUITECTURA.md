@@ -276,12 +276,19 @@ aquí no hay nadie haciéndolo por detrás. Montado en INFRA-05 siguiendo la reg
 
 ### Despliegue
 
-GitHub Actions al hacer merge en `main`:
+GitHub Actions al hacer merge en `main` (INFRA-06, `.github/workflows/deploy-api.yml`), solo si cambió la API o
+el servidor:
 
-1. Construye la imagen de la API y la sube a GitHub Container Registry.
-2. Entra por SSH al VPS con una clave de despliegue dedicada.
-3. `docker compose pull && docker compose up -d` y aplica las migraciones de Alembic.
-4. Comprueba `/api/health`; si falla, revierte a la imagen anterior.
+1. Construye la imagen de la API y la sube a GitHub Container Registry (`ghcr.io/…/portfolio-api:<commit>`,
+   pública: no lleva secretos).
+2. Entra por SSH con una llave de despliegue dedicada, como el usuario `despliegue`, que **solo puede lanzar**
+   `portfolio-desplegar <commit>` (orden forzada, sin terminal, `sudo` solo para eso).
+3. En el servidor: código de `main`, la imagen, **una copia de la base**, las migraciones con la imagen nueva y
+   la API nueva.
+4. Comprueba `/api/health`; si falla, **vuelve sola a la imagen anterior** (probado: versión que no arranca,
+   imagen que no existe, copia que falla, migración rota).
+
+El servidor sigue `main`. Las migraciones tienen que ser compatibles hacia atrás. Todo, en `docs/DESPLIEGUE.md`.
 
 El frontend se despliega solo: Vercel escucha el repositorio.
 

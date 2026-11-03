@@ -47,9 +47,9 @@ if ! id "$CUENTA" >/dev/null 2>&1; then
   useradd --system --home-dir "$CASA" --no-create-home --shell /bin/sh "$CUENTA"
   echo "Creado."
 fi
-usermod --shell /bin/sh --home "$CASA" "$CUENTA"
+usermod --shell /bin/sh --home "$CASA" "$CUENTA" 2>/dev/null || true
 # Sin contraseña (ni siquiera vacía): solo se entra con la llave.
-usermod -p '*' "$CUENTA"
+usermod -p '*' "$CUENTA" 2>/dev/null || true
 # Su casa y su .ssh son de root: no puede cambiar su propia llave ni dejarse archivos.
 install -d -m 755 -o root -g root "$CASA" "$CASA/.ssh"
 echo "$(id "$CUENTA") · casa $CASA (de root) · intérprete /bin/sh"
