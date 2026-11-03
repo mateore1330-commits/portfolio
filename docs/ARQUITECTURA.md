@@ -203,16 +203,24 @@ sección 2 sigue vigente de todas formas: si el servidor se cae, la web se ve ig
 
 ### Qué corre en la máquina
 
-Tres contenedores con Docker Compose:
+Cuatro contenedores con Docker Compose (`infra/docker-compose.yml`, INFRA-03), en `/srv/portfolio`:
 
 | Contenedor | Qué es | Expuesto |
 |---|---|---|
-| `caddy` | Proxy inverso y TLS automático de Let's Encrypt | 80, 443 |
-| `api` | Flask bajo Gunicorn | Solo red interna |
-| `db` | PostgreSQL con volumen persistente | Solo red interna |
+| `caddy` | Proxy inverso; el TLS automático de Let's Encrypt llega con INFRA-04 | 80, 443 |
+| `api` | Flask bajo Gunicorn (2 procesos × 4 hilos), con Chromium para el CV en PDF. Usuario sin privilegios | Solo red interna |
+| `db` | PostgreSQL 18 con volumen persistente. Dos bases (`portfolio`, `umami`), cada una con su usuario sin privilegios | Solo red interna |
+| `umami` | Las visitas (ADM-10) | Solo red interna |
 
-Solo Caddy ve Internet. La API y la base de datos no tienen puerto publicado: se hablan por
+Solo Caddy ve Internet. La API, la base de datos y Umami no tienen puerto publicado: se hablan por
 la red interna de Docker. Es la diferencia entre un servidor y un servidor expuesto.
+
+- La imagen de la API se construye en el servidor (`apps/api/Dockerfile`); con INFRA-06 pasará a GitHub.
+- Al arrancar, la API aplica las migraciones pendientes. Detrás de Caddy lee la IP real del visitante (`PROXIES=1`).
+- Registros con tope (3 × 10 MB por contenedor) y `no-new-privileges` para todos (`/etc/docker/daemon.json`).
+- Todo con `restart: unless-stopped`: tras reiniciar el servidor vuelve solo (comprobado el 03/11/2026).
+- Instalado con `infra/servidor/infra-03.sh`: Docker desde su repositorio oficial, con la huella de su clave
+  comprobada antes de instalar nada.
 
 ### Seguridad de base
 
@@ -227,7 +235,8 @@ la red interna de Docker. Es la diferencia entre un servidor y un servidor expue
 - `unattended-upgrades` para los parches de seguridad del sistema, **sin reinicio automático**: si un parche lo pide,
   sale "*** System restart required ***" al entrar por SSH y se reinicia a mano. Sin Ubuntu Pro (sus condiciones
   gratuitas no cubren con claridad un VPS alquilado). Script: `infra/servidor/infra-02.sh`.
-- Secretos en un `.env` del servidor con permisos 600, nunca en el repositorio.
+- Secretos en `infra/.env` y `infra/api.env` del servidor, generados allí al azar, de root y con permisos 600;
+  nunca en el repositorio (plantillas: `.env.example` y `api.env.example`).
 - CORS restringido al dominio propio.
 
 ### Backups
