@@ -264,7 +264,7 @@ Depende de: 3.5
 ## E7 · Infraestructura y VPS
 
 **7.1 · Contratar y provisionar el servidor** `v1`
-- [ ] Hetzner CX23 con Ubuntu LTS
+- [x] Hostinger KVM 2 con Ubuntu LTS (INFRA-01; el Hetzner CX23 estaba agotado)
 - [ ] Usuario sin privilegios, acceso solo por clave SSH
 - [ ] Contraseñas y acceso de root desactivados
 
