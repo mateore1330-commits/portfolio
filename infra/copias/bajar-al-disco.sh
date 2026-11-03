@@ -30,7 +30,8 @@ mkdir -p "$DESTINO"
 echo "Bajando a $DESTINO …"
 rsync -a --ignore-existing --exclude '.en-curso.*' portfolio:/var/backups/portfolio/ "$DESTINO/"
 
-# Comprobar: cada copia está cerrada (empieza por la cabecera de age) y no está vacía.
+# Comprobar: cada copia está cerrada (empieza por la cabecera de age) y no está vacía. Los ._*
+# no son copias: macOS los crea en los discos ExFAT (como el de Mateo) para sus metadatos.
 mal=0
 total=0
 while IFS= read -r archivo; do
@@ -39,11 +40,11 @@ while IFS= read -r archivo; do
     echo "OJO: $archivo no parece una copia buena."
     mal=$((mal + 1))
   fi
-done < <(find "$DESTINO" -name '*.dump.age')
+done < <(find "$DESTINO" -name '*.dump.age' ! -name '._*')
 
 echo
 echo "En el disco: $(find "$DESTINO" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ') días, $total archivos, $(du -sh "$DESTINO" | cut -f1)."
-echo "La más reciente: $(ls "$DESTINO" | sort | tail -1)"
+echo "La más reciente: $(find "$DESTINO" -mindepth 1 -maxdepth 1 -type d -name '20??-??-??' -exec basename {} \; | sort | tail -1)"
 if [ "$mal" -gt 0 ]; then
   echo "Hay $mal archivos raros: avisa a Claude."
   exit 1
