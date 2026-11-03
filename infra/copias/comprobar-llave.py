@@ -19,8 +19,9 @@ import urllib.parse
 import urllib.request
 
 API = "https://api.backblazeb2.com/b2api/v2"
-NO_DEBE = {"deleteFiles", "deleteBuckets", "deleteKeys", "writeKeys", "writeBuckets", "writeBucketRetentions",
-           "bypassGovernance", "listAllBucketNames"}
+# Exactamente estos, ni uno más (crear-llave.py la crea así). La opción "Write Only" de la web
+# de Backblaze trae también deleteFiles y writeBucketLifecycleRules: no vale.
+PERMITIDOS = {"listBuckets", "listFiles", "writeFiles"}
 
 
 def pedir(url, cabeceras, datos=None):
@@ -47,9 +48,10 @@ def main():
         sys.exit(f"MAL: la llave no está limitada al bucket {bucket}.")
     if "writeFiles" not in permisos:
         sys.exit("MAL: la llave no puede subir archivos (falta writeFiles).")
-    sobran = permisos & NO_DEBE
+    sobran = permisos - PERMITIDOS
     if sobran:
-        sys.exit(f"MAL: la llave tiene permisos que no debe: {', '.join(sorted(sobran))}. Hay que rehacerla.")
+        sys.exit(f"MAL: la llave tiene permisos que no debe: {', '.join(sorted(sobran))}. "
+                 "Hay que crearla con infra/copias/crear-llave.py.")
 
     # La prueba de verdad: subir y tratar de borrar.
     api, token = auth["apiUrl"] + "/b2api/v2", auth["authorizationToken"]
