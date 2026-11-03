@@ -2,7 +2,9 @@
 
 Lo usan el comando `pipenv run generar-cv` (seed/generar_cv.py, escribe los archivos) y
 el panel al publicar o al probar el PDF (ADM-05, los guarda en la base de datos).
-Necesita Google Chrome y las fuentes de la web (npm install en apps/web).
+Necesita Google Chrome y las fuentes de la web (npm install en apps/web). En el servidor
+(INFRA-03), la imagen de Docker trae Chromium, las fuentes y el retrato, y dice dónde con
+CHROME, CV_FUENTES y CV_RETRATO.
 
 - Los textos son los del CV (el texto "cv" del contenido): resumidos y adaptados a las
   ofertas, no una copia de la web.
@@ -43,8 +45,12 @@ PLANTILLAS = Path(__file__).resolve().parent
 IDIOMAS = ("es", "en")
 NOMBRE_ARCHIVO = "CV-Mateo-Rodriguez-Escobar"
 CHROME = os.getenv("CHROME", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
-FUENTES = WEB / "node_modules" / "@fontsource-variable"
-RETRATO = WEB / "src" / "assets" / "retrato" / "retrato-400.jpg"
+FUENTES = Path(os.getenv("CV_FUENTES") or WEB / "node_modules" / "@fontsource-variable")
+RETRATO = Path(os.getenv("CV_RETRATO") or WEB / "src" / "assets" / "retrato" / "retrato-400.jpg")
+# Dentro de un contenedor, Chromium no puede usar su "sandbox" (le faltan permisos del sistema).
+# Se apaga solo ahí (CV_CHROME_SIN_SANDBOX=1): la página que abre la genera la propia API con el
+# contenido de la base, no es una web de fuera.
+SIN_SANDBOX = os.getenv("CV_CHROME_SIN_SANDBOX") == "1"
 WEB_URL = "https://mateorodriguez.solutions"
 AZUL = (0x1E, 0x3F, 0xB0)  # --blue de la web (tema claro)
 TINTE = .55  # la opacidad del azul sobre la foto, como en la portada
@@ -247,11 +253,11 @@ def fuentes_fijas(carpeta):
 def a_pdf(pagina_html, destino, carpeta):
     origen = carpeta / f"{destino.stem}.html"
     origen.write_text(pagina_html, encoding="utf-8")
-    subprocess.run(
-        [CHROME, "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
-         "--virtual-time-budget=5000", f"--print-to-pdf={destino}", origen.as_uri()],
-        check=True, capture_output=True, timeout=90,
-    )
+    orden = [CHROME, "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
+             "--virtual-time-budget=5000", f"--print-to-pdf={destino}", origen.as_uri()]
+    if SIN_SANDBOX:
+        orden[1:1] = ["--no-sandbox", "--disable-dev-shm-usage"]
+    subprocess.run(orden, check=True, capture_output=True, timeout=90)
 
 
 def poner_metadatos(ruta, datos):
