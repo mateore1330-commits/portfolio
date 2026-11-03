@@ -1,0 +1,17 @@
+# La copia de la base (INFRA-05). La lanza portfolio-copia.timer; a mano:
+#   sudo systemctl start portfolio-copia      ·      sudo journalctl -u portfolio-copia
+[Unit]
+Description=Copia cifrada de la base del portfolio
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+# Si termina mal (por lo que sea), el correo.
+OnFailure=portfolio-copia-aviso.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/lib/portfolio-copias/copiar.sh
+PrivateTmp=yes
+NoNewPrivileges=yes
+Nice=10
+IOSchedulingClass=idle
