@@ -249,14 +249,30 @@ la red interna de Docker. Es la diferencia entre un servidor y un servidor expue
 ### Backups
 
 Lo que más duele perder es la base de datos, y en un VPS **el backup es responsabilidad tuya**:
-aquí no hay nadie haciéndolo por detrás.
+aquí no hay nadie haciéndolo por detrás. Montado en INFRA-05 siguiendo la regla **3-2-1**:
 
-- `pg_dump` diario mediante un temporizador de systemd.
-- Cifrado del volcado antes de salir de la máquina.
-- Copia fuera del servidor (Hetzner Storage Box o Backblaze B2, ambos de céntimos al mes).
-- Retención de 7 diarios y 4 semanales.
-- **Una prueba de restauración** al terminar el montaje. Un backup que no se ha restaurado
-  nunca no es un backup.
+- **Cada noche a las 04:00 (Madrid)**, un temporizador de systemd (`portfolio-copia.timer`) lanza
+  `infra/copias/copiar.sh`: `pg_dump -Fc` de `portfolio` y de `umami`.
+- **Cifrado con age antes de salir**, con una llave **pública** (`infra/copias/llave-publica.txt`). La
+  privada está solo en Bitwarden y en el Mac de Mateo: el servidor puede cerrar copias, pero **no abrirlas**.
+- **Tres sitios**:
+  - dentro, `/var/backups/portfolio/` (las 7 últimas; legibles por `mateo` para bajarlas, van cifradas);
+  - **Backblaze B2** (Ámsterdam, gratis hasta 10 GB): `diarias/` 7 días y `semanales/` (domingos) 31 días.
+    Lo viejo lo borran sus reglas de caducidad, con 7 días más de margen;
+  - **el disco SSD de Mateo**, cuando él quiere: `infra/copias/bajar-al-disco.sh`.
+  - Y aparte, la copia semanal de Hostinger.
+- **La llave de Backblaze del servidor solo puede listar y subir** (`listBuckets`, `listFiles`,
+  `writeFiles`, solo su bucket): no puede borrar ni cambiar las reglas, así que quien tomara el servidor no
+  podría destruir las copias. La opción "Write Only" de la web de Backblaze **no sirve** (trae `deleteFiles`
+  y `writeBucketLifecycleRules`): se crea con `infra/copias/crear-llave.py` y la comprueba
+  `comprobar-llave.py` (sube un archivo e intenta borrarlo).
+- **Si una copia falla**, systemd lanza `portfolio-copia-aviso` (`OnFailure`): un correo con las últimas
+  líneas del registro, por el mismo buzón que el formulario de contacto (`SMTP_*` y `CONTACT_TO` de `api.env`).
+  Probado provocando un fallo. Que la copia ni siquiera se lance, lo vigilará INFRA-07.
+- Los scripts se instalan en `/usr/local/lib/portfolio-copias/` (de root: los ejecuta root cada noche) y la
+  configuración en `/etc/portfolio-copias/` (root, 600). Instalador: `infra/servidor/infra-05.sh`.
+- **Restaurada de verdad** (03/11/2026): una copia bajada de Backblaze, abierta y cargada en una base limpia:
+  las 42 tablas con las mismas filas. El procedimiento, paso a paso, en **`docs/RESTAURAR.md`**.
 
 ### Despliegue
 
