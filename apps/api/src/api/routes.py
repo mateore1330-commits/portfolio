@@ -55,7 +55,7 @@ def contact():
     if errores:
         return jsonify(errores=errores), 400
 
-    # La IP real llega por el proxy del servidor (X-Forwarded-For); se configura en INFRA.
+    # Detrás de Caddy, la del visitante (ProxyFix, ver create_app y PROXIES).
     ip = request.remote_addr
     if contacto.supera_limite(ip):
         return jsonify(error="limite"), 429

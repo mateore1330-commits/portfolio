@@ -65,6 +65,8 @@ def load_config():
         "JWT_ACCESS_COOKIE_NAME": "sesion_panel",
         "JWT_ACCESS_COOKIE_PATH": "/api/admin",
         "JWT_COOKIE_SECURE": os.getenv("COOKIE_SECURE", "1").strip() != "0",
+        # Cuántos proxies hay delante (Caddy en el servidor: 1). Ver create_app.
+        "PROXIES": int(os.getenv("PROXIES", "0") or 0),
         "JWT_COOKIE_SAMESITE": "Lax",
         "JWT_SESSION_COOKIE": False,
         "JWT_ACCESS_TOKEN_EXPIRES": timedelta(hours=8),

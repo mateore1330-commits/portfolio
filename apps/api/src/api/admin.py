@@ -61,7 +61,7 @@ def _hash_falso():
 
 
 def _ip():
-    # La IP real llega por el proxy del servidor (X-Forwarded-For); se configura en INFRA.
+    # Detrás de Caddy, la del visitante (ProxyFix, ver create_app y PROXIES).
     return request.remote_addr or "desconocida"
 
 
