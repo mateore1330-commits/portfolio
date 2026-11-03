@@ -220,9 +220,13 @@ la red interna de Docker. Es la diferencia entre un servidor y un servidor expue
   Hecho en INFRA-01: un solo usuario de administración (`mateo`, con `sudo` **que pide su contraseña**), clave
   ed25519 con passphrase, `AllowUsers mateo` y como mucho 3 intentos (`/etc/ssh/sshd_config.d/00-portfolio.conf`).
   El usuario de los despliegues automáticos, sin `sudo`, llega con INFRA-06.
-- `ufw` con tres puertos abiertos: 22, 80 y 443. Nada más.
-- `fail2ban` contra fuerza bruta en SSH.
-- `unattended-upgrades` para los parches de seguridad del sistema.
+- `ufw` con tres puertos abiertos: 22, 80 y 443. Nada más. **Y delante, el cortafuegos de Hostinger** con las
+  mismas tres (Accept 22/80/443, Drop el resto): para el tráfico antes de llegar y Docker no puede saltárselo
+  (INFRA-02). Ojo en INFRA-03: Docker se salta `ufw` si un contenedor publica un puerto; solo Caddy publica 80 y 443.
+- `fail2ban` contra fuerza bruta en SSH: 5 fallos en 10 min → 1 h fuera, y el doble si repite (máx. 1 semana).
+- `unattended-upgrades` para los parches de seguridad del sistema, **sin reinicio automático**: si un parche lo pide,
+  sale "*** System restart required ***" al entrar por SSH y se reinicia a mano. Sin Ubuntu Pro (sus condiciones
+  gratuitas no cubren con claridad un VPS alquilado). Script: `infra/servidor/infra-02.sh`.
 - Secretos en un `.env` del servidor con permisos 600, nunca en el repositorio.
 - CORS restringido al dominio propio.
 
