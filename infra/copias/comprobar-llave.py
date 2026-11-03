@@ -55,20 +55,28 @@ def main():
 
     # La prueba de verdad: subir y tratar de borrar.
     api, token = auth["apiUrl"] + "/b2api/v2", auth["authorizationToken"]
-    estado, subida = pedir(f"{api}/b2_get_upload_url", {"Authorization": token},
-                           json.dumps({"bucketId": permitido["bucketId"]}).encode())
-    if estado != 200:
-        sys.exit(f"MAL: no se puede pedir dónde subir ({estado} {subida.get('code')}).")
     contenido = f"Prueba de permisos de INFRA-05, {time.strftime('%F %T')}. Se borra sola.\n".encode()
     nombre = f"diarias/prueba-permisos/{int(time.time())}.txt"
-    estado, archivo = pedir(subida["uploadUrl"], {
-        "Authorization": subida["authorizationToken"],
-        "X-Bz-File-Name": urllib.parse.quote(nombre),
-        "Content-Type": "text/plain",
-        "X-Bz-Content-Sha1": hashlib.sha1(contenido).hexdigest(),
-    }, contenido)
-    if estado != 200:
-        sys.exit(f"MAL: no se pudo subir el archivo de prueba ({estado} {archivo.get('code')}).")
+    # Backblaze a veces contesta 503 ("ocupado"): lo que pide su documentación es otra dirección
+    # de subida y volver a probar. rclone (la copia de cada noche) ya lo hace solo.
+    for intento in range(1, 6):
+        estado, subida = pedir(f"{api}/b2_get_upload_url", {"Authorization": token},
+                               json.dumps({"bucketId": permitido["bucketId"]}).encode())
+        if estado == 200:
+            estado, archivo = pedir(subida["uploadUrl"], {
+                "Authorization": subida["authorizationToken"],
+                "X-Bz-File-Name": urllib.parse.quote(nombre),
+                "Content-Type": "text/plain",
+                "X-Bz-Content-Sha1": hashlib.sha1(contenido).hexdigest(),
+            }, contenido)
+            if estado == 200:
+                break
+        if estado not in (408, 429, 500, 503):
+            sys.exit(f"MAL: no se pudo subir el archivo de prueba ({estado}).")
+        print(f"  Backblaze ocupado ({estado}); otro intento ({intento}/5)…")
+        time.sleep(2 * intento)
+    else:
+        sys.exit("MAL: Backblaze sigue ocupado tras 5 intentos. Prueba otra vez en un rato.")
     print(f"Sube: sí ({nombre}).")
 
     estado, _ = pedir(f"{api}/b2_delete_file_version", {"Authorization": token},
