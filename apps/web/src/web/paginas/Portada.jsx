@@ -12,10 +12,10 @@ export default function Portada() {
     <main id="contenido" tabIndex={-1}>
       <Inicio />
       <SobreMi />
-      <Actividad />
-      <Conocimientos />
       <Proyectos />
+      <Actividad />
       <Trayectoria />
+      <Conocimientos />
       <Contacto />
     </main>
   )

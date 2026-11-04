@@ -5,6 +5,11 @@
    ============================================================ */
 
 .contact {
+  /* Las dos cajas (texto y formulario), como la tarjeta del login: translúcidas, para que
+     los puntos y su brillo al pasar el cursor se intuyan detrás. Poco desenfoque: los
+     puntos son diminutos y con más se borrarían. */
+  --caja-fondo: rgba(11, 13, 17, .5);
+  --caja-filtro: blur(1.5px);
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -115,6 +120,18 @@
 }
 
 /* --- Texto y canales --------------------------------------- */
+/* En su caja translúcida, como el formulario: los puntos siguen alrededor pero no cruzan
+   el texto. Borde neutro (el del formulario es azul): el formulario manda, esto es la
+   alternativa directa. Las dos cajas empiezan a la misma altura; cada una, del alto de lo
+   suyo. */
+.contact-texto {
+  padding: clamp(22px, 3vw, 40px);
+  border: 1px solid rgba(237, 235, 229, .12);
+  background: var(--caja-fondo);
+  backdrop-filter: var(--caja-filtro);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .35);
+}
+
 .contact .sub {
   max-width: 44ch;
   color: var(--panel-dim);
@@ -126,6 +143,10 @@
   margin-top: var(--sp-3);
 }
 
+.contact-texto .sub:last-of-type {
+  margin-bottom: 38px;
+}
+
 .contact .sub b {
   color: var(--panel-ink);
   font-weight: 600;
@@ -135,7 +156,7 @@
 .canales {
   container-type: inline-size;
   max-width: 520px;
-  margin: 38px 0 0;
+  margin: 0;
   padding: 0;
   border-top: 1px solid rgba(237, 235, 229, .14);
   list-style: none;
@@ -271,8 +292,8 @@
 .form-contacto {
   padding: clamp(22px, 3vw, 40px);
   border: 1px solid rgba(114, 144, 255, .28);
-  background: rgba(11, 13, 17, .72);
-  backdrop-filter: blur(6px);
+  background: var(--caja-fondo);
+  backdrop-filter: var(--caja-filtro);
   box-shadow: 0 30px 80px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(114, 144, 255, .25);
 }
 
@@ -527,9 +548,10 @@
   }
 }
 
-/* Columna estrecha (móvil, o a 1024 con el formulario al lado): la etiqueta del canal
-   encima del dato, para que el correo quepa entero en una línea. */
-@container (max-width: 460px) {
+/* Columna estrecha (móvil, o en portátiles con el formulario al lado y el margen de la
+   caja): la etiqueta del canal encima del dato, para que el correo quepa entero en una
+   línea. En fila, el correo con su etiqueta y "Copiar" necesita unos 500 px. */
+@container (max-width: 520px) {
   .canales a,
   .canales .con-copiar {
     grid-template-columns: minmax(0, 1fr) auto;

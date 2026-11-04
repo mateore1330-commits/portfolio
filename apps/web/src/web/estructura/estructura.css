@@ -329,6 +329,15 @@
   }
 }
 
+/* Justo por encima de 1200 px, con los seis enlaces ya en la cabecera, "Desarrollador
+   Full Stack" deja poco más de 16 px hasta el menú: ahí el logo es solo el nombre. A
+   partir de 1280 px, completo (y con holgura: unos 48 px). */
+@media (min-width: 1200px) and (max-width: 1279px) {
+  .brand .mono {
+    display: none;
+  }
+}
+
 @media (max-width: 759px) {
   /* En móvil, la cabecera solo lleva el nombre y "Menú": el resto pasa al panel. */
   .brand .mono,

@@ -4,10 +4,10 @@
 // subtitulo: el texto de la derecha en la cabecera de la sección (CabeceraSeccion).
 export const SECCIONES = [
   { id: 'sobre-mi', clave: 'seccion.sobre', subtitulo: 'seccion.sobre.subtitulo' },
-  { id: 'actividad', clave: 'seccion.actividad', subtitulo: 'seccion.actividad.subtitulo' },
-  { id: 'conocimientos', clave: 'seccion.conocimientos', subtitulo: 'seccion.conocimientos.subtitulo' },
   { id: 'proyectos', clave: 'seccion.proyectos', subtitulo: 'seccion.proyectos.subtitulo' },
+  { id: 'actividad', clave: 'seccion.actividad', subtitulo: 'seccion.actividad.subtitulo' },
   { id: 'trayectoria', clave: 'seccion.trayectoria', subtitulo: 'seccion.trayectoria.subtitulo' },
+  { id: 'conocimientos', clave: 'seccion.conocimientos' },
   { id: 'contacto', clave: 'seccion.contacto' },
 ]
 

@@ -101,6 +101,15 @@ export default function Trayectoria() {
     <section id="trayectoria" className="seccion timeline">
       <CabeceraSeccion id="trayectoria" />
 
+      {/* Primero la formación (y los cursos), después la experiencia laboral. */}
+      {formacion.length > 0 && (
+        <Bloque titulo={t('trayectoria.formacion')}>{formacion.map((curso) => filaDe(curso, false))}</Bloque>
+      )}
+
+      {cursos.length > 0 && (
+        <Bloque titulo={t('trayectoria.cursos')}>{cursos.map((curso) => filaDe(curso, true))}</Bloque>
+      )}
+
       <Bloque titulo={t('trayectoria.experiencia')} subtitulo={t('trayectoria.experiencia_sub')}>
         {porFechaDesc(jobs).map((empleo) => (
           <Fila
@@ -114,14 +123,6 @@ export default function Trayectoria() {
           />
         ))}
       </Bloque>
-
-      {formacion.length > 0 && (
-        <Bloque titulo={t('trayectoria.formacion')}>{formacion.map((curso) => filaDe(curso, false))}</Bloque>
-      )}
-
-      {cursos.length > 0 && (
-        <Bloque titulo={t('trayectoria.cursos')}>{cursos.map((curso) => filaDe(curso, true))}</Bloque>
-      )}
     </section>
   )
 }
