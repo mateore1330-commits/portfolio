@@ -8,6 +8,8 @@
 #   4. Fuera: Backblaze B2, en diarias/AAAA-MM-DD/ (y los domingos también en semanales/). Lo
 #      viejo lo borra Backblaze con sus reglas de caducidad: la llave del servidor no puede borrar.
 #   5. Si algo falla (aquí o donde sea), systemd lanza portfolio-copia-aviso: un correo.
+#   6. Si todo va bien, "¡hecha!" a Healthchecks.io (INFRA-07): si ese aviso no llega a su hora
+#      (porque la copia ni siquiera se lanzó), Healthchecks.io manda el correo.
 #
 # Instalado por infra/servidor/4-copias.sh en /usr/local/lib/portfolio-copias (solo root puede
 # cambiarlo). La configuración, en /etc/portfolio-copias/ (root, 600).
@@ -76,3 +78,16 @@ find "$COPIAS" -mindepth 1 -maxdepth 1 -type d -name '20??-??-??' | sort | head 
 done
 
 echo "== Hecho: $(ls "$COPIAS" | tr '\n' ' ')"
+
+# El "¡hecha!" para la vigilancia (INFRA-07). La dirección es secreta (quien la tenga podría
+# fingir copias): está en vigilancia.env (root, 600) y no se escribe en el registro. Si el aviso
+# no sale, la copia sigue bien: solo se dice.
+if [ -f "$CONF/vigilancia.env" ]; then
+  # shellcheck source=/dev/null
+  . "$CONF/vigilancia.env"
+  if curl -fsS -m 10 --retry 5 -o /dev/null "$AVISO_COPIA"; then
+    echo "== Vigilancia avisada: copia hecha."
+  else
+    echo "== OJO: no se pudo avisar a la vigilancia (la copia está bien; mañana avisará de que falta)."
+  fi
+fi
