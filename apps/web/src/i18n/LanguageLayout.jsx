@@ -36,6 +36,14 @@ export default function LanguageLayout({ lang }) {
   )
 }
 
+// Lleva el foco a un elemento sin mover la página (de eso se encarga ScrollRestoration). Una
+// sección no recibe el foco por sí sola: se le deja recibirlo solo por código (tabindex -1).
+function enfocar(elemento) {
+  if (!elemento) return
+  if (!elemento.hasAttribute('tabindex')) elemento.setAttribute('tabindex', '-1')
+  elemento.focus({ preventScroll: true })
+}
+
 // Solo la primera página de la visita puede redirigir al idioma recordado.
 let primeraPagina = true
 
@@ -46,7 +54,7 @@ function Documento() {
   const { site_texts: textos } = useContent()
   // La descripción de siempre: la entradilla de la portada, sin las marcas **.
   const descripcion = p(textos['hero.entradilla']).replace(/\*\*|`/g, '')
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
   const navigate = useNavigate()
   const tipo = useNavigationType()
   const anterior = useRef(pathname)
@@ -70,15 +78,20 @@ function Documento() {
   }, [lang, t, pathname, descripcion])
 
   // Al ir a otra página con un enlace, el foco pasa al contenido nuevo, para el lector de
-  // pantalla. (El scroll lo lleva ScrollRestoration, en App: arriba al entrar, donde
-  // estabas al volver.) Al cambiar solo de idioma no se toca nada.
+  // pantalla; y al ir a una sección (el menú), a esa sección (#158). (El scroll lo lleva
+  // ScrollRestoration, en App: arriba al entrar, la sección del #, donde estabas al volver.)
+  // Al cambiar solo de idioma no se toca nada.
   useLayoutEffect(() => {
-    const cambioDeIdioma = rutaEn('es', anterior.current) === rutaEn('es', pathname)
     const cambioDePagina = anterior.current !== pathname
+    const cambioDeIdioma = cambioDePagina && rutaEn('es', anterior.current) === rutaEn('es', pathname)
     anterior.current = pathname
-    if (tipo !== 'PUSH' || !cambioDePagina || cambioDeIdioma) return
-    document.getElementById('contenido')?.focus({ preventScroll: true })
-  }, [pathname, tipo])
+    if (tipo !== 'PUSH' || cambioDeIdioma) return
+    if (hash) {
+      enfocar(document.getElementById(decodeURIComponent(hash.slice(1))))
+    } else if (cambioDePagina) {
+      enfocar(document.getElementById('contenido'))
+    }
+  }, [pathname, hash, tipo])
 
   // Antes de pintar: si venimos del selector, volver a la sección que se estaba viendo.
   useLayoutEffect(() => {
