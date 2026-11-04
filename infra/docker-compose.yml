@@ -53,7 +53,12 @@ services:
       dockerfile: apps/api/Dockerfile
     image: ${API_IMAGEN:-portfolio-api:local}
     restart: unless-stopped
-    env_file: api.env
+    # Tal cual (raw): sin esto, Docker toma lo que va detrás de un $ como una variable, lo corta
+    # y lo enseña en el aviso (se vio con la contraseña del correo en los registros públicos
+    # de los despliegues). Por eso, en api.env, los valores van sin comillas.
+    env_file:
+      - path: api.env
+        format: raw
     depends_on:
       db:
         condition: service_healthy
