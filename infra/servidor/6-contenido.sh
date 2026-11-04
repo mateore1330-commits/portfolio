@@ -49,7 +49,9 @@ poner() {  # cambia (o añade) CLAVE=valor en api.env; el valor va por el entorn
   mv "$API_ENV.nuevo" "$API_ENV"
 }
 compose() { (cd "$DESTINO/infra" && docker compose "$@"); }
-sql() { compose exec -T db psql -U postgres -d portfolio -tAc "$1"; }
+# </dev/null: docker compose exec lee de la terminal aunque no le haga falta, y se quedaría
+# con lo que escribes para las preguntas siguientes.
+sql() { compose exec -T db psql -U postgres -d portfolio -tAc "$1" </dev/null; }
 
 echo
 echo "== 1/5 · El código (rama $RAMA) =="
@@ -58,7 +60,7 @@ if [ -z "${SALTAR_GIT:-}" ]; then
   sudo -u "$USUARIO" git -C "$DESTINO" checkout --quiet "$RAMA"
   sudo -u "$USUARIO" git -C "$DESTINO" pull --quiet --ff-only origin "$RAMA"
 fi
-echo "Código en: $(git -C "$DESTINO" log --oneline -1)"
+echo "Código en: $(sudo -u "$USUARIO" git -C "$DESTINO" log --oneline -1)"
 
 echo
 echo "== 2/5 · Las llaves de la API (Enter para dejar una para más adelante) =="
@@ -98,7 +100,7 @@ chown root:root "$API_ENV"
 chmod 600 "$API_ENV"
 if [ "$cambiado" = si ]; then
   echo "Reinicio la API para que lea las llaves…"
-  compose up -d --force-recreate --wait api
+  compose up -d --force-recreate --wait api </dev/null
 fi
 
 echo
@@ -121,13 +123,13 @@ else
   else
     echo "Ya hay usuario del panel: la semilla no lo toca."
   fi
-  compose exec -T -e ADMIN_EMAIL -e ADMIN_PASSWORD api python seed/cargar.py
+  compose exec -T -e ADMIN_EMAIL -e ADMIN_PASSWORD api python seed/cargar.py </dev/null
   unset ADMIN_EMAIL ADMIN_PASSWORD
 fi
 
 echo
 echo "== 4/5 · Publicar =="
-compose exec -T api python seed/publicar.py
+compose exec -T api python seed/publicar.py </dev/null
 
 echo
 echo "== 5/5 · Comprobar desde fuera =="
