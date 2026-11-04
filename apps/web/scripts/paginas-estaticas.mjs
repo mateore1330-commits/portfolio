@@ -103,7 +103,7 @@ function cabecera(p) {
 
 // El retrato es lo más grande de la portada (el LCP de Lighthouse), pero el navegador no
 // lo descubre hasta que React pinta la página. Avisarle desde el HTML adelanta su descarga.
-// Mismos archivos y mismo `sizes` que el <picture> de Hero.jsx: si cambian allí, cambiar aquí.
+// Mismos archivos y mismo `sizes` que el <picture> de Inicio.jsx (web/secciones): si cambian allí, cambiar aquí.
 const RETRATO_SIZES = '(max-width: 980px) min(78vw, 420px), 38vw'
 
 async function precargaRetrato() {

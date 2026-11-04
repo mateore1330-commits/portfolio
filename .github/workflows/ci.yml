@@ -62,7 +62,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - name: Los dos idiomas de la interfaz cuadran
-        run: python3 scripts/comprobar-idiomas.py apps/web/src/i18n/es.json apps/web/src/i18n/en.json
+        run: python3 scripts/comprobar-idiomas.py apps/web/src/idioma/es.json apps/web/src/idioma/en.json
         working-directory: .
       - run: npm run build
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Antes de cada build de la web: trae de la API las dos copias que se incrustan en el
 // bundle y las guarda en apps/web/src/contenido/:
-//   - snapshot.json: la última instantánea del contenido publicado.
+//   - instantanea.json: la última instantánea del contenido publicado.
 //   - contribuciones.json: el gráfico de contribuciones de GitHub.
 // Y el CV en PDF publicado desde el panel (ADM-05), en apps/web/public/cv/.
 //
