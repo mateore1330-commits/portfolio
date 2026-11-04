@@ -138,6 +138,10 @@ export default function CampoPuntos() {
       cerca = true
       arrancar()
     }
+    // Se rehace cuando cambia el tamaño del propio lienzo, no solo el de la ventana: la
+    // sección cambia de alto sin que la ventana cambie (al cargar las fuentes, cuando el
+    // formulario pasa a "no disponible"…), y un dibujo hecho para otro alto deja el efecto
+    // lejos del puntero (#168).
     let espera
     const alCambiarTamano = () => {
       clearTimeout(espera)
@@ -149,7 +153,8 @@ export default function CampoPuntos() {
 
     construir()
     pintar() // en reposo, visible sin interactuar
-    window.addEventListener('resize', alCambiarTamano)
+    const vigia = new ResizeObserver(alCambiarTamano)
+    vigia.observe(cv)
     if (!reducido) {
       sec.addEventListener('pointermove', alMover, { passive: true })
       sec.addEventListener('pointerleave', alSalir)
@@ -158,7 +163,7 @@ export default function CampoPuntos() {
     return () => {
       cancelAnimationFrame(fotograma)
       clearTimeout(espera)
-      window.removeEventListener('resize', alCambiarTamano)
+      vigia.disconnect()
       sec.removeEventListener('pointermove', alMover)
       sec.removeEventListener('pointerleave', alSalir)
       sec.removeEventListener('pointerdown', alPulsar)
