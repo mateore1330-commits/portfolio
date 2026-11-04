@@ -12,7 +12,8 @@
 #      root, así que nadie más debe poder cambiarlos; /srv/portfolio es de mateo).
 #   3. La llave de Backblaze (comprobada de verdad: sube y NO borra) y la llave pública de age.
 #   4. El correo de aviso (SMTP_* y CONTACT_TO en api.env, los mismos que usa la API).
-#   5. El temporizador, y la primera copia.
+#   5. El "¡hecha!" para la vigilancia (Healthchecks.io, INFRA-07).
+#   6. El temporizador, y la primera copia.
 set -euo pipefail
 
 if [ "$(id -u)" -ne 0 ]; then
@@ -58,7 +59,7 @@ tiene() {  # ¿api.env ya tiene un valor para esta clave? (sin enseñarlo)
 }
 
 echo
-echo "== 1/5 · El código (rama $RAMA) y los programas =="
+echo "== 1/6 · El código (rama $RAMA) y los programas =="
 sudo -u "$USUARIO" git -C "$DESTINO" fetch --quiet --prune origin
 sudo -u "$USUARIO" git -C "$DESTINO" checkout --quiet "$RAMA"
 sudo -u "$USUARIO" git -C "$DESTINO" pull --quiet --ff-only origin "$RAMA"
@@ -67,7 +68,7 @@ apt-get install -y -q age rclone >/dev/null
 echo "age $(age --version) · $(rclone version | head -1)"
 
 echo
-echo "== 2/5 · Los scripts, donde solo root puede cambiarlos =="
+echo "== 2/6 · Los scripts, donde solo root puede cambiarlos =="
 COPIAS_SRC="$DESTINO/infra/copias"
 install -d -m 755 -o root -g root "$LIB"
 install -m 755 -o root -g root "$COPIAS_SRC/copiar.sh" "$LIB/copiar.sh"
@@ -79,7 +80,7 @@ install -m 600 -o root -g root "$COPIAS_SRC/llave-publica.txt" "$CONF/llave-publ
 echo "En $LIB y /etc/systemd/system. Llave pública: $(cat "$CONF/llave-publica.txt")"
 
 echo
-echo "== 3/5 · La llave de Backblaze (Bitwarden: \"Backblaze · llave del servidor\") =="
+echo "== 3/6 · La llave de Backblaze (Bitwarden: \"Backblaze · llave del servidor\") =="
 # Desde aquí, lo que se escriba solo lo puede leer root.
 umask 077
 if [ -f "$CONF/b2.env" ] && ! si "Ya hay una llave guardada. ¿Cambiarla?"; then
@@ -96,7 +97,7 @@ echo "Comprobando la llave de verdad (sube un archivo de prueba e intenta borrar
 ( set -a; . "$CONF/b2.env"; set +a; python3 -I "$LIB/comprobar-llave.py" )
 
 echo
-echo "== 4/5 · El correo de aviso (el mismo buzón que el formulario de contacto) =="
+echo "== 4/6 · El correo de aviso (el mismo buzón que el formulario de contacto) =="
 if tiene SMTP_HOST && tiene SMTP_USER && tiene SMTP_PASSWORD && ! si "El correo ya está configurado. ¿Cambiarlo?"; then
   echo "Se queda el que había."
 else
@@ -114,13 +115,29 @@ else
   chmod 600 "$API_ENV"
   echo "Guardado en api.env. La API también lo usa (formulario de contacto): la reinicio."
   (cd "$DESTINO/infra" && docker compose up -d --force-recreate --wait api)
+  echo "Mandando un correo de PRUEBA…"
+  python3 -I "$LIB/avisar.py" --prueba
 fi
-echo "Mandando un correo de PRUEBA…"
-python3 -I "$LIB/avisar.py" --prueba
+
+echo
+echo "== 5/6 · El \"¡hecha!\" para la vigilancia (Healthchecks.io: \"Copia nocturna\" → Ping URL) =="
+if [ -f "$CONF/vigilancia.env" ] && ! si "Ya hay una dirección guardada. ¿Cambiarla?"; then
+  echo "Se queda la que había."
+else
+  aviso=$(leer "Dirección del aviso, https://hc-ping.com/… (no se ve al escribir)")
+  case "$aviso" in
+    https://hc-ping.com/*) ;;
+    *) echo "No parece una dirección de Healthchecks.io (https://hc-ping.com/…). No toco nada."; exit 1 ;;
+  esac
+  printf 'AVISO_COPIA=%s\n' "$aviso" > "$CONF/vigilancia.env"
+  unset aviso
+fi
+chmod 600 "$CONF/vigilancia.env"
+echo "Guardada en $CONF/vigilancia.env (la usará la primera copia, en el paso siguiente)."
 
 echo
 umask 022
-echo "== 5/5 · El despertador (cada noche, 04:00 de Madrid) y la primera copia =="
+echo "== 6/6 · El despertador (cada noche, 04:00 de Madrid) y la primera copia =="
 systemctl daemon-reload
 systemctl enable --now portfolio-copia.timer
 echo "Haciendo la primera copia ahora (unos segundos)…"
