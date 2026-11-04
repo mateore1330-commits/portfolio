@@ -39,12 +39,18 @@ Enum tech_category {
   backend
   data
   tools
+  design [note: 'Photoshop, Illustrator, InDesign… De mi etapa anterior']
   soft [note: 'Competencias transversales: trato con cliente, gestión de equipo…']
 }
 
 Enum media_type {
   image
   video
+}
+
+Enum education_kind {
+  program [note: 'Formación: programas largos (bootcamp, FP…)']
+  course  [note: 'Curso: corto, de una o dos semanas']
 }
 
 Enum link_type {
@@ -73,8 +79,9 @@ Table admin_users {
   token_version  int       [not null, default: 1, note: 'Al subirlo, todos los JWT emitidos antes dejan de valer']
   last_login_at  timestamp
   created_at     timestamp [not null, default: `now()`]
+  is_singleton   boolean   [unique, not null, default: true, note: 'CHECK (is_singleton): siempre true. Con el UNIQUE, una segunda fila no tiene ningún valor válido']
 
-  Note: 'Un único usuario: yo. Una restricción CHECK impide que haya más de una fila.'
+  Note: 'Un único usuario: yo. Un CHECK no puede contar filas, así que lo impide is_singleton (CHECK + UNIQUE).'
 }
 
 Table auth_attempts {
@@ -103,11 +110,12 @@ Table projects {
 
   repo_url        varchar
   demo_url        varchar
-  period          varchar        [note: 'Texto libre: "mayo – octubre 2026"']
+  period          jsonb          [note: '{"es": "agosto – octubre 2026", "en": "August – October 2026"}']
+  label           jsonb          [note: '"Proyecto final del bootcamp · En equipo de 4"']
 
   is_team_project boolean        [not null, default: false]
   team_size       int            [note: 'Nulo si fue individual']
-  commits_share   int            [note: 'Porcentaje de commits propios. CleanFlow: 87']
+  commits_share   int            [note: 'Porcentaje de commits propios. CleanFlow: 87. CHECK entre 0 y 100']
 
   name            jsonb          [not null, note: '{"es": …, "en": …}']
   summary         jsonb          [not null, note: 'Una o dos frases para la tarjeta']
@@ -140,10 +148,11 @@ Table project_media {
 
 Table technologies {
   technology_id int           [pk, increment]
-  name          varchar       [unique, not null, note: 'React, Flask, PostgreSQL…']
+  name          varchar       [unique, not null, note: 'Clave interna, de un solo idioma: React, Flask, PostgreSQL…']
+  display_name  jsonb         [note: 'Solo si el nombre cambia con el idioma: {"es": "Trato con cliente", "en": "Client relations"}']
   category      tech_category [not null]
   is_skill      boolean       [not null, default: true, note: 'Si sale en la sección Conocimientos']
-  level         int           [note: '0-100. Nulo si solo se usa para etiquetar proyectos']
+  level         int           [note: '0-100 (CHECK). Nulo si solo se usa para etiquetar proyectos']
   level_label   jsonb         [note: '"Sólido" / "En curso", en los dos idiomas']
   sort_order    int           [not null, default: 0]
 
@@ -181,12 +190,16 @@ Table jobs {
 
 Table education {
   education_id int       [pk, increment]
-  institution  varchar   [not null]
+  institution  varchar   [note: 'Nulo en la formación por cuenta propia']
   location     varchar
   start_date   date
   end_date     date      [note: 'Nulo = en curso']
   sort_order   int       [not null, default: 0]
   is_visible   boolean   [not null, default: true]
+  kind         education_kind [not null, default: 'program']
+  hours        int       [note: 'CHECK hours > 0']
+  certificate_url  varchar [note: 'Enlace de verificación del certificado (el botón lo abre primero)']
+  certificate_file varchar [note: 'Archivo del certificado (PDF o imagen), si no hay enlace o como respaldo']
 
   title        jsonb     [not null, note: 'La titulación, en los dos idiomas']
   description  jsonb
@@ -220,6 +233,7 @@ Table links {
 Table snapshots {
   snapshot_id  int       [pk, increment]
   payload      jsonb     [not null, note: 'Todo el contenido publicado, en los dos idiomas']
+  etag         varchar   [not null, note: 'SHA-256 del payload canónico: ETag de /api/content']
   published_at timestamp [not null, default: `now()`]
   published_by int       [not null]
 
@@ -264,19 +278,8 @@ Table contributions_cache {
   Note: 'Caché de 24 h. Si GitHub falla, se sirve esta copia aunque esté caducada.'
 }
 
-Table page_views {
-  view_id    int       [pk, increment]
-  path       varchar   [not null]
-  locale     varchar
-  referrer   varchar
-  country    varchar   [note: 'Deducido de la cabecera del proxy']
-  created_at timestamp [not null, default: `now()`]
-
-  indexes {
-    (created_at) [name: 'idx_visitas_fecha']
-  }
-  Note: 'Sin cookies, sin IP y sin identificar a nadie. Solo para saber si la web se visita.'
-}
+// Las visitas no van en esta base: las cuenta Umami, en nuestro servidor (ADM-10).
+// La tabla page_views se borró sin llegar a usarse.
 
 // =====================================================================
 // RELACIONES
@@ -316,5 +319,4 @@ TableGroup publicacion {
 TableGroup entrada {
   contact_messages
   contributions_cache
-  page_views
 }

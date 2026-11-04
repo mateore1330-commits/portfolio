@@ -1,0 +1,117 @@
+/* ============================================================
+   CONOCIMIENTOS — portado de la maqueta aprobada.
+   ============================================================ */
+
+/* 3 × 2 en escritorio: los seis grupos, del mismo tamaño. Diseño y Transversal pesan lo
+   mismo que lo técnico (con la rejilla automática de la maqueta, uno quedaba suelto). */
+.skgrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--rule);
+  background: var(--rule);
+}
+
+.skcol {
+  padding: clamp(20px, 2.4vw, 32px);
+  background: var(--paper);
+  transition: background var(--dur) var(--ease);
+}
+
+.skcol:hover {
+  background: var(--paper-2);
+}
+
+.skcol h3 {
+  margin-bottom: var(--sp-1);
+  font-size: var(--fs-d-s);
+  font-variation-settings: "wdth" 110, "wght" 700;
+  letter-spacing: .06em;
+}
+
+.skcol .sub {
+  margin-bottom: 22px;
+  color: var(--ink-3);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: var(--tr-mono);
+  text-transform: uppercase;
+}
+
+.skcol ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sk {
+  padding-block: 11px;
+  border-top: 1px solid var(--rule-2);
+}
+
+.sk-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sk-name {
+  color: var(--ink);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-l);
+  letter-spacing: .02em;
+}
+
+.sk-lvl {
+  color: var(--ink-3);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .06em;
+  text-align: right;
+}
+
+/* --- Barra en 3 tramos ----------------------------------------- */
+.sk-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  margin-top: 9px;
+}
+
+.sk-bar i {
+  position: relative;
+  height: 2px;
+  overflow: hidden;
+  background: var(--rule);
+}
+
+/* El relleno azul entra de izquierda a derecha, un tramo detrás de otro. */
+.sk-bar i.on::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--blue);
+  transform-origin: left;
+  transition: transform .5s var(--ease-out);
+}
+
+.sk-bar i:nth-child(2)::after { transition-delay: .15s; }
+.sk-bar i:nth-child(3)::after { transition-delay: .3s; }
+
+/* Fuera de pantalla al cargar: vacía hasta que aparece. */
+.sk-bar[data-espera] i.on::after {
+  transform: scaleX(0);
+}
+
+@media (max-width: 1000px) {
+  .skgrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .skgrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

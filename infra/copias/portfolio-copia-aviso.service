@@ -1,0 +1,9 @@
+# El correo de aviso cuando falla la copia (INFRA-05). Lo lanza portfolio-copia (OnFailure).
+[Unit]
+Description=Aviso por correo: la copia de la base ha fallado
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 -I /usr/local/lib/portfolio-copias/avisar.py
+PrivateTmp=yes
+NoNewPrivileges=yes

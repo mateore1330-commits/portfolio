@@ -1,0 +1,12 @@
+# Cada noche a las 04:00 de Madrid (INFRA-05). Si el servidor estaba apagado a esa hora, la
+# hace al arrancar (Persistent). Ver la próxima: systemctl list-timers portfolio-copia.timer
+[Unit]
+Description=Copia de la base del portfolio, cada noche
+
+[Timer]
+OnCalendar=*-*-* 04:00:00 Europe/Madrid
+RandomizedDelaySec=10min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

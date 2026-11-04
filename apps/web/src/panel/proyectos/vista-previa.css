@@ -1,0 +1,48 @@
+/* La vista previa de un proyecto (ADM-03): la página de la web tal cual, con una franja
+   arriba que deja claro que no es la web publicada. Fuera de .panel-app: aquí manda la web. */
+.franja-previa {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 10px var(--gut);
+  background: var(--ink);
+  color: var(--paper);
+  font: 500 var(--fs-mono-s) var(--f-mono);
+  letter-spacing: .06em;
+}
+
+.franja-previa b {
+  text-transform: uppercase;
+  letter-spacing: .14em;
+}
+
+.franja-previa .idiomas {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.franja-previa button {
+  padding: 4px 9px;
+  border: 1px solid color-mix(in srgb, var(--paper) 35%, transparent);
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: .12em;
+  cursor: pointer;
+}
+
+.franja-previa button[aria-pressed="true"] {
+  border-color: var(--paper);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.aviso-previa {
+  padding: var(--sp-9) var(--gut);
+  color: var(--ink-2);
+}

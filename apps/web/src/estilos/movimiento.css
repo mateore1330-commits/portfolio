@@ -1,0 +1,51 @@
+/* ============================================================
+   MOVIMIENTO — el vocabulario común de la web (WEB-11), portado de
+   la maqueta aprobada. Solo se animan transform y opacity: no obligan
+   al navegador a recolocar la página. Con movimiento reducido, base.css
+   corta todas las transiciones y animaciones.
+   ============================================================ */
+
+/* --- Revelado al bajar -------------------------------------- */
+/* Los bloques marcados con data-revelar se ven siempre. Solo los que están fuera de
+   pantalla al cargar pasan a "espera" (lo pone Revelado.jsx): un poco más abajo y algo
+   tenues, nunca invisibles. Al entrar en pantalla, vuelven a su sitio, escalonados. */
+[data-revelar] {
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+  transition-delay: var(--retraso, 0ms);
+}
+
+[data-revelar="espera"] {
+  opacity: .4;
+  transform: translateY(24px);
+}
+
+/* --- Grano fotográfico ---------------------------------------- */
+/* Una capa de ruido muy suave sobre toda la página, como la maqueta. No recibe clics y
+   cambia de posición a saltos (una vez por segundo): apenas cuesta. */
+.grano {
+  position: fixed;
+  inset: -120px;
+  z-index: 900;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
+  mix-blend-mode: overlay;
+  opacity: var(--grain-op);
+  pointer-events: none;
+  animation: grano 6s steps(6) infinite;
+}
+
+@keyframes grano {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-14px, 8px); }
+  40% { transform: translate(10px, -12px); }
+  60% { transform: translate(-8px, -8px); }
+  80% { transform: translate(12px, 10px); }
+  100% { transform: translate(0, 0); }
+}
+
+@media print {
+  .grano {
+    display: none;
+  }
+}

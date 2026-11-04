@@ -1,0 +1,74 @@
+/* ============================================================
+   CURSOR — el de la maqueta: punto azul + anillo que lo sigue.
+   El anillo crece con transform: scale (no con width/height, que obligan
+   a recolocar la página). Mide 74 px y en reposo está a la mitad.
+   ============================================================ */
+
+.cursor-punto,
+.cursor-anillo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 950;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease);
+}
+
+/* Solo cuando el ratón está dentro de la página (y no escribiendo, el anillo). */
+:root[data-cursor-visible] .cursor-punto,
+:root[data-cursor-visible]:not([data-cursor-escribiendo]) .cursor-anillo {
+  opacity: 1;
+}
+
+.cursor-punto {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: var(--blue);
+}
+
+.cursor-anillo {
+  margin: -37px 0 0 -37px;
+}
+
+.cursor-forma {
+  display: grid;
+  place-items: center;
+  width: 74px;
+  height: 74px;
+  border: 2px solid var(--ink-3);
+  border-radius: 50%;
+  transform: scale(.514); /* 38 px, como la maqueta */
+  transition:
+    transform var(--dur-fast) var(--ease),
+    background var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease);
+}
+
+.cursor-etiqueta {
+  color: transparent;
+  font-family: var(--f-mono);
+  font-size: 8px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  transition: color .25s var(--ease);
+}
+
+/* Sobre algo pulsable: grande, azul y con su etiqueta. */
+.cursor-anillo.ancho .cursor-forma {
+  border-color: var(--blue);
+  background: var(--blue);
+  transform: scale(1);
+}
+
+.cursor-anillo.ancho .cursor-etiqueta {
+  color: var(--on-blue);
+}
+
+@media (hover: none), (max-width: 860px) {
+  .cursor {
+    display: none;
+  }
+}

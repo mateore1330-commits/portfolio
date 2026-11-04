@@ -1,0 +1,31 @@
+// Las secciones del panel, en el orden del menú aprobado en ADM-00. De aquí salen el menú
+// lateral y las rutas. Las que tienen `issue` todavía no existen: abren "Llega en…" hasta
+// que su issue las construya (y entonces se le quita el campo).
+export const GRUPOS = [
+  {
+    titulo: 'General',
+    secciones: [
+      { ruta: '', n: '00', nombre: 'Inicio' },
+      { ruta: 'publicaciones', n: '··', nombre: 'Publicaciones' },
+    ],
+  },
+  {
+    titulo: 'Contenido',
+    secciones: [
+      { ruta: 'proyectos', n: '01', nombre: 'Proyectos' },
+      { ruta: 'textos', n: '02', nombre: 'Textos' },
+      { ruta: 'trayectoria', n: '03', nombre: 'Trayectoria' },
+      { ruta: 'conocimientos', n: '04', nombre: 'Conocimientos y enlaces' },
+      { ruta: 'cv', n: '05', nombre: 'CV' },
+    ],
+  },
+  {
+    titulo: 'Recibido',
+    secciones: [
+      { ruta: 'mensajes', n: '06', nombre: 'Mensajes', issue: 'ADM-10', que: 'La bandeja de los mensajes del formulario de contacto.', contador: 'mensajes' },
+      { ruta: 'visitas', n: '07', nombre: 'Visitas', issue: 'ADM-10', que: 'Las visitas de la web, con los datos de Umami.' },
+    ],
+  },
+]
+
+export const SECCIONES = GRUPOS.flatMap((g) => g.secciones)

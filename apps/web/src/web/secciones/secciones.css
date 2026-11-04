@@ -1,0 +1,58 @@
+/* ============================================================
+   PIEZAS COMUNES A LAS SECCIONES — portadas de la maqueta aprobada.
+   ============================================================ */
+
+/* Cada sección de la portada, con el mismo ancho y aire que la maqueta. */
+.seccion {
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding: var(--sp-section) var(--gut);
+}
+
+/* --- Cabecera: número · nombre · subtítulo ------------------ */
+.sechead {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: var(--sp-head);
+  padding-block: var(--sp-4);
+  border-top: 1px solid var(--rule);
+}
+
+.sechead .n {
+  color: var(--blue);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-m);
+  font-weight: 700;
+  letter-spacing: .18em;
+}
+
+/* Es el h2 de la sección, pero se ve como una etiqueta: anula el estilo de base.css. */
+.sechead .t {
+  color: var(--ink-2);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-m);
+  font-variation-settings: normal;
+  font-weight: 500;
+  line-height: var(--lh-body);
+  letter-spacing: var(--tr-mono-wide);
+}
+
+.sechead .x {
+  color: var(--ink-3);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .16em;
+  text-align: right;
+}
+
+/* Solo para lectores de pantalla: ocupa 0 px pero se lee. */
+.solo-lector {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

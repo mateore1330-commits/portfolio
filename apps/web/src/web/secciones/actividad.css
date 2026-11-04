@@ -1,0 +1,205 @@
+/* ============================================================
+   ACTIVIDAD — gráfico de contribuciones, portado de la maqueta aprobada.
+   Los colores salen de la rampa --lv0…--lv4 de los tokens (derivada del azul).
+   ============================================================ */
+
+/* --- Cifras: cuatro celdas separadas por filetes de 1 px ---- */
+.gh-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px;
+  margin: 0 0 clamp(26px, 3.5vw, 44px);
+  border: 1px solid var(--rule);
+  background: var(--rule);
+}
+
+.gh-stat {
+  padding: var(--sp-4) 18px;
+  background: var(--paper);
+  transition: background .4s var(--ease);
+}
+
+.gh-stat:hover {
+  background: var(--paper-2);
+}
+
+.gh-stat dt {
+  margin-bottom: 7px;
+  color: var(--ink-3);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-xs);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.gh-stat dd {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: clamp(24px, 2.6vw, 36px);
+  font-variant-numeric: tabular-nums;
+  font-variation-settings: "wdth" 114, "wght" 700;
+  line-height: 1;
+}
+
+.gh-stat .u {
+  margin-left: var(--sp-1);
+  color: var(--ink-3);
+  font-size: .42em;
+  font-variation-settings: "wdth" 100, "wght" 500;
+}
+
+/* --- Rejilla ------------------------------------------------ */
+.gh {
+  --cell: clamp(8px, .92vw, 13px);
+  --cgap: 3px;
+  position: relative;
+}
+
+/* En pantallas estrechas se desplaza aquí dentro, no la página. El relleno deja sitio
+   al cuadro marcado, que crece. */
+.gh-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: var(--sp-2) var(--sp-1) 6px;
+  margin-inline: calc(var(--sp-1) * -1);
+  scrollbar-width: thin;
+}
+
+.gh-plot {
+  min-width: 680px;
+}
+
+.gh-months {
+  display: grid;
+  grid-template-columns: repeat(53, minmax(0, 1fr));
+  gap: var(--cgap);
+  margin: 0 0 var(--sp-2) calc(24px + var(--cgap));
+}
+
+.gh-months span,
+.gh-days span {
+  color: var(--ink-3);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-xs);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.gh-body {
+  display: flex;
+  align-items: stretch;
+  gap: var(--cgap);
+}
+
+.gh-days {
+  display: grid;
+  flex: none;
+  grid-template-rows: repeat(7, minmax(0, 1fr));
+  gap: var(--cgap);
+  width: 24px;
+}
+
+.gh-days span {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}
+
+/* Las celdas van en orden de columna: cada columna es una semana, de lunes a domingo. */
+.gh-cells {
+  display: grid;
+  flex: 1;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(53, minmax(0, 1fr));
+  grid-template-rows: repeat(7, auto);
+  gap: var(--cgap);
+  min-width: 0;
+}
+
+.gh-c {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  background: var(--lv0);
+  transition: transform .25s var(--ease-out), background .25s var(--ease), box-shadow .25s var(--ease);
+}
+
+/* Días que aún no han llegado (o antes del primero): huecos tenues. */
+.gh-c[data-vacio] {
+  opacity: .26;
+}
+
+.gh [data-l="1"] { background: var(--lv1); }
+.gh [data-l="2"] { background: var(--lv2); }
+.gh [data-l="3"] { background: var(--lv3); }
+.gh [data-l="4"] { background: var(--lv4); }
+
+/* El cuadro marcado crece y se separa del resto. */
+.gh-c.hot {
+  position: relative;
+  z-index: 5;
+  box-shadow: 0 0 0 1px var(--paper), 0 4px 12px rgba(0, 0, 0, .22);
+  transform: scale(1.85);
+}
+
+/* --- Pie: explicación y leyenda ----------------------------- */
+.gh-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3) 22px;
+  margin-top: var(--sp-4);
+  padding-top: 14px;
+  border-top: 1px solid var(--rule-2);
+  color: var(--ink-3);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.gh-key {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.gh-key i {
+  display: block;
+  width: var(--cell);
+  height: var(--cell);
+  border-radius: 1.5px;
+}
+
+.gh-key i[data-l="0"] {
+  background: var(--lv0);
+}
+
+/* --- Globo con la fecha y el número ------------------------- */
+.gh-tip {
+  position: absolute;
+  z-index: 40;
+  padding: 7px 10px;
+  background: var(--ink);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .22);
+  color: var(--paper);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: .06em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -136%) scale(.94);
+  transition: opacity .18s var(--ease), transform .18s var(--ease);
+}
+
+.gh-tip.on {
+  opacity: 1;
+  transform: translate(-50%, -150%) scale(1);
+}
+
+.gh-tip b {
+  color: var(--blue-2);
+  font-weight: 500;
+}

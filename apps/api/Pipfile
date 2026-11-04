@@ -1,0 +1,40 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "==3.1.3"
+flask-sqlalchemy = "==3.1.1"
+flask-migrate = "==4.1.0"
+psycopg2-binary = "==2.9.13"
+python-dotenv = "==1.2.4"
+flask-cors = "==6.0.5"
+gunicorn = "==26.2.0"
+bcrypt = "==5.0.0"
+flask-jwt-extended = "==4.7.4"
+# El CV en PDF (api/cv/generar.py): desde ADM-05 lo genera la API al publicar.
+pypdf = "==6.21.0"
+pillow = "==12.3.0"
+fonttools = "==4.67.0"
+brotli = "==1.2.0"
+# Las imágenes de los proyectos y los certificados (ADM-08).
+cloudinary = "==1.46.3"
+
+[dev-packages]
+ruff = "==0.17.1"
+pytest = "==9.1.1"
+
+[requires]
+python_version = "3.13"
+
+[scripts]
+dev = "flask --app wsgi run --debug --port 3001"
+lint = "ruff check ."
+seed = "python seed/cargar.py"
+publicar = "python seed/publicar.py"
+reenviar-avisos = "python seed/reenviar.py"
+borrar-mensajes-antiguos = "python seed/borrar_mensajes.py"
+generar-cv = "python seed/generar_cv.py"
+cambiar-contrasena = "python seed/cambiar_contrasena.py"
+test = "pytest"
