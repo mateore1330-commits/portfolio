@@ -309,8 +309,19 @@ Los DNS se gestionan desde Hostinger. No hace falta mover el dominio de registra
 
 ### Vigilancia
 
-Un comprobador externo gratuito contra `/api/health` cada 5 minutos, con aviso por correo.
-Sin esto te enteras de que la API está caída cuando te escriba alguien — o cuando no te escriba.
+Desde fuera del servidor (INFRA-07): si el servidor está caído, no puede avisar de que está caído.
+
+- **UptimeRobot** (gratis: 50 monitores cada 5 min, aviso por correo, 3 meses de historial; vale para uso
+  personal y comercial y no pide tarjeta, según su página de precios el 04/11/2026), cada 5 minutos:
+  - `https://api.mateorodriguez.solutions/api/health` — la API **y la base de datos**: si PostgreSQL no contesta,
+    responde `503` (el despliegue también lo usa, así que no da por buena una versión que no llega a la base);
+  - `https://visitas.mateorodriguez.solutions/script.js` — Umami (y Caddy).
+  Avisa por correo al caer (confirmado, con el código de respuesta) y al volver, y guarda cuánto estuvo caída.
+- **Healthchecks.io** (gratis, plan Hobbyist): la copia nocturna avisa "¡hecha!" al terminar
+  (`infra/copias/copiar.sh`). Si a las 06:00 de Madrid no ha llegado (la copia es a las 04:00, con 2 h de margen),
+  manda un correo: así se ve también que la copia **ni siquiera se lanzó**, que el aviso de fallo de systemd no
+  puede ver. La dirección del aviso es secreta: en el servidor, `/etc/portfolio-copias/vigilancia.env` (root, 600).
+- Las dos cuentas, con verificación en dos pasos; los avisos, al Gmail de Mateo.
 
 ## 6. Estructura del repositorio
 
