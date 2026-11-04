@@ -35,13 +35,15 @@ Cómo se cumple, pieza por pieza:
 
 ## 3. Frontend
 
-**Stack:** React 18 · Vite · React Router · GSAP + ScrollTrigger · React Bits · CSS propio
+**Stack:** React 18 · Vite · React Router · CSS propio · dnd-kit (ordenar arrastrando, en el panel)
 
 - **CSS propio con tokens**, sin framework. La identidad "plano y plata" ya está definida en
   la maqueta: gris mineral `#E4E2DC`, azul de plano `#1E3FB0`, Archivo + Newsreader +
   JetBrains Mono. Se traslada tal cual.
-- **Animaciones con GSAP + ScrollTrigger**. React Bits aporta el Dot Grid del contacto y
-  el Scroll Stack de los proyectos; el resto se porta de la maqueta.
+- **Animaciones sin librerías**: CSS, `IntersectionObserver` (lo que aparece al bajar) y
+  `requestAnimationFrame` (el cursor, el raíl, el campo de puntos del contacto, portado al estilo del
+  "Dot Grid" de React Bits). Se planteó GSAP + ScrollTrigger, pero no hizo falta: menos peso y nada que
+  mantener. Con "reducir movimiento", todo quieto.
 - **Idiomas por prefijo de ruta**: `/` en español, `/en` en inglés. Mejor para SEO que un
   parámetro, y permite enlazar directamente a la versión inglesa.
 - **Sin librería de i18n.** Dos ficheros `es.json` / `en.json` y un contexto de veinte líneas.
@@ -312,24 +314,39 @@ Sin esto te enteras de que la API está caída cuando te escriba alguien — o c
 
 ## 6. Estructura del repositorio
 
+Nombres en español (ORG-01): cada archivo se llama como lo que exporta. Se quedan como están los que manda una
+herramienta (`main.jsx`, `package.json`, `Dockerfile`…), el prefijo `use` de los hooks y, en la API, los nombres
+habituales de Flask (`models.py`, `config.py`, `extensions.py`, `routes.py`).
+
 ```
 portfolio/
 ├── apps/
-│   ├── web/              React + Vite
+│   ├── web/                    React + Vite (la web pública y el panel)
 │   │   ├── src/
-│   │   │   ├── components/
-│   │   │   ├── sections/      hero, sobre-mi, actividad, stack, proyectos, trayectoria, contacto
-│   │   │   ├── content/       es.json, en.json, proyectos.json
-│   │   │   ├── hooks/
-│   │   │   └── styles/        tokens.css
+│   │   │   ├── main.jsx · Aplicacion.jsx · rutas.jsx
+│   │   │   ├── web/            la web pública
+│   │   │   │   ├── paginas/        Portada, PaginaProyecto, PaginaLegal, NoEncontrada
+│   │   │   │   ├── secciones/      Inicio, SobreMi, Actividad, Conocimientos, Proyectos, Trayectoria, Contacto…
+│   │   │   │   └── estructura/     EstructuraWeb, Cabecera, MenuMovil, Pie, RailProgreso, Cursor
+│   │   │   ├── panel/          el panel: una carpeta por pantalla, comun/ y utilidades/
+│   │   │   ├── compartido/     componentes/ y efectos/ que usan la web y el panel; medir.js (Umami)
+│   │   │   ├── contenido/      instantanea.json, contribuciones.json y cómo se leen
+│   │   │   ├── idioma/         es.json, en.json, el selector y useIdioma
+│   │   │   ├── tema/           claro/oscuro
+│   │   │   ├── estilos/        variables, fuentes, base y movimiento
+│   │   │   └── recursos/       fuentes y retrato
+│   │   ├── scripts/        congelar-contenido, paginas-estaticas, recortar-fuentes, optimizar-retrato, imagenes-compartir
 │   │   └── public/
-│   └── api/              Flask
-│       ├── src/api/      models.py, routes.py, github.py, mail.py
-│       └── migrations/
-├── scripts/              generar-cv-pdf, congelar-instantanea-contribuciones
-├── .github/workflows/    ci, despertar-api
-├── ARQUITECTURA.md
-├── BRIEFING.md
+│   └── api/                    Flask
+│       ├── src/api/        un módulo por tema (proyectos, textos, trayectoria, publicar, cv/…)
+│       ├── tests/          un test por módulo
+│       ├── migrations/     Alembic
+│       ├── seed/           el contenido inicial
+│       └── Dockerfile
+├── infra/                      el servidor (infra/README.md): docker-compose, Caddyfile, servidor/ (1-seguridad … 5-despliegue), copias/, despliegue/
+├── scripts/                    comprobar-idiomas (lo usan las dos aplicaciones)
+├── docs/                       ARQUITECTURA, MODELO_DATOS, BACKLOG, DESPLIEGUE, RESTAURAR
+├── .github/                    workflows: ci (cada PR) y deploy-api (al fusionar en main)
 └── README.md
 ```
 
