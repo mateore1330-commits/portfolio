@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # INFRA-02 · Cortafuegos, fail2ban y actualizaciones (se ejecuta una vez, en el servidor).
 #
-#   sudo bash ~/infra-02.sh
+#   sudo bash ~/1-seguridad.sh
 #
 # Lo ejecuta Mateo (sudo pide su contraseña). Se puede repetir sin romper nada. Sin secretos.
 # Plan: Recursos/Planes/PLAN-INFRA-02.md.
 set -euo pipefail
 
 if [ "$(id -u)" -ne 0 ]; then
-  echo "Hay que ejecutarlo con sudo: sudo bash ~/infra-02.sh"
+  echo "Hay que ejecutarlo con sudo: sudo bash ~/1-seguridad.sh"
   exit 1
 fi
 export DEBIAN_FRONTEND=noninteractive

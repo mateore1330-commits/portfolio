@@ -226,7 +226,7 @@ la red interna de Docker. Es la diferencia entre un servidor y un servidor expue
   `ssh -L 8081:127.0.0.1:8081 portfolio`. La API usa el usuario `api-portfolio`, de solo lectura y en el equipo
   "Portfolio" con papel de solo lectura (lo crea `infra/servidor/umami-configurar.py`).
 - Todo con `restart: unless-stopped`: tras reiniciar el servidor vuelve solo (comprobado el 03/11/2026).
-- Instalado con `infra/servidor/infra-03.sh`: Docker desde su repositorio oficial, con la huella de su clave
+- Instalado con `infra/servidor/2-docker.sh`: Docker desde su repositorio oficial, con la huella de su clave
   comprobada antes de instalar nada.
 
 ### Seguridad de base
@@ -241,7 +241,7 @@ la red interna de Docker. Es la diferencia entre un servidor y un servidor expue
 - `fail2ban` contra fuerza bruta en SSH: 5 fallos en 10 min → 1 h fuera, y el doble si repite (máx. 1 semana).
 - `unattended-upgrades` para los parches de seguridad del sistema, **sin reinicio automático**: si un parche lo pide,
   sale "*** System restart required ***" al entrar por SSH y se reinicia a mano. Sin Ubuntu Pro (sus condiciones
-  gratuitas no cubren con claridad un VPS alquilado). Script: `infra/servidor/infra-02.sh`.
+  gratuitas no cubren con claridad un VPS alquilado). Script: `infra/servidor/1-seguridad.sh`.
 - Secretos en `infra/.env` y `infra/api.env` del servidor, generados allí al azar, de root y con permisos 600;
   nunca en el repositorio (plantillas: `.env.example` y `api.env.example`).
 - CORS restringido al dominio propio.
@@ -270,7 +270,7 @@ aquí no hay nadie haciéndolo por detrás. Montado en INFRA-05 siguiendo la reg
   líneas del registro, por el mismo buzón que el formulario de contacto (`SMTP_*` y `CONTACT_TO` de `api.env`).
   Probado provocando un fallo. Que la copia ni siquiera se lance, lo vigilará INFRA-07.
 - Los scripts se instalan en `/usr/local/lib/portfolio-copias/` (de root: los ejecuta root cada noche) y la
-  configuración en `/etc/portfolio-copias/` (root, 600). Instalador: `infra/servidor/infra-05.sh`.
+  configuración en `/etc/portfolio-copias/` (root, 600). Instalador: `infra/servidor/4-copias.sh`.
 - **Restaurada de verdad** (03/11/2026): una copia bajada de Backblaze, abierta y cargada en una base limpia:
   las 42 tablas con las mismas filas. El procedimiento, paso a paso, en **`docs/RESTAURAR.md`**.
 

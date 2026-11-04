@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # INFRA-05 · Las copias cifradas de la base (se ejecuta en el servidor).
 #
-#   sudo bash ~/infra-05.sh [rama]        (por defecto, develop)
+#   sudo bash ~/4-copias.sh [rama]        (por defecto, develop)
 #
 # Lo ejecuta Mateo (sudo pide su contraseña). Se puede repetir: lo que ya está configurado lo
 # pregunta antes de cambiarlo. Las llaves y contraseñas se escriben aquí, en la terminal, sin que
@@ -16,7 +16,7 @@
 set -euo pipefail
 
 if [ "$(id -u)" -ne 0 ]; then
-  echo "Hay que ejecutarlo con sudo: sudo bash ~/infra-05.sh"
+  echo "Hay que ejecutarlo con sudo: sudo bash ~/4-copias.sh"
   exit 1
 fi
 export DEBIAN_FRONTEND=noninteractive

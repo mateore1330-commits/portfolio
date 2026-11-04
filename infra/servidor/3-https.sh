@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # INFRA-04 · HTTPS con Caddy y el usuario de Umami de la API (se ejecuta en el servidor).
 #
-#   sudo bash ~/infra-04.sh [rama]           pone al día el código y recrea Caddy (pide los certificados)
-#   sudo bash ~/infra-04.sh --umami [rama]   además, deja Umami listo: cambia la contraseña de admin,
+#   sudo bash ~/3-https.sh [rama]           pone al día el código y recrea Caddy (pide los certificados)
+#   sudo bash ~/3-https.sh --umami [rama]   además, deja Umami listo: cambia la contraseña de admin,
 #                                            da de alta la web y crea el usuario de solo lectura de la
 #                                            API (umami-configurar.py), y lo guarda en api.env
 #
@@ -11,7 +11,7 @@
 set -euo pipefail
 
 if [ "$(id -u)" -ne 0 ]; then
-  echo "Hay que ejecutarlo con sudo: sudo bash ~/infra-04.sh"
+  echo "Hay que ejecutarlo con sudo: sudo bash ~/3-https.sh"
   exit 1
 fi
 UMAMI=0

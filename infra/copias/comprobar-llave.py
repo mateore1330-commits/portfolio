@@ -1,4 +1,4 @@
-"""Comprueba la llave de Backblaze del servidor (INFRA-05). Lo lanza infra-05.sh.
+"""Comprueba la llave de Backblaze del servidor (INFRA-05). Lo lanza 4-copias.sh.
 
 Lo que debe salir: que sube, que solo ve su bucket y que NO puede borrar. Para saberlo de
 verdad, sube un archivo de prueba a diarias/ (lo borra Backblaze con su regla de caducidad) e

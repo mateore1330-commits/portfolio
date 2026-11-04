@@ -1,4 +1,4 @@
-"""Deja Umami listo para el portfolio (INFRA-04). Lo llama infra-04.sh --umami.
+"""Deja Umami listo para el portfolio (INFRA-04). Lo llama 3-https.sh --umami.
 
 Hace (y se puede repetir: lo que ya está, no lo rehace):
   1. Cambia la contraseña de admin (si se da una nueva).

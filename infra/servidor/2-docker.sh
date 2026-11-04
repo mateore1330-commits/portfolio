@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # INFRA-03 · Docker y el portfolio en el servidor (se ejecuta en el servidor).
 #
-#   sudo bash ~/infra-03.sh [rama]        (por defecto, develop)
+#   sudo bash ~/2-docker.sh [rama]        (por defecto, develop)
 #
 # Lo ejecuta Mateo (sudo pide su contraseña). Se puede repetir: no rehace lo que ya está y
 # NUNCA pisa los secretos que ya existan. Sin secretos en el archivo. Plan: PLAN-INFRA-03.md.
 set -euo pipefail
 
 if [ "$(id -u)" -ne 0 ]; then
-  echo "Hay que ejecutarlo con sudo: sudo bash ~/infra-03.sh"
+  echo "Hay que ejecutarlo con sudo: sudo bash ~/2-docker.sh"
   exit 1
 fi
 export DEBIAN_FRONTEND=noninteractive

@@ -9,7 +9,7 @@
 #      viejo lo borra Backblaze con sus reglas de caducidad: la llave del servidor no puede borrar.
 #   5. Si algo falla (aquí o donde sea), systemd lanza portfolio-copia-aviso: un correo.
 #
-# Instalado por infra/servidor/infra-05.sh en /usr/local/lib/portfolio-copias (solo root puede
+# Instalado por infra/servidor/4-copias.sh en /usr/local/lib/portfolio-copias (solo root puede
 # cambiarlo). La configuración, en /etc/portfolio-copias/ (root, 600).
 set -Eeuo pipefail
 

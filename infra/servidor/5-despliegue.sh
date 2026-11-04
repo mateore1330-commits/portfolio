@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # INFRA-06 · El despliegue automático (se ejecuta en el servidor).
 #
-#   sudo bash ~/infra-06.sh [rama]        (por defecto, develop)
+#   sudo bash ~/5-despliegue.sh [rama]        (por defecto, develop)
 #
 # Lo ejecuta Mateo (sudo pide su contraseña). Se puede repetir. Plan: PLAN-INFRA-06.md.
 #
@@ -16,7 +16,7 @@
 set -euo pipefail
 
 if [ "$(id -u)" -ne 0 ]; then
-  echo "Hay que ejecutarlo con sudo: sudo bash ~/infra-06.sh"
+  echo "Hay que ejecutarlo con sudo: sudo bash ~/5-despliegue.sh"
   exit 1
 fi
 RAMA="${1:-develop}"
