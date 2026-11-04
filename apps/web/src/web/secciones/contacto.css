@@ -115,6 +115,18 @@
 }
 
 /* --- Texto y canales --------------------------------------- */
+/* En su caja translúcida, como el formulario: los puntos siguen alrededor pero no cruzan
+   el texto. Borde neutro (el del formulario es azul): el formulario manda, esto es la
+   alternativa directa. Las dos cajas empiezan a la misma altura; cada una, del alto de lo
+   suyo. */
+.contact-texto {
+  padding: clamp(22px, 3vw, 40px);
+  border: 1px solid rgba(237, 235, 229, .12);
+  background: rgba(11, 13, 17, .72);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .35);
+}
+
 .contact .sub {
   max-width: 44ch;
   color: var(--panel-dim);
@@ -126,6 +138,10 @@
   margin-top: var(--sp-3);
 }
 
+.contact-texto .sub:last-of-type {
+  margin-bottom: 38px;
+}
+
 .contact .sub b {
   color: var(--panel-ink);
   font-weight: 600;
@@ -135,7 +151,7 @@
 .canales {
   container-type: inline-size;
   max-width: 520px;
-  margin: 38px 0 0;
+  margin: 0;
   padding: 0;
   border-top: 1px solid rgba(237, 235, 229, .14);
   list-style: none;
