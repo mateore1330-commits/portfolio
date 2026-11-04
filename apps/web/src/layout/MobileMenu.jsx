@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { useNavigate } from 'react-router'
 import LanguageSwitch from '@/i18n/LanguageSwitch.jsx'
 import { useLang, useT } from '@/i18n/useLang.js'
 import { enlaceSeccion, SECCIONES } from '@/layout/secciones.js'
@@ -17,6 +18,7 @@ export default function MobileMenu({ activa }) {
   const t = useT()
   const boton = useRef(null)
   const panel = useRef(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (!abierto) return undefined
@@ -56,12 +58,13 @@ export default function MobileMenu({ activa }) {
   }
 
   // Se cierra el panel (y se desbloquea el scroll) antes de ir a la sección: con el
-  // scroll bloqueado, el navegador no podría bajar hasta ella.
+  // scroll bloqueado, no se podría bajar hasta ella. Va por React Router (#158): con
+  // location.assign lo tomaría por un "Atrás" y cortaría la bajada.
   const irA = (e) => {
     e.preventDefault()
     const destino = e.currentTarget.getAttribute('href')
     setAbierto(false)
-    requestAnimationFrame(() => window.location.assign(destino))
+    requestAnimationFrame(() => navigate(destino))
   }
 
   return (
