@@ -20,12 +20,12 @@ cercano: amplía aquí el rango y vuelve a ejecutarlo.
 
 Lee el CSS de @fontsource-variable (mismos nombres y unicode-range), recorta los
 alfabetos latino y latino extendido, y escribe:
-    apps/web/src/assets/fuentes/*.woff2
-    apps/web/src/styles/fonts.css
+    apps/web/src/recursos/fuentes/*.woff2
+    apps/web/src/estilos/fuentes.css
 
 Uso, desde la raíz del repo (con node_modules instalado en apps/web):
 
-    uv run scripts/recortar-fuentes.py
+    uv run apps/web/scripts/recortar-fuentes.py
 """
 
 import re
@@ -35,11 +35,11 @@ from pathlib import Path
 from fontTools.ttLib import TTFont
 from fontTools.varLib import instancer
 
-RAIZ = Path(__file__).resolve().parent.parent
-WEB = RAIZ / "apps/web"
+WEB = Path(__file__).resolve().parent.parent
+RAIZ = WEB.parent.parent
 FONTSOURCE = WEB / "node_modules/@fontsource-variable"
-DESTINO = WEB / "src/assets/fuentes"
-CSS = WEB / "src/styles/fonts.css"
+DESTINO = WEB / "src/recursos/fuentes"
+CSS = WEB / "src/estilos/fuentes.css"
 ALFABETOS = ("latin", "latin-ext")
 
 # (CSS de fontsource, límites de cada eje)
@@ -50,7 +50,7 @@ FUENTES = [
     ("jetbrains-mono/wght.css", {"wght": (400, 800)}),
 ]
 
-CABECERA = """/* GENERADO por scripts/recortar-fuentes.py: no editar a mano.
+CABECERA = """/* GENERADO por apps/web/scripts/recortar-fuentes.py: no editar a mano.
    Las fuentes se sirven desde la propia web, no desde Google Fonts: así no se envía la IP
    del visitante a terceros. Son las de @fontsource-variable recortadas a los gruesos,
    anchos y tamaños que usa la web (el script explica los rangos). Cada alfabeto va en su
@@ -108,7 +108,7 @@ def main():
                 f"  font-style: {propiedad(cuerpo, 'font-style')};\n"
                 f"  font-display: swap;\n"
                 f"  font-weight: {rango(limites['wght'])};{ancho}\n"
-                f"  src: url(../assets/fuentes/{archivo}) format('woff2-variations');\n"
+                f"  src: url(../recursos/fuentes/{archivo}) format('woff2-variations');\n"
                 f"  unicode-range: {propiedad(cuerpo, 'unicode-range')};\n}}\n"
             )
             print(f"{archivo}  {origen.stat().st_size // 1024} → {destino.stat().st_size // 1024} KB")

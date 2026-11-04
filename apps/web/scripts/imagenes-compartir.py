@@ -14,7 +14,7 @@ una captura con Chrome sin ventana. Luego la pasa a JPEG.
 
 Uso, desde la raíz del repo (con Google Chrome instalado):
 
-    uv run scripts/imagenes-compartir.py
+    uv run apps/web/scripts/imagenes-compartir.py
 
 Vuelve a ejecutarlo si cambia un proyecto, el retrato o los textos. Las imágenes van a
 apps/web/public/compartir/ y se suben al repo.
@@ -29,12 +29,12 @@ from pathlib import Path
 
 from PIL import Image
 
-RAIZ = Path(__file__).resolve().parent.parent
-WEB = RAIZ / "apps/web"
+WEB = Path(__file__).resolve().parent.parent
+RAIZ = WEB.parent.parent
 DESTINO = WEB / "public/compartir"
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 FUENTES = WEB / "node_modules/@fontsource-variable"
-RETRATO = WEB / "src/assets/retrato/retrato-660.jpg"
+RETRATO = WEB / "src/recursos/retrato/retrato-660.jpg"
 DOMINIO = "mateorodriguez.solutions"
 
 TEXTOS = {
@@ -94,7 +94,7 @@ def capturar(pagina_html, salida):
 def main():
     if not Path(CHROME).exists():
         sys.exit("Hace falta Google Chrome en /Applications para generar las imágenes.")
-    contenido = json.loads((WEB / "src/content/snapshot.json").read_text(encoding="utf-8"))
+    contenido = json.loads((WEB / "src/contenido/instantanea.json").read_text(encoding="utf-8"))
     comun = {
         "archivo": (FUENTES / "archivo/files/archivo-latin-wdth-normal.woff2").as_uri(),
         "mono": (FUENTES / "jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2").as_uri(),

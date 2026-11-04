@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Antes de cada build de la web: trae de la API las dos copias que se incrustan en el
-// bundle y las guarda en apps/web/src/content/:
+// bundle y las guarda en apps/web/src/contenido/:
 //   - snapshot.json: la última instantánea del contenido publicado.
 //   - contribuciones.json: el gráfico de contribuciones de GitHub.
 // Y el CV en PDF publicado desde el panel (ADM-05), en apps/web/public/cv/.
@@ -9,15 +9,15 @@
 // raro, avisa y se queda la copia que ya está en el repo. Esa es la regla del
 // proyecto: la web se ve entera aunque la API esté caída.
 //
-// Uso: CONTENT_API_URL=https://api.ejemplo.com node scripts/congelar-contenido.mjs
+// Uso: CONTENT_API_URL=https://api.ejemplo.com node apps/web/scripts/congelar-contenido.mjs
 // Sin dependencias: Node 24 ya trae fetch.
 
 import { readFile, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 
-const CONTENIDO = fileURLToPath(new URL('../apps/web/src/content/snapshot.json', import.meta.url))
-const CONTRIBUCIONES = fileURLToPath(new URL('../apps/web/src/content/contribuciones.json', import.meta.url))
-const CV = (lang) => fileURLToPath(new URL(`../apps/web/public/cv/CV-Mateo-Rodriguez-Escobar-${lang.toUpperCase()}.pdf`, import.meta.url))
+const CONTENIDO = fileURLToPath(new URL('../src/contenido/instantanea.json', import.meta.url))
+const CONTRIBUCIONES = fileURLToPath(new URL('../src/contenido/contribuciones.json', import.meta.url))
+const CV = (lang) => fileURLToPath(new URL(`../public/cv/CV-Mateo-Rodriguez-Escobar-${lang.toUpperCase()}.pdf`, import.meta.url))
 const ESPERA_MAXIMA_MS = 5000
 const VERSION = 1
 const SECCIONES = ['site_texts', 'links', 'technologies', 'projects', 'jobs', 'education']

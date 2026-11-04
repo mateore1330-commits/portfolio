@@ -13,7 +13,7 @@ import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const WEB = fileURLToPath(new URL('../apps/web/', import.meta.url))
+const WEB = fileURLToPath(new URL('../', import.meta.url))
 const DIST = join(WEB, 'dist')
 const SITIO = (process.env.VITE_SITE_URL ?? 'https://mateorodriguez.solutions').replace(/\/$/, '')
 const IDIOMAS = ['es', 'en']
@@ -21,8 +21,8 @@ const LOCALE = { es: 'es_ES', en: 'en_US' }
 const MAX_DESCRIPCION = 160
 
 const leerJson = async (ruta) => JSON.parse(await readFile(join(WEB, ruta), 'utf8'))
-const contenido = await leerJson('src/content/snapshot.json')
-const interfaz = { es: await leerJson('src/i18n/es.json'), en: await leerJson('src/i18n/en.json') }
+const contenido = await leerJson('src/contenido/instantanea.json')
+const interfaz = { es: await leerJson('src/idioma/es.json'), en: await leerJson('src/idioma/en.json') }
 
 const pick = (campo, lang) => (campo && typeof campo === 'object' && !Array.isArray(campo) ? campo[lang] : campo)
 const sinMarcas = (texto) => texto.replace(/\*\*|`/g, '')

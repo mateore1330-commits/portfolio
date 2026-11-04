@@ -10,10 +10,10 @@ en una foto que se publica, la cámara, la fecha o la ubicación no deben viajar
 
 Uso, desde la raíz del repo (no hace falta instalar nada en el proyecto):
 
-    uv run scripts/optimizar-retrato.py ruta/a/la/foto.jpg
+    uv run apps/web/scripts/optimizar-retrato.py ruta/a/la/foto.jpg
 
 Si la foto nueva es más grande, añade el ancho a ANCHOS (p. ej. 1000, para pantallas
-Retina) y actualiza la lista de imports de apps/web/src/sections/Hero.jsx.
+Retina) y actualiza la lista de imports de apps/web/src/web/secciones/Inicio.jsx.
 """
 
 import sys
@@ -23,7 +23,7 @@ from PIL import Image, ImageOps
 
 PROPORCION = 756 / 880  # ancho / alto
 ANCHOS = (400, 660)
-DESTINO = Path(__file__).resolve().parent.parent / "apps/web/src/assets/retrato"
+DESTINO = Path(__file__).resolve().parent.parent / "src/recursos/retrato"
 CALIDAD = {"avif": 55, "webp": 78, "jpg": 82}
 
 
@@ -39,7 +39,7 @@ def recortar(foto: Image.Image) -> Image.Image:
 
 def main() -> None:
     if len(sys.argv) != 2:
-        sys.exit("Uso: uv run scripts/optimizar-retrato.py ruta/a/la/foto.jpg")
+        sys.exit("Uso: uv run apps/web/scripts/optimizar-retrato.py ruta/a/la/foto.jpg")
 
     # exif_transpose gira la foto si la cámara la guardó de lado; luego se pierde el EXIF.
     foto = recortar(ImageOps.exif_transpose(Image.open(sys.argv[1])).convert("RGB"))
