@@ -12,7 +12,7 @@ if grep -qE '^(\.github/(workflows|scripts)/|package\.json$)' <<<"$cambios"; the
   web=true
   api=true
 fi
-# scripts/ tiene utilidades de las dos: comprobar idiomas (API) y congelar el contenido (build de la web).
+# scripts/ (la raíz) tiene lo que usan las dos: comprobar los idiomas. Los de la web están en apps/web/scripts.
 grep -qE '^(apps/web|scripts)/' <<<"$cambios" && web=true
 grep -qE '^(apps/api|scripts)/' <<<"$cambios" && api=true
 

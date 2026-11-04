@@ -99,11 +99,12 @@ lo que pasara después de esa copia se pierde.
 
 ### Si el servidor entero ha desaparecido
 
-1. Servidor nuevo: INFRA-01 a INFRA-04 (sus scripts están en `infra/servidor/`). El `infra-03.sh`
-   genera contraseñas nuevas: no hace falta recuperar las viejas.
+1. Servidor nuevo: los pasos 0 a 3 de [infra/README.md](../infra/README.md) ("Montar un servidor desde cero").
+   `2-docker.sh` genera contraseñas nuevas: no hace falta recuperar las viejas.
 2. Las bases salen vacías al arrancar: seguir el apartado **B** con la última copia de Backblaze o
    del disco.
-3. `infra-05.sh` para volver a tener copias (la llave de Backblaze está en Bitwarden).
+3. Los pasos 4 y 5 (`4-copias.sh` y `5-despliegue.sh`) para volver a tener copias y despliegue (las llaves
+   de Backblaze están en Bitwarden; la de GitHub se crea nueva).
 
 ---
 

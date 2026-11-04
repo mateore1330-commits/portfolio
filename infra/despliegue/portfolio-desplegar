@@ -14,7 +14,7 @@
 #   e. La API nueva; Caddy relee su configuración si cambió.
 #   f. ¿/api/health responde y es la imagen nueva? Si no: vuelta atrás sola a la anterior.
 #
-# Instalado por infra/servidor/infra-06.sh en /usr/local/sbin (de root). Registro:
+# Instalado por infra/servidor/5-despliegue.sh en /usr/local/sbin (de root). Registro:
 # journalctl -t portfolio-desplegar. Plan: PLAN-INFRA-06.md; uso: docs/DESPLIEGUE.md.
 set -Eeuo pipefail
 

@@ -19,10 +19,17 @@ bundle; si la API responde, se sustituye por datos frescos, y si no, nadie se en
 ## Estructura
 
 ```
-apps/web    React 18 · Vite · React Router · GSAP        → Vercel
-apps/api    Flask · SQLAlchemy · PostgreSQL · Gunicorn   → VPS propio
-docs/       Arquitectura, modelo de datos y backlog
-scripts/    Utilidades: comprobar idiomas, instantáneas, CV en PDF
+apps/web      La web y el panel: React 18 · Vite · React Router          → Vercel
+  src/web/          la web pública: páginas, secciones y estructura (cabecera, pie…)
+  src/panel/        el panel de administración
+  src/compartido/   lo que usan los dos (componentes, efectos, medir visitas)
+  src/contenido/    la instantánea del contenido y cómo se lee
+  src/idioma/  src/tema/  src/estilos/  src/recursos/
+  scripts/          los del build (congelar el contenido, páginas estáticas) y para preparar imágenes y fuentes
+apps/api      La API: Flask · SQLAlchemy · PostgreSQL · Gunicorn         → VPS propio (Docker)
+infra/        El servidor: Docker Compose, Caddy, copias y despliegue (cómo montarlo: infra/README.md)
+docs/         Arquitectura, modelo de datos, backlog, despliegue y restaurar copias
+scripts/      Lo que usan las dos aplicaciones: comprobar que los dos idiomas cuadran
 ```
 
 ## Arrancar en local
@@ -62,24 +69,35 @@ npm run dev
 ```
 
 **Publicar y congelar el contenido.** La web lleva dentro una instantánea del contenido
-(`apps/web/src/content/snapshot.json`), y por eso se ve entera aunque la API esté caída.
+(`apps/web/src/contenido/instantanea.json`), y por eso se ve entera aunque la API esté caída.
 
 ```bash
 cd apps/api && pipenv run publicar                         # guarda una instantánea nueva si hay cambios
-cd apps/web && CONTENT_API_URL=http://localhost:3001 npm run build   # la trae de la API y actualiza snapshot.json
+cd apps/web && CONTENT_API_URL=http://localhost:3001 npm run build   # la trae de la API y actualiza instantanea.json
 ```
 
 Sin `CONTENT_API_URL`, o si la API no contesta, el build avisa y usa la instantánea que ya
 está en el repo: nunca falla por eso. Para que la nueva quede como respaldo, se commitea
-`snapshot.json`.
+`instantanea.json`.
 
 **Antes de abrir un PR**, desde la raíz: `npm run check` comprueba las dos aplicaciones.
 
 ## Documentación
 
-- [Arquitectura](docs/ARQUITECTURA.md) — decisiones técnicas y por qué
-- [Modelo de datos](docs/MODELO_DATOS.dbml) — esquema en DBML, se pega en dbdiagram.io
-- [Backlog](docs/BACKLOG.md) — las épicas y su reparto entre v1 y v2
+| Documento | Qué cuenta |
+|---|---|
+| [Arquitectura](docs/ARQUITECTURA.md) | Las decisiones técnicas y por qué |
+| [Modelo de datos](docs/MODELO_DATOS.dbml) | El esquema en DBML (se pega en dbdiagram.io) |
+| [Backlog](docs/BACKLOG.md) | Las épicas y su reparto entre v1 y v2 |
+| [El servidor](infra/README.md) | Qué hay en `infra/` y cómo montar un servidor desde cero |
+| [Despliegue](docs/DESPLIEGUE.md) | Cómo llega la API al servidor al fusionar en `main` |
+| [Restaurar copias](docs/RESTAURAR.md) | Dónde están las copias de la base y cómo recuperarlas |
+
+## Cómo se trabaja
+
+Cada cambio es una issue del tablero, una rama desde `develop` y un PR con el CI en verde.
+`main` es lo publicado: se llega a ella con un PR desde `develop`, y entonces la API se
+despliega sola.
 
 ## Estado
 

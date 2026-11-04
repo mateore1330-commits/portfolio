@@ -46,7 +46,7 @@ IDIOMAS = ("es", "en")
 NOMBRE_ARCHIVO = "CV-Mateo-Rodriguez-Escobar"
 CHROME = os.getenv("CHROME", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
 FUENTES = Path(os.getenv("CV_FUENTES") or WEB / "node_modules" / "@fontsource-variable")
-RETRATO = Path(os.getenv("CV_RETRATO") or WEB / "src" / "assets" / "retrato" / "retrato-400.jpg")
+RETRATO = Path(os.getenv("CV_RETRATO") or WEB / "src" / "recursos" / "retrato" / "retrato-400.jpg")
 # Dentro de un contenedor, Chromium no puede usar su "sandbox" (le faltan permisos del sistema).
 # Se apaga solo ahí (CV_CHROME_SIN_SANDBOX=1): la página que abre la genera la propia API con el
 # contenido de la base, no es una web de fuera.

@@ -35,7 +35,7 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt && rm /tmp/requirements.
 
 # Lo del CV: las fuentes y el retrato, en su sitio (y la API los busca ahí).
 COPY --from=fuentes /fuentes/node_modules/@fontsource-variable /opt/cv/fuentes
-COPY apps/web/src/assets/retrato/retrato-400.jpg /opt/cv/retrato-400.jpg
+COPY apps/web/src/recursos/retrato/retrato-400.jpg /opt/cv/retrato-400.jpg
 
 # Un usuario sin privilegios: la API no corre como root dentro de su caja.
 RUN useradd --create-home --shell /usr/sbin/nologin api

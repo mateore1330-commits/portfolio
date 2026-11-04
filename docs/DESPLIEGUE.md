@@ -29,7 +29,7 @@ del trabajo "Desplegar en el servidor" y en `ssh -t portfolio 'sudo journalctl -
 ## Cuándo se lanza (y cuándo no)
 
 - Al llegar a `main` un cambio en `apps/api/`, en lo que va dentro de la imagen (`scripts/comprobar-idiomas.py`,
-  el retrato de `apps/web/src/assets/retrato/`, `.dockerignore`) o en lo que usa el servidor
+  el retrato de `apps/web/src/recursos/retrato/`, `.dockerignore`) o en lo que usa el servidor
   (`infra/docker-compose.yml`, `infra/Caddyfile`, `infra/db/`).
 - **No** si solo cambia `apps/web` u otra cosa (documentación…).
 - A mano: GitHub → Actions → **Desplegar API** → *Run workflow* (rama `main`). Despliega el último commit de
@@ -45,7 +45,7 @@ Un PR de `develop` a `main` con **merge normal** ("Create a merge commit"; `main
 
 - **Una llave solo para esto**, distinta de la de Mateo. Vive **solo** en los secretos de GitHub (entorno
   `produccion`: `DESPLIEGUE_LLAVE`, `DESPLIEGUE_HOST` y `DESPLIEGUE_HUELLA`, la huella del servidor, para no
-  hablar con un impostor). Se crea en el servidor con `infra/servidor/infra-06.sh` y se enseña una sola vez.
+  hablar con un impostor). Se crea en el servidor con `infra/servidor/5-despliegue.sh` y se enseña una sola vez.
 - Entra con el usuario **`despliegue`**: sin contraseña, sin terminal, sin túneles ni copia de archivos, con su
   casa y su llave de root (no puede cambiarlas). **Orden forzada** (en la llave y en sshd): diga lo que diga,
   solo se ejecuta `sudo portfolio-desplegar "<lo que pidió>"`, y ese programa solo acepta un commit (40
@@ -72,7 +72,7 @@ Antes de migrar siempre se hace una copia (si la copia falla, no se despliega): 
 | Qué versión está en marcha | `ssh -t portfolio 'sudo cat /etc/portfolio-despliegue/actual'` |
 | Poner una versión concreta de `main` (por ejemplo, volver a una anterior) | `ssh -t portfolio 'sudo portfolio-desplegar <commit>'` (su imagen tiene que estar en ghcr.io) |
 | Ver qué pasó | `ssh -t portfolio 'sudo journalctl -t portfolio-desplegar --since today'` |
-| Cambiar la llave de GitHub | `sudo bash ~/infra-06.sh main` y responder "s" a crear una nueva; pegarla en el secreto `DESPLIEGUE_LLAVE` |
+| Cambiar la llave de GitHub | `sudo bash ~/5-despliegue.sh main` y responder "s" a crear una nueva; pegarla en el secreto `DESPLIEGUE_LLAVE` |
 
 Si tampoco responde la versión anterior (el programa lo dice: "¡OJO!"), mirar
 `sudo docker compose -f /srv/portfolio/infra/docker-compose.yml ps` y los registros de la API

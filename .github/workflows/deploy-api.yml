@@ -10,7 +10,7 @@ on:
     # (apps/web), no: la despliega Vercel (GO-02).
     paths:
       - "apps/api/**"
-      - "apps/web/src/assets/retrato/**"
+      - "apps/web/src/recursos/retrato/**"
       - "scripts/comprobar-idiomas.py"
       - "infra/docker-compose.yml"
       - "infra/Caddyfile"
