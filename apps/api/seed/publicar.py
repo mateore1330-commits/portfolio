@@ -1,9 +1,11 @@
-"""Publica: guarda una instantánea del contenido en la tabla snapshots.
+"""Publica desde la consola: lo mismo que el botón "Publicar" del panel (ADM-05).
 
 Uso:  pipenv run publicar   (desde apps/api)
+      python seed/publicar.py   (en el servidor, dentro del contenedor de la API: GO-03)
 
-Es lo que hará el botón "Publicar" del panel (ADM-05). Si el contenido no ha cambiado
-desde la última publicación, no crea ninguna fila nueva.
+Los tres pasos del panel, con las mismas funciones (api/publicar.py): la instantánea, el CV en
+PDF si ha cambiado y el aviso a Vercel si está configurado. Si no hay nada que publicar, no
+crea nada.
 """
 
 import sys
@@ -15,8 +17,19 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from api import create_app  # noqa: E402
 from api.extensions import db  # noqa: E402
-from api.models import AdminUser  # noqa: E402
-from api.snapshot import InstantaneaError, publicar  # noqa: E402
+from api.models import AdminUser, CvStatus, DeployStatus  # noqa: E402
+from api.publicar import hacer_cv, hacer_despliegue, hacer_foto, pendientes  # noqa: E402
+
+CV = {
+    CvStatus.GENERATED: "generado (español e inglés)",
+    CvStatus.UNCHANGED: "sin cambios",
+    CvStatus.FAILED: "NO se ha publicado",
+}
+DESPLIEGUE = {
+    DeployStatus.DEPLOYED: "Vercel avisado",
+    DeployStatus.NOT_CONFIGURED: "sin Vercel configurado (no se avisa)",
+    DeployStatus.FAILED: "Vercel NO ha contestado",
+}
 
 
 def main():
@@ -25,27 +38,29 @@ def main():
         if admin is None:
             sys.exit("No hay administrador: cada publicación necesita un autor. "
                      "Créalo con la semilla (ADMIN_EMAIL y ADMIN_PASSWORD).")
-        autor_id = admin.admin_id
-        # publicar() tiene que empezar su propia transacción para poder leer con
-        # REPEATABLE READ: se cierra la lectura del administrador antes.
-        db.session.rollback()
-        try:
-            nueva, snapshot, tamano = publicar(autor_id)
-            db.session.commit()
-        except InstantaneaError as e:
-            db.session.rollback()
-            sys.exit(f"No se ha publicado. {e}")
+        lista = pendientes()
+        if not lista:
+            print("No hay nada que publicar: el contenido es el de la última publicación.")
+            return
 
+        snapshot, error = hacer_foto(admin.admin_id, lista)
+        if error:
+            sys.exit(f"No se ha publicado. {error}")
         p = snapshot.payload
-        resumen = (f"{len(p['projects'])} proyectos · {len(p['technologies'])} tecnologías · "
-                   f"{len(p['jobs'])} empleos · {len(p['education'])} formaciones · "
-                   f"{tamano / 1024:.1f} KB")
-        if nueva:
-            print(f"Publicado (instantánea {snapshot.snapshot_id}): {resumen}")
-        else:
-            print(f"El contenido no ha cambiado: sigue vigente la instantánea "
-                  f"{snapshot.snapshot_id} ({resumen}).")
-        print(f"ETag: {snapshot.etag[:16]}…")
+        print(f"1. Instantánea {snapshot.snapshot_id}: {len(p['projects'])} proyectos · "
+              f"{len(p['technologies'])} tecnologías · {len(p['jobs'])} empleos · "
+              f"{len(p['education'])} formaciones · {snapshot.size_bytes / 1024:.1f} KB")
+        print(f"   Cambios: {', '.join(lista)}")
+
+        hacer_cv(snapshot)
+        print(f"2. CV en PDF: {CV.get(snapshot.cv_status, snapshot.cv_status.value)}")
+        if snapshot.cv_status is CvStatus.FAILED:
+            print(f"   {snapshot.cv_detail}")
+
+        hacer_despliegue(snapshot)
+        print(f"3. Web: {DESPLIEGUE.get(snapshot.deploy_status, snapshot.deploy_status.value)}")
+        if snapshot.cv_status is CvStatus.FAILED:
+            sys.exit(1)
 
 
 if __name__ == "__main__":

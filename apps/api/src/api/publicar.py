@@ -159,14 +159,12 @@ def ver_pendientes():
     )
 
 
-@admin.post("/publicar")
-@admin_required
-def paso_foto():
-    """Paso 1: la instantánea, con lo que cambia respecto a la anterior."""
-    autor_id = int(get_jwt_identity())
-    lista = pendientes()
-    if not lista:
-        return jsonify(error="sin_cambios"), 409
+# ---------------------------------------------------------------- Los tres pasos
+# Los usan el panel (las rutas de abajo) y la consola (seed/publicar.py), para que publicar
+# sea siempre lo mismo.
+
+def hacer_foto(autor_id, lista):
+    """Paso 1: la instantánea, con lo que cambia (lista). (snapshot, None) o (None, error)."""
     cv_cambiado = _cv_cambiado()
     anterior = ultima_instantanea()
     antes = json.dumps(anterior.payload) if anterior else None
@@ -176,7 +174,7 @@ def paso_foto():
         _, snapshot, tamano = publicar(autor_id, forzar=True)
     except InstantaneaError as error:
         db.session.rollback()
-        return jsonify(error="demasiado_grande", detalle=str(error)), 422
+        return None, str(error)
     snapshot.changes = lista
     snapshot.size_bytes = tamano
     snapshot.cv_status = CvStatus.PENDING if cv_cambiado else CvStatus.UNCHANGED
@@ -184,7 +182,7 @@ def paso_foto():
     db.session.commit()
     # Lo de Cloudinary que la web ya no enseña ni usa el panel, fuera (ADM-08).
     limpiar_al_publicar(antes, snapshot.payload)
-    return jsonify(_publicacion(snapshot)), 201
+    return snapshot, None
 
 
 def _texto_problemas(pdfs):
@@ -207,15 +205,10 @@ def _guardar_pdfs(pdfs, datos, es_prueba):
         db.session.add(fila)
 
 
-@admin.post("/publicar/<int:snapshot_id>/cv")
-@admin_required
-def paso_cv(snapshot_id):
+def hacer_cv(snapshot):
     """Paso 2: el CV en PDF, solo si ha cambiado. Un CV roto nunca se publica."""
-    snapshot, falla = _buscar(snapshot_id)
-    if falla:
-        return falla
     if snapshot.cv_status in (CvStatus.UNCHANGED, CvStatus.GENERATED):
-        return jsonify(_publicacion(snapshot))
+        return
     try:
         datos = datos_cv()
         pdfs = generar_pdfs(datos)
@@ -229,7 +222,6 @@ def paso_cv(snapshot_id):
             _guardar_pdfs(pdfs, datos, es_prueba=False)
             snapshot.cv_status, snapshot.cv_detail = CvStatus.GENERATED, None
     db.session.commit()
-    return jsonify(_publicacion(snapshot))
 
 
 def llamar_vercel(gancho):
@@ -251,13 +243,8 @@ def llamar_vercel(gancho):
         return f"No se pudo conectar con Vercel ({motivo})."
 
 
-@admin.post("/publicar/<int:snapshot_id>/despliegue")
-@admin_required
-def paso_despliegue(snapshot_id):
+def hacer_despliegue(snapshot):
     """Paso 3 (y "Reintentar el despliegue"): que Vercel vuelva a construir la web."""
-    snapshot, falla = _buscar(snapshot_id)
-    if falla:
-        return falla
     gancho = current_app.config["VERCEL_DEPLOY_HOOK"]
     if not gancho:
         snapshot.deploy_status, snapshot.deploy_detail = DeployStatus.NOT_CONFIGURED, None
@@ -269,6 +256,42 @@ def paso_despliegue(snapshot_id):
             snapshot.deploy_status, snapshot.deploy_detail = DeployStatus.DEPLOYED, None
             snapshot.deployed_at = datetime.now(UTC)
     db.session.commit()
+
+
+# ---------------------------------------------------------------- Las rutas del panel
+
+@admin.post("/publicar")
+@admin_required
+def paso_foto():
+    """Paso 1: la instantánea, con lo que cambia respecto a la anterior."""
+    lista = pendientes()
+    if not lista:
+        return jsonify(error="sin_cambios"), 409
+    snapshot, error = hacer_foto(int(get_jwt_identity()), lista)
+    if error:
+        return jsonify(error="demasiado_grande", detalle=error), 422
+    return jsonify(_publicacion(snapshot)), 201
+
+
+@admin.post("/publicar/<int:snapshot_id>/cv")
+@admin_required
+def paso_cv(snapshot_id):
+    """Paso 2: el CV en PDF, solo si ha cambiado."""
+    snapshot, falla = _buscar(snapshot_id)
+    if falla:
+        return falla
+    hacer_cv(snapshot)
+    return jsonify(_publicacion(snapshot))
+
+
+@admin.post("/publicar/<int:snapshot_id>/despliegue")
+@admin_required
+def paso_despliegue(snapshot_id):
+    """Paso 3: que Vercel vuelva a construir la web."""
+    snapshot, falla = _buscar(snapshot_id)
+    if falla:
+        return falla
+    hacer_despliegue(snapshot)
     return jsonify(_publicacion(snapshot))
 
 
