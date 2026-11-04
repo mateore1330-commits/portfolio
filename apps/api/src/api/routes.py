@@ -1,6 +1,9 @@
 from flask import Blueprint, current_app, jsonify, request
+from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
 
 from . import contacto
+from .extensions import db
 from .github import contribuciones
 from .snapshot import ultima_instantanea
 
@@ -9,8 +12,17 @@ api = Blueprint("api", __name__, url_prefix="/api")
 
 @api.get("/health")
 def health():
-    # Solo responde a "¿está viva la API?": no consulta la base de datos.
-    return jsonify(ok=True, version=current_app.config["VERSION"])
+    """¿Funciona de verdad? La API y la base de datos (INFRA-07): lo miran el vigilante de
+    fuera (UptimeRobot) y el despliegue. Si la base no contesta, 503; el detalle va al
+    registro, no hacia fuera."""
+    version = current_app.config["VERSION"]
+    try:
+        db.session.execute(text("SELECT 1"))
+    except SQLAlchemyError:
+        current_app.logger.exception("Salud: la base de datos no contesta")
+        db.session.rollback()
+        return jsonify(ok=False, base=False, version=version), 503
+    return jsonify(ok=True, base=True, version=version)
 
 
 @api.get("/content")
