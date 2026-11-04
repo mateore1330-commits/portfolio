@@ -259,3 +259,29 @@ def test_si_vercel_falla_se_reintenta_solo_el_despliegue(app, cliente, csrf, cv,
     assert bien["despliegue"] == "deployed"
     # Reintentar no crea otra publicación.
     assert len(cliente.get(f"{RUTA}/publicaciones").json) == 1
+
+
+def test_la_consola_publica_como_el_panel(app, admin, cv, capsys):
+    """seed/publicar.py (GO-03: la primera publicación del servidor, sin panel): los tres pasos."""
+    import publicar as consola
+
+    from api.extensions import db
+    from api.models import CvPdf, CvStatus, DeployStatus, Snapshot
+
+    consola.main()
+    salida = capsys.readouterr().out
+    assert "1. Instantánea" in salida and "Primera publicación" in salida
+    assert "2. CV en PDF: generado" in salida
+    assert "3. Web: sin Vercel configurado" in salida
+    with app.app_context():
+        snapshot = db.session.scalars(db.select(Snapshot)).one()
+        assert snapshot.cv_status is CvStatus.GENERATED
+        assert snapshot.deploy_status is DeployStatus.NOT_CONFIGURED
+        pdfs = {(f.lang, f.is_test) for f in db.session.scalars(db.select(CvPdf))}
+        assert pdfs == {("es", False), ("en", False)}
+
+    # Sin cambios, no publica otra vez.
+    consola.main()
+    assert "No hay nada que publicar" in capsys.readouterr().out
+    with app.app_context():
+        assert db.session.scalar(db.select(db.func.count()).select_from(Snapshot)) == 1
