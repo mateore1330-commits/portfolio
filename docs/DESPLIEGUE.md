@@ -77,3 +77,34 @@ Antes de migrar siempre se hace una copia (si la copia falla, no se despliega): 
 Si tampoco responde la versión anterior (el programa lo dice: "¡OJO!"), mirar
 `sudo docker compose -f /srv/portfolio/infra/docker-compose.yml ps` y los registros de la API
 (`… logs --tail 100 api`).
+
+## La web (Vercel, GO-02)
+
+La web no pasa por el servidor: **Vercel** la construye desde `apps/web` (proyecto con *Root Directory*
+`apps/web`, plan Hobby) y la sirve en `mateorodriguez.solutions` (`www` redirige a ella).
+
+```
+push a main (cambia apps/web) ──► Vercel: npm run build ──► producción
+"Publicar" en el panel ──► API ──► gancho de Vercel ──► Vercel: npm run build ──► producción
+PR ──► vista previa (protegida: solo con sesión de Vercel)
+```
+
+- **`npm run build`** congela el contenido publicado (`CONTENT_API_URL`), construye y genera una página por URL.
+  Si la API no contesta, usa la copia del repo: la web se construye igual.
+- **`apps/web/vercel.json`**: cabeceras de seguridad (las mismas que la API, más `Permissions-Policy` y
+  `Cross-Origin-Opener-Policy`; la CSP llega en GO-04), caché larga para `/assets/` (llevan huella en el nombre),
+  y que cualquier dirección que no sea un archivo abra la web (el panel y el "no encontrado" los monta React; la
+  ruta del panel no se puede escribir ahí, el repo es público).
+- **Solo se construye si cambia `apps/web`** (`ignoreCommand`): compara el commit con el de lo último
+  desplegado. Si es el mismo commit (el gancho o un *Redeploy* sin commits nuevos), se construye siempre.
+  Pendiente de comprobar en GO-02: el gancho justo después de un commit que solo toque la API (si lo frena, se
+  quita el filtro: "Publicar" manda).
+- **Variables** (en Vercel, Production): `VITE_API_URL`, `CONTENT_API_URL`, `VITE_UMAMI_URL`,
+  `VITE_UMAMI_WEBSITE_ID` y `VITE_ADMIN_PATH`. Las `VITE_` acaban en el código que descarga el navegador: no
+  pueden ser secretos.
+
+### El gancho de "Publicar"
+
+Es una dirección secreta (quien la tenga puede lanzar construcciones). Vive en `infra/api.env` del servidor
+(`VERCEL_DEPLOY_HOOK`) y en Bitwarden. **Si se filtra:** en Vercel, *Settings → Git → Deploy Hooks*, bórralo y crea
+otro; después `sudo bash ~/6-contenido.sh main` en el servidor (te pide el nuevo, sin que se vea).
