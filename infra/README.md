@@ -88,6 +88,13 @@ El usuario `despliegue`, que solo puede lanzar `portfolio-desplegar`, y su llave
 guardarla en GitHub (Settings → Environments → `produccion` → `DESPLIEGUE_LLAVE`, con `DESPLIEGUE_HOST` y
 `DESPLIEGUE_HUELLA`). Desde ahí, lo que se fusiona en `main` se despliega solo.
 
+### 6 · El contenido y las llaves de la API — `servidor/6-contenido.sh [rama]`
+
+Guarda en `api.env`, sin que se vean, el token de GitHub (el gráfico de contribuciones), la `CLOUDINARY_URL` y el
+gancho de Vercel (que "Publicar" reconstruya la web: GO-02). La primera vez carga la semilla con tu usuario del
+panel; después ya no (pisaría lo editado desde el panel). Publica y comprueba desde fuera. Se puede repetir: lo
+que ya está, lo pregunta antes de cambiarlo.
+
 ### Y para recuperar los datos
 
 Con el servidor ya montado, la última copia: [docs/RESTAURAR.md](../docs/RESTAURAR.md) (apartado B).

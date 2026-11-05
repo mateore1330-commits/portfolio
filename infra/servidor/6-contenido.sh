@@ -8,8 +8,9 @@
 # desde el panel). Las contraseñas y llaves se escriben aquí, sin que se vean. Plan: PLAN-GO-03.md.
 #
 #   1. El código.
-#   2. Las llaves de la API en api.env: GitHub (el gráfico de contribuciones) y Cloudinary (las
-#      imágenes que se suban desde el panel).
+#   2. Las llaves de la API en api.env: GitHub (el gráfico de contribuciones), Cloudinary (las
+#      imágenes que se suban desde el panel) y el gancho de Vercel (que "Publicar" reconstruya la
+#      web: GO-02).
 #   3. La semilla (tu contenido) y tu usuario del panel.
 #   4. Publicar: la instantánea, los CV en PDF y el aviso a Vercel (si ya está).
 #   5. Comprobar desde fuera lo que sirve la API.
@@ -95,6 +96,21 @@ else
     echo "Cloudinary: guardado."
   fi
   unset nube
+fi
+if tiene VERCEL_DEPLOY_HOOK && ! si "Ya hay gancho de Vercel. ¿Cambiarlo?"; then
+  echo "Vercel: se queda el que había."
+else
+  gancho=$(leer "Gancho de Vercel, https://api.vercel.com/v1/integrations/deploy/… (Bitwarden: \"Vercel · gancho de despliegue\"; no se ve)")
+  if [ -n "$gancho" ]; then
+    case "$gancho" in
+      https://api.vercel.com/v1/integrations/deploy/*) ;;
+      *) echo "No parece un gancho de Vercel (https://api.vercel.com/v1/integrations/deploy/…). No toco nada."; exit 1 ;;
+    esac
+    poner VERCEL_DEPLOY_HOOK "$gancho"
+    cambiado=si
+    echo "Vercel: guardado."
+  fi
+  unset gancho
 fi
 chown root:root "$API_ENV"
 chmod 600 "$API_ENV"
