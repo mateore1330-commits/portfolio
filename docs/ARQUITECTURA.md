@@ -302,12 +302,14 @@ Dominio: **mateorodriguez.solutions**, registrado en Hostinger.
 
 | Registro | Apunta a |
 |---|---|
-| `mateorodriguez.solutions` | Vercel (el canónico, sin `www`; GO-01) |
-| `www` | Vercel (redirige al de sin `www`) |
+| `mateorodriguez.solutions` | Vercel (registro A, el que da Vercel en *Domains*, TTL 1 h; el canónico, sin `www`; GO-01) |
+| `www` | Vercel (CNAME al que da Vercel, TTL 1 h; redirige con 308 al de sin `www`) |
 | `api.mateorodriguez.solutions` | IP del VPS (registro A, TTL 1 h; INFRA-04) |
 | `visitas.mateorodriguez.solutions` | IP del VPS (registro A, TTL 1 h; INFRA-04) |
 
-Los DNS se gestionan desde Hostinger. No hace falta mover el dominio de registrador.
+Los DNS se gestionan desde Hostinger. No hace falta mover el dominio de registrador, ni pasar los DNS a Vercel:
+el correo (MX, SPF, DKIM, DMARC, `autodiscover`, `autoconfig`) sigue en Hostinger y no se toca. El certificado
+de la web lo pide y lo renueva Vercel (Let's Encrypt).
 
 ### Vigilancia
 
@@ -317,7 +319,8 @@ Desde fuera del servidor (INFRA-07): si el servidor está caído, no puede avisa
   personal y comercial y no pide tarjeta, según su página de precios el 04/11/2026), cada 5 minutos:
   - `https://api.mateorodriguez.solutions/api/health` — la API **y la base de datos**: si PostgreSQL no contesta,
     responde `503` (el despliegue también lo usa, así que no da por buena una versión que no llega a la base);
-  - `https://visitas.mateorodriguez.solutions/script.js` — Umami (y Caddy).
+  - `https://visitas.mateorodriguez.solutions/script.js` — Umami (y Caddy);
+  - `https://mateorodriguez.solutions` — la web en Vercel (GO-02).
   Avisa por correo al caer (confirmado, con el código de respuesta) y al volver, y guarda cuánto estuvo caída.
 - **Healthchecks.io** (gratis, plan Hobbyist): la copia nocturna avisa "¡hecha!" al terminar
   (`infra/copias/copiar.sh`). Si a las 06:00 de Madrid no ha llegado (la copia es a las 04:00, con 2 h de margen),
