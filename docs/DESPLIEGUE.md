@@ -95,8 +95,10 @@ PR ──► vista previa (protegida: solo con sesión de Vercel)
   `Cross-Origin-Opener-Policy`; la CSP llega en GO-04), caché larga para `/assets/` (llevan huella en el nombre),
   y que cualquier dirección que no sea un archivo abra la web (el panel y el "no encontrado" los monta React; la
   ruta del panel no se puede escribir ahí, el repo es público).
-- **Solo se construye si cambia `apps/web`** (`ignoreCommand`): compara el commit con el de lo último
-  desplegado. Si es el mismo commit (el gancho o un *Redeploy* sin commits nuevos), se construye siempre.
+- **Solo se construye si cambia `apps/web`** (`ignoreCommand` → `apps/web/scripts/saltar-construccion.sh`):
+  compara el commit con el de lo último desplegado. Si es el mismo commit (el gancho o un *Redeploy* sin commits
+  nuevos), la primera vez de una rama o no se puede comparar, se construye. Vercel solo admite 0 (saltar) o 1
+  (construir): cualquier otra salida la toma como fallo del despliegue.
   Pendiente de comprobar en GO-02: el gancho justo después de un commit que solo toque la API (si lo frena, se
   quita el filtro: "Publicar" manda).
 - **Variables** (en Vercel, Production): `VITE_API_URL`, `CONTENT_API_URL`, `VITE_UMAMI_URL`,
