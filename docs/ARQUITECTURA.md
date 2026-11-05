@@ -292,7 +292,9 @@ el servidor:
 
 El servidor sigue `main`. Las migraciones tienen que ser compatibles hacia atrás. Todo, en `docs/DESPLIEGUE.md`.
 
-El frontend se despliega solo: Vercel escucha el repositorio.
+El frontend se despliega solo: Vercel escucha el repositorio (GO-02). Proyecto con raíz `apps/web`; cabeceras
+de seguridad y reglas de rutas en `apps/web/vercel.json`; "Publicar" lo reconstruye con un gancho secreto que
+vive en el servidor. Todo, en `docs/DESPLIEGUE.md` (La web).
 
 ### DNS
 
@@ -300,8 +302,8 @@ Dominio: **mateorodriguez.solutions**, registrado en Hostinger.
 
 | Registro | Apunta a |
 |---|---|
-| `mateorodriguez.solutions` | Vercel |
-| `www` | Vercel |
+| `mateorodriguez.solutions` | Vercel (el canónico, sin `www`; GO-01) |
+| `www` | Vercel (redirige al de sin `www`) |
 | `api.mateorodriguez.solutions` | IP del VPS (registro A, TTL 1 h; INFRA-04) |
 | `visitas.mateorodriguez.solutions` | IP del VPS (registro A, TTL 1 h; INFRA-04) |
 
