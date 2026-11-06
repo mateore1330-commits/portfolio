@@ -148,7 +148,7 @@ export default function DialogoPublicar({ abierto, pendientes, alCerrar, alPubli
       )}
       {terminado && publicacion.despliegue === 'failed' && (
         <Banda tipo="error">
-          <b>La publicación nº {publicacion.id} se guardó, pero el despliegue en Vercel falló</b> ({publicacion.despliegue_detalle?.replace(/\.$/, '')}).
+          <b>El despliegue nº {publicacion.id} falló en Vercel; el contenido sí se guardó</b> ({publicacion.despliegue_detalle?.replace(/\.$/, '')}).
           La web ya enseña lo nuevo; la copia de seguridad que lleva dentro, todavía no.
         </Banda>
       )}
