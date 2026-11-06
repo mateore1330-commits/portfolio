@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router'
 import Aplicacion from '@/Aplicacion.jsx'
+import ErrorRuta from '@/compartido/componentes/ErrorRuta.jsx'
 import EstructuraWeb from '@/web/estructura/EstructuraWeb.jsx'
 import Portada from '@/web/paginas/Portada.jsx'
 import { RUTA_PANEL } from '@/panel/utilidades/ruta.js'
@@ -41,6 +42,7 @@ const panel = RUTA_PANEL
       path: RUTA_PANEL,
       lazy: delPanel(() => import('@/panel/PanelRaiz.jsx')),
       HydrateFallback: () => null,
+      errorElement: <ErrorRuta />,
       children: [
         { path: 'entrar', lazy: delPanel(() => import('@/panel/entrar/Entrar.jsx')) },
         // Las vistas previas, en su pestaña y sin el panel alrededor (la sesión la pide la API).
@@ -83,6 +85,8 @@ export const router = createBrowserRouter([
     // Lo que se pinta mientras llega una página diferida (lazy) al entrar
     // directamente en ella. Tarda milisegundos: no merece un cargador.
     HydrateFallback: () => null,
+    // Si una página falla (o es de una versión anterior): ErrorRuta, no la pantalla de React Router.
+    errorElement: <ErrorRuta />,
     children: [
       ...devRoutes,
       { path: 'en', ...paginas('en') },
