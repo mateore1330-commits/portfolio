@@ -9,6 +9,7 @@ import Dialogo from '@/panel/comun/Dialogo.jsx'
 import { Banda, Cabecera } from '@/panel/comun/Estados.jsx'
 import ListaParrafos from '@/panel/comun/ListaParrafos.jsx'
 import PestanasIdioma from '@/panel/comun/PestanasIdioma.jsx'
+import { useRevisarIdiomas } from '@/panel/comun/RevisarIdiomas.jsx'
 import { conError, useFormulario } from '@/panel/comun/useFormulario.js'
 import { NoEncontrado } from '@/panel/Proximamente.jsx'
 import { RUTA_PANEL } from '@/panel/utilidades/ruta.js'
@@ -48,6 +49,7 @@ function Formulario({ tipo, id }) {
   const [intento, setIntento] = useState(0)
   const [detalle, setDetalle] = useState(null)
   const [idioma, setIdioma] = useState('es')
+  const revision = useRevisarIdiomas(form, setIdioma)
   const [errores, setErrores] = useState({})
   const [fallo, setFallo] = useState(null)
   const [guardando, setGuardando] = useState(false)
@@ -133,11 +135,12 @@ function Formulario({ tipo, id }) {
   }
   const deshacer = (clave) => cambiar(clave, original[clave])
   const errorDe = (clave) => (errores[clave] ? mensaje(clave, errores[clave]) : null)
-  const marca = (clave) => ({ cambiado: form.cambiado(clave), alDeshacer: () => deshacer(clave) })
+  const marca = (clave) => ({ cambiado: form.cambiado(clave), alDeshacer: () => deshacer(clave), revisar: form.revisar(clave) })
 
   const total = cuantos()
   const numErrores = Object.keys(errores).length
   const erroresEn = (lang) => Object.keys(errores).some((k) => k.split('.')[1] === lang)
+  const porRevisar = form.porRevisar().length
 
   const guardar = async () => {
     setGuardando(true)
@@ -255,13 +258,14 @@ function Formulario({ tipo, id }) {
               <button className="boton suave pequeno" type="button" onClick={descartar}>
                 Descartar
               </button>
-              <button className="boton azul pequeno" type="button" onClick={guardar} disabled={guardando}>
+              <button className="boton azul pequeno" type="button" onClick={revision.comprobar(guardar)} disabled={guardando}>
                 Guardar
               </button>
             </>
           }
         >
           <b>Tienes {cambios(total)} sin guardar</b>. Están marcados en ámbar; si sales ahora, te avisaré.
+          {porRevisar > 0 && ` En azul, ${porRevisar === 1 ? 'el campo' : `los ${porRevisar} campos`} que cambiaste solo en un idioma.`}
         </Banda>
       )}
       {numErrores > 0 && (
@@ -297,6 +301,7 @@ function Formulario({ tipo, id }) {
             alCambiar={setIdioma}
             conCambios={{ es: cuantos((k) => k.endsWith('.es')) > 0, en: cuantos((k) => k.endsWith('.en')) > 0 }}
             conErrores={{ es: erroresEn('es'), en: erroresEn('en') }}
+            conRevisar={{ es: form.porRevisar((k) => k.endsWith('.es')).length > 0, en: form.porRevisar((k) => k.endsWith('.en')).length > 0 }}
           >
             {(lang) => (
               <>
@@ -311,6 +316,7 @@ function Formulario({ tipo, id }) {
                       original={original[clave]}
                       errores={erroresParrafos(clave)}
                       alCambiar={(v) => cambiar(clave, v)}
+                      revisar={form.revisar(clave)}
                       lineas={lineas}
                       ayuda={lineas ? 'Lo que va entre **asteriscos** sale en negrita.' : undefined}
                     />
@@ -471,13 +477,14 @@ function Formulario({ tipo, id }) {
                 Vista previa ↗
               </a>
             ))}
-          <button className="boton azul" type="button" onClick={guardar} disabled={guardando}>
+          <button className="boton azul" type="button" onClick={revision.comprobar(guardar)} disabled={guardando}>
             {guardando ? 'Guardando…' : 'Guardar'}
           </button>
         </div>
       </div>
 
       <AvisoSalir cuantos={total} />
+      {revision.dialogo}
       <Dialogo abierto={borrar} titulo={`Borrar ${nombreGuardado ?? ''}`} alCerrar={borrando ? undefined : () => setBorrar(false)}>
         <p>
           Desaparece de la web <b>al publicar</b>. <b>No se puede deshacer.</b> Si solo quieres quitarlo de la web, ocúltalo.

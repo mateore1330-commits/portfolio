@@ -18,7 +18,7 @@ function datoDe(enlace, nombre) {
 // con estos mismos nombres.
 const rutaCv = (lang) => `/cv/CV-Mateo-Rodriguez-Escobar-${lang.toUpperCase()}.pdf`
 
-// El cierre de la web: panel negro en los dos temas con el campo de puntos. Arriba, a
+// El cierre de la web, con el campo de puntos; sigue el tema (#185). Arriba, a
 // todo el ancho, la etiqueta de disponibilidad y el titular (la parte marcada, en azul).
 // Debajo, el texto y los canales a la izquierda y el formulario a la derecha.
 // Propuesta aprobada el 31/10/2026 (Recursos/Maquetas/contacto-propuesta.html).

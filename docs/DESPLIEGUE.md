@@ -94,7 +94,11 @@ PR ──► vista previa (protegida: solo con sesión de Vercel)
 - **`apps/web/vercel.json`**: cabeceras de seguridad (las mismas que la API, más `Permissions-Policy` y
   `Cross-Origin-Opener-Policy`; la CSP llega en GO-04), caché larga para `/assets/` (llevan huella en el nombre),
   y que cualquier dirección que no sea un archivo abra la web (el panel y el "no encontrado" los monta React; la
-  ruta del panel no se puede escribir ahí, el repo es público).
+  ruta del panel no se puede escribir ahí, el repo es público). **Menos `/assets/`**: una pieza que no existe da
+  404, no la portada (que además se guardaría un año con la caché de `/assets/`).
+- **Una pestaña abierta de antes de publicar** pide piezas con el nombre viejo, que ya no existen. La pantalla de
+  error de las rutas (`ErrorRuta`) recarga sola una vez en la dirección a la que ibas; si vuelve a fallar en
+  menos de un minuto, enseña "Algo no ha cargado · Recargar" (#185).
 - **Se construye con cada push a `main`, aunque solo cambie la API** (un minuto, gratis). Hubo un filtro para
   saltarse esas construcciones (*Ignored Build Step*) y se quitó: Vercel no distingue un push del gancho, y
   después de un commit que no tocaba `apps/web` se saltaba también la construcción de "Publicar" (probado en

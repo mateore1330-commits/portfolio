@@ -1484,6 +1484,27 @@
   text-transform: none;
 }
 
+/* Cambiado en el otro idioma y aquí no (#185): en azul, para no confundirlo con el ámbar de
+   "Modificado". Es un aviso, no un error: se puede guardar igual. */
+.panel-app .marca-revisar {
+  margin-left: auto;
+  color: var(--blue);
+  font: 500 9.5px var(--f-mono);
+  letter-spacing: .08em;
+  text-transform: none;
+}
+
+.panel-app .campo-panel.por-revisar input:not([type="checkbox"]),
+.panel-app .campo-panel.por-revisar textarea {
+  border-left: 3px solid var(--blue);
+}
+
+.panel-app .tabs .chip.revisar {
+  padding: 1px 5px;
+  background: var(--blue-wash);
+  color: var(--blue);
+}
+
 .panel-app .deshacer {
   padding: 0;
   border: 0;
@@ -1908,7 +1929,7 @@
   margin-top: 16px;
 }
 
-/* --- Publicaciones ------------------------------------------ */
+/* --- Despliegues -------------------------------------------- */
 .panel-app .chip.mal {
   background: var(--error-bg);
   color: var(--error);

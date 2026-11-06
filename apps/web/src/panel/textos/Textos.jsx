@@ -4,11 +4,12 @@ import { pedir } from '@/panel/utilidades/api.js'
 import AreaTexto from '@/panel/comun/AreaTexto.jsx'
 import AvisoSalir from '@/panel/comun/AvisoSalir.jsx'
 import { useAvisar } from '@/panel/comun/avisos.js'
-import Campo from '@/panel/comun/Campo.jsx'
+import Campo, { MarcaRevisar } from '@/panel/comun/Campo.jsx'
 import { Banda, Cabecera } from '@/panel/comun/Estados.jsx'
 import ListaBloques from '@/panel/comun/ListaBloques.jsx'
 import ListaParrafos from '@/panel/comun/ListaParrafos.jsx'
 import PestanasIdioma from '@/panel/comun/PestanasIdioma.jsx'
+import { useRevisarIdiomas } from '@/panel/comun/RevisarIdiomas.jsx'
 import { conError, useFormulario } from '@/panel/comun/useFormulario.js'
 import { cuandoSeGuardo } from '@/panel/utilidades/fechas.js'
 import {
@@ -46,6 +47,12 @@ export default function Textos() {
   const secciones = useMemo(() => (datos ? seccionesDe(datos.textos) : []), [datos])
   const form = useFormulario(useMemo(() => clavesDeListas(secciones), [secciones]))
   const { valores, original, cuantos } = form
+  // "Revisar" (#185): a la sección y a la pestaña del primer campo por revisar.
+  const revision = useRevisarIdiomas(form, (lang, clave) => {
+    setIdioma(lang)
+    const s = secciones.find((x) => x.campos.some((c) => clave === c.clave || clave.startsWith(`${c.clave}.`)))
+    if (s) setParams({ seccion: s.id }, { replace: true })
+  })
 
   useEffect(() => {
     ponerTitulo('Textos · Panel')
@@ -180,7 +187,7 @@ export default function Textos() {
   const pintar = (c, lang) => {
     const clave = `${c.clave}.${lang}`
     const id = idDe(clave)
-    const marca = { cambiado: form.cambiado(clave), alDeshacer: () => deshacer(clave) }
+    const marca = { cambiado: form.cambiado(clave), alDeshacer: () => deshacer(clave), revisar: form.revisar(clave) }
 
     if (c.tipo === 'linea' || c.tipo === 'parrafo') {
       const error = errorDe(clave)
@@ -222,6 +229,7 @@ export default function Textos() {
           pares={c.pares}
           ayuda={c.ayuda}
           anadir={c.anadir}
+          revisar={form.revisar(clave)}
         />
       )
     }
@@ -242,6 +250,7 @@ export default function Textos() {
                   error={error}
                   cambiado={form.cambiado(k)}
                   alDeshacer={() => deshacer(k)}
+                  revisar={form.revisar(k)}
                 >
                   <input id={idDe(k)} type="text" value={valores[k]} onChange={(e) => cambiar(k, e.target.value)} {...conError(idDe(k), error)} />
                 </Campo>
@@ -263,10 +272,14 @@ export default function Textos() {
           error={errorTitulo}
           cambiado={form.cambiado(kTitulo)}
           alDeshacer={() => deshacer(kTitulo)}
+          revisar={form.revisar(kTitulo)}
         >
           <input id={idDe(kTitulo)} type="text" value={valores[kTitulo]} onChange={(e) => cambiar(kTitulo, e.target.value)} {...conError(idDe(kTitulo), errorTitulo)} />
         </Campo>
-        <p className="etiqueta mono">Apartados</p>
+        <p className="etiqueta mono">
+          Apartados
+          {form.revisar(kBloques) && <MarcaRevisar idioma={form.revisar(kBloques)} />}
+        </p>
         <ListaBloques
           valor={valores[kBloques]}
           original={original[kBloques]}
@@ -300,6 +313,8 @@ export default function Textos() {
     )
   }
 
+  const revisarEn = (lang) => form.porRevisar((k) => deSeccion(seccion)(k) && k.split('.').includes(lang)).length > 0
+  const porRevisar = form.porRevisar().length
   const erroresEn = (lang) => Object.keys(errores).some((k) => deSeccion(seccion)(k) && k.split('.').includes(lang))
   const actualizado = datos.actualizado
 
@@ -315,7 +330,7 @@ export default function Textos() {
               <button className="boton suave pequeno" type="button" onClick={descartar}>
                 Descartar
               </button>
-              <button className="boton azul pequeno" type="button" onClick={guardar} disabled={guardando}>
+              <button className="boton azul pequeno" type="button" onClick={revision.comprobar(guardar)} disabled={guardando}>
                 Guardar
               </button>
             </>
@@ -328,6 +343,7 @@ export default function Textos() {
             .map((s) => s.nombre)
             .join(', ')}
           . Están marcados en ámbar; si sales ahora, te avisaré.
+          {porRevisar > 0 && ` En azul, ${porRevisar === 1 ? 'el campo' : `los ${porRevisar} campos`} que cambiaste solo en un idioma.`}
         </Banda>
       )}
       {numErrores > 0 && (
@@ -379,6 +395,7 @@ export default function Textos() {
               en: cuantos((k) => deSeccion(seccion)(k) && k.split('.').includes('en')) > 0,
             }}
             conErrores={{ es: erroresEn('es'), en: erroresEn('en') }}
+            conRevisar={{ es: revisarEn('es'), en: revisarEn('en') }}
           >
             {(lang) => seccion.campos.map((c) => pintar(c, lang))}
           </PestanasIdioma>
@@ -397,13 +414,14 @@ export default function Textos() {
           <button className="boton suave" type="button" onClick={abrirVistaPrevia}>
             Vista previa ↗
           </button>
-          <button className="boton azul" type="button" onClick={guardar} disabled={guardando || total === 0}>
+          <button className="boton azul" type="button" onClick={revision.comprobar(guardar)} disabled={guardando || total === 0}>
             {guardando ? 'Guardando…' : 'Guardar'}
           </button>
         </div>
       </div>
 
       <AvisoSalir cuantos={total} />
+      {revision.dialogo}
     </>
   )
 }

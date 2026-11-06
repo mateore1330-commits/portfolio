@@ -9,6 +9,7 @@ import Campo from '@/panel/comun/Campo.jsx'
 import { Banda, Cabecera } from '@/panel/comun/Estados.jsx'
 import ListaParrafos from '@/panel/comun/ListaParrafos.jsx'
 import PestanasIdioma from '@/panel/comun/PestanasIdioma.jsx'
+import { useRevisarIdiomas } from '@/panel/comun/RevisarIdiomas.jsx'
 import SelectorTecnologias from '@/panel/comun/SelectorTecnologias.jsx'
 import { conError, useFormulario } from '@/panel/comun/useFormulario.js'
 import { cuandoSeGuardo, elDiaALas } from '@/panel/utilidades/fechas.js'
@@ -56,6 +57,7 @@ function Formulario({ id }) {
   const [todas, setTodas] = useState([])
   const [detalle, setDetalle] = useState(null) // lo guardado, tal como lo da la API
   const [idioma, setIdioma] = useState('es')
+  const revision = useRevisarIdiomas(form, setIdioma)
   const [errores, setErrores] = useState({})
   const [slugDe, setSlugDe] = useState(null)
   const [fallo, setFallo] = useState(null)
@@ -174,6 +176,7 @@ function Formulario({ id }) {
   const total = cuantos()
   const numErrores = Object.keys(errores).length
   const erroresEn = (lang) => Object.keys(errores).some((k) => k.split('.')[1] === lang)
+  const porRevisar = form.porRevisar().length
 
   const guardar = async () => {
     setGuardando(true)
@@ -229,6 +232,7 @@ function Formulario({ id }) {
         error={error}
         cambiado={form.cambiado(clave)}
         alDeshacer={() => deshacer(clave)}
+        revisar={form.revisar(clave)}
       >
         <Control
           id={idCampo}
@@ -324,13 +328,14 @@ function Formulario({ id }) {
               <button className="boton suave pequeno" type="button" onClick={descartar}>
                 Descartar
               </button>
-              <button className="boton azul pequeno" type="button" onClick={guardar} disabled={guardando}>
+              <button className="boton azul pequeno" type="button" onClick={revision.comprobar(guardar)} disabled={guardando}>
                 Guardar
               </button>
             </>
           }
         >
           <b>Tienes {cambios(total)} sin guardar</b>. Están marcados en ámbar; si sales ahora, te avisaré.
+          {porRevisar > 0 && ` En azul, ${porRevisar === 1 ? 'el campo' : `los ${porRevisar} campos`} que cambiaste solo en un idioma.`}
         </Banda>
       )}
       {numErrores > 0 && (
@@ -360,6 +365,7 @@ function Formulario({ id }) {
             alCambiar={setIdioma}
             conCambios={{ es: cuantos((k) => k.endsWith('.es')) > 0, en: cuantos((k) => k.endsWith('.en')) > 0 }}
             conErrores={{ es: erroresEn('es'), en: erroresEn('en') }}
+            conRevisar={{ es: form.porRevisar((k) => k.endsWith('.es')).length > 0, en: form.porRevisar((k) => k.endsWith('.en')).length > 0 }}
           >
             {(lang) => (
               <>
@@ -374,6 +380,7 @@ function Formulario({ id }) {
                       original={original[clave]}
                       errores={erroresParrafos(clave)}
                       alCambiar={(v) => cambiar(clave, v)}
+                      revisar={form.revisar(clave)}
                     />
                   )
                 })}
@@ -512,13 +519,14 @@ function Formulario({ id }) {
                 Vista previa ↗
               </a>
             ))}
-          <button className="boton azul" type="button" onClick={guardar} disabled={guardando}>
+          <button className="boton azul" type="button" onClick={revision.comprobar(guardar)} disabled={guardando}>
             {guardando ? 'Guardando…' : 'Guardar'}
           </button>
         </div>
       </div>
 
       <AvisoSalir cuantos={total} />
+      {revision.dialogo}
       <DialogoDestacado
         cambio={preguntar ? { nuevo: valores['name.es'] || 'Este proyecto', anterior: destacado } : null}
         alGuardar

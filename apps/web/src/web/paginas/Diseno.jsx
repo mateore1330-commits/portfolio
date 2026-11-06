@@ -9,7 +9,8 @@ const PALETTE = [
   ['Tinta', ['--ink', '--ink-2', '--ink-3', '--mist']],
   ['Líneas', ['--rule', '--rule-2']],
   ['Acento', ['--blue', '--blue-2', '--blue-wash', '--on-blue']],
-  ['Panel de contacto · igual en los dos temas', ['--panel', '--panel-2', '--panel-ink', '--panel-dim', '--panel-blue']],
+  ['Oscuro fijo (sobre fotos) · igual en los dos temas', ['--panel', '--panel-2', '--panel-ink', '--panel-dim', '--panel-blue']],
+  ['Contacto', ['--contacto-fondo', '--contacto-tinta', '--contacto-tenue', '--contacto-azul', '--contacto-error']],
   ['Gráfico de contribuciones', ['--lv0', '--lv1', '--lv2', '--lv3', '--lv4']],
 ]
 

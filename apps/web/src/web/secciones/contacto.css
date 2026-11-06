@@ -1,29 +1,30 @@
 /* ============================================================
-   CONTACTO — el cierre de la web. Panel negro en los dos temas, con el
-   campo de puntos. Propuesta aprobada el 31/10/2026
-   (Recursos/Maquetas/contacto-propuesta.html).
+   CONTACTO — el cierre de la web, con el campo de puntos. Propuesta
+   aprobada el 31/10/2026 (Recursos/Maquetas/contacto-propuesta.html).
+   Sigue el tema desde #185 (Recursos/Maquetas/contacto-claro.html): sus
+   colores son los --contacto-* de variables.css.
    ============================================================ */
 
 .contact {
   /* Las dos cajas (texto y formulario), como la tarjeta del login: translúcidas, para que
      los puntos y su brillo al pasar el cursor se intuyan detrás. Poco desenfoque: los
      puntos son diminutos y con más se borrarían. */
-  --caja-fondo: rgba(11, 13, 17, .5);
+  --caja-fondo: var(--contacto-caja);
   --caja-filtro: blur(1.5px);
   position: relative;
   isolation: isolate;
   overflow: hidden;
   padding: clamp(76px, 11vw, 150px) var(--gut);
-  background: var(--panel);
-  color: var(--panel-ink);
+  background: var(--contacto-fondo);
+  color: var(--contacto-tinta);
 }
 
-/* El foco con teclado, en el azul del panel: el azul del tema claro casi no se ve sobre negro. */
+/* El foco con teclado, en el azul del contacto: el de la página no se ve sobre su fondo oscuro. */
 .contact :focus-visible {
-  outline-color: var(--panel-blue);
+  outline-color: var(--contacto-azul);
 }
 
-/* El lienzo ocupa todo el panel y se desvanece hacia los bordes. */
+/* El lienzo ocupa toda la sección y se desvanece hacia los bordes. */
 .dotfield {
   position: absolute;
   inset: 0;
@@ -44,7 +45,7 @@
   z-index: 0;
   width: 60%;
   height: 80%;
-  background: radial-gradient(closest-side, rgba(114, 144, 255, .16), transparent);
+  background: radial-gradient(closest-side, rgba(var(--contacto-azul-rgb), var(--contacto-halo)), transparent);
   pointer-events: none;
 }
 
@@ -71,9 +72,9 @@
   gap: 10px;
   margin-bottom: 26px;
   padding: var(--sp-2) 14px;
-  border: 1px solid rgba(114, 144, 255, .45);
-  background: rgba(114, 144, 255, .08);
-  color: var(--panel-ink);
+  border: 1px solid rgba(var(--contacto-azul-rgb), .45);
+  background: rgba(var(--contacto-azul-rgb), .08);
+  color: var(--contacto-tinta);
   font-family: var(--f-mono);
   font-size: 10.5px;
   font-weight: 500;
@@ -81,18 +82,18 @@
   text-transform: uppercase;
 }
 
-/* El punto que late, como en la portada, en el azul del panel. */
+/* El punto que late, como en la portada, en el azul del contacto. */
 .contact-pill .dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--panel-blue);
+  background: var(--contacto-azul);
   animation: latido 2.6s infinite;
 }
 
 @keyframes latido {
   0% {
-    box-shadow: 0 0 0 0 rgba(114, 144, 255, .5);
+    box-shadow: 0 0 0 0 rgba(var(--contacto-azul-rgb), .5);
   }
 
   70%,
@@ -101,12 +102,12 @@
   }
 }
 
-/* La pregunta en blanco y la respuesta (marcada con **…** en el contenido) debajo, en azul.
+/* La pregunta en tinta y la respuesta (marcada con **…** en el contenido) debajo, en azul.
    El tope de 10cqi: "¿Construimos", la palabra más larga, mide unas 9,7 veces el tamaño de
    letra; con 40 px fijos se salía y quedaba cortada en un móvil de 360. */
 .contact h2 {
   max-width: 16ch;
-  color: var(--panel-ink);
+  color: var(--contacto-tinta);
   font-size: min(clamp(40px, 7.4cqi, 118px), 10cqi);
   font-variation-settings: "wdth" 118, "wght" 800;
   line-height: .9;
@@ -115,7 +116,7 @@
 
 .contact h2 b {
   display: block;
-  color: var(--panel-blue);
+  color: var(--contacto-azul);
   font-weight: inherit;
 }
 
@@ -126,15 +127,15 @@
    suyo. */
 .contact-texto {
   padding: clamp(22px, 3vw, 40px);
-  border: 1px solid rgba(237, 235, 229, .12);
+  border: 1px solid var(--contacto-caja-borde);
   background: var(--caja-fondo);
   backdrop-filter: var(--caja-filtro);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, .35);
+  box-shadow: 0 30px 80px var(--contacto-sombra);
 }
 
 .contact .sub {
   max-width: 44ch;
-  color: var(--panel-dim);
+  color: var(--contacto-tenue);
   font-size: var(--fs-lede);
   line-height: 1.5;
 }
@@ -148,7 +149,7 @@
 }
 
 .contact .sub b {
-  color: var(--panel-ink);
+  color: var(--contacto-tinta);
   font-weight: 600;
 }
 
@@ -158,7 +159,7 @@
   max-width: 520px;
   margin: 0;
   padding: 0;
-  border-top: 1px solid rgba(237, 235, 229, .14);
+  border-top: 1px solid var(--contacto-linea);
   list-style: none;
 }
 
@@ -168,14 +169,14 @@
   align-items: baseline;
   gap: 14px;
   padding-block: 14px;
-  border-bottom: 1px solid rgba(237, 235, 229, .14);
-  color: var(--panel-ink);
+  border-bottom: 1px solid var(--contacto-linea);
+  color: var(--contacto-tinta);
   text-decoration: none;
   transition: padding var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 
 .canales .k {
-  color: var(--panel-blue);
+  color: var(--contacto-azul);
   font-family: var(--f-mono);
   font-size: var(--fs-mono-s);
   letter-spacing: .16em;
@@ -190,7 +191,7 @@
 }
 
 .canales .f {
-  color: var(--panel-dim);
+  color: var(--contacto-tenue);
   font-family: var(--f-mono);
   font-size: 14px;
   transition: transform var(--dur) var(--ease), color var(--dur) var(--ease);
@@ -202,7 +203,7 @@
 
 .canales a:hover .v,
 .canales a:hover .f {
-  color: var(--panel-blue);
+  color: var(--contacto-azul);
 }
 
 .canales a:hover .f {
@@ -222,20 +223,20 @@
   align-items: center;
   gap: 14px;
   padding-block: 10px;
-  border-bottom: 1px solid rgba(237, 235, 229, .14);
+  border-bottom: 1px solid var(--contacto-linea);
 }
 
 .canales .con-copiar a {
   display: inline;
   padding: 0;
   border: 0;
-  color: var(--panel-ink);
+  color: var(--contacto-tinta);
   transition: color var(--dur) var(--ease);
 }
 
 .canales .con-copiar a:hover {
   padding: 0;
-  color: var(--panel-blue);
+  color: var(--contacto-azul);
 }
 
 .copiar {
@@ -243,9 +244,9 @@
   align-items: center;
   gap: 7px;
   padding: 7px 10px;
-  border: 1px solid rgba(237, 235, 229, .28);
+  border: 1px solid var(--contacto-linea-2);
   background: transparent;
-  color: var(--panel-ink);
+  color: var(--contacto-tinta);
   font-family: var(--f-mono);
   font-size: var(--fs-mono-xs);
   letter-spacing: .14em;
@@ -264,14 +265,14 @@
 }
 
 .copiar:hover {
-  border-color: var(--panel-blue);
-  color: var(--panel-blue);
+  border-color: var(--contacto-azul);
+  color: var(--contacto-azul);
 }
 
 .copiar.hecho {
-  border-color: var(--panel-blue);
-  background: var(--panel-blue);
-  color: var(--panel);
+  border-color: var(--contacto-azul);
+  background: var(--contacto-azul);
+  color: var(--contacto-sobre-azul);
 }
 
 /* Debajo de "Escríbeme directamente": "o [Copia el correo]". */
@@ -281,7 +282,7 @@
   align-items: center;
   gap: 10px;
   margin-top: 14px;
-  color: var(--panel-dim);
+  color: var(--contacto-tenue);
   font-family: var(--f-mono);
   font-size: var(--fs-mono-s);
   letter-spacing: .12em;
@@ -291,10 +292,10 @@
 /* --- Formulario: caja translúcida, para leerse sobre los puntos --- */
 .form-contacto {
   padding: clamp(22px, 3vw, 40px);
-  border: 1px solid rgba(114, 144, 255, .28);
+  border: 1px solid rgba(var(--contacto-azul-rgb), .28);
   background: var(--caja-fondo);
   backdrop-filter: var(--caja-filtro);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(114, 144, 255, .25);
+  box-shadow: 0 30px 80px var(--contacto-sombra), inset 0 1px 0 rgba(var(--contacto-azul-rgb), .25);
 }
 
 .cab-form {
@@ -304,11 +305,11 @@
   gap: var(--sp-3);
   margin-bottom: 22px;
   padding-bottom: 18px;
-  border-bottom: 1px solid rgba(237, 235, 229, .14);
+  border-bottom: 1px solid var(--contacto-linea);
 }
 
 .cab-form .flecha {
-  color: var(--panel-blue);
+  color: var(--contacto-azul);
   font-family: var(--f-mono);
   font-size: 18px;
   font-weight: 700;
@@ -322,7 +323,7 @@
 
 .cab-form .mini {
   margin-left: auto;
-  color: var(--panel-dim);
+  color: var(--contacto-tenue);
   font-family: var(--f-mono);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono);
@@ -336,7 +337,7 @@
 .campo label {
   display: block;
   margin-bottom: 6px;
-  color: var(--panel-dim);
+  color: var(--contacto-tenue);
   font-family: var(--f-mono);
   font-size: var(--fs-mono-s);
   letter-spacing: .16em;
@@ -345,7 +346,7 @@
 
 .campo label b {
   margin-right: 6px;
-  color: var(--panel-blue);
+  color: var(--contacto-azul);
   font-weight: 700;
 }
 
@@ -356,10 +357,10 @@
   width: 100%;
   padding: 6px 0 8px;
   border: 0;
-  border-bottom: 1px solid rgba(237, 235, 229, .28);
+  border-bottom: 1px solid var(--contacto-linea-2);
   border-radius: 0;
-  background: linear-gradient(var(--panel-blue), var(--panel-blue)) left bottom / 0 2px no-repeat;
-  color: var(--panel-ink);
+  background: linear-gradient(var(--contacto-azul), var(--contacto-azul)) left bottom / 0 2px no-repeat;
+  color: var(--contacto-tinta);
   font-family: var(--f-body);
   font-size: var(--fs-body);
   resize: vertical;
@@ -368,7 +369,7 @@
 
 .campo input::placeholder,
 .campo textarea::placeholder {
-  color: rgba(138, 142, 153, .6);
+  color: var(--contacto-pista);
 }
 
 .campo input:focus,
@@ -378,7 +379,7 @@
 
 .campo.mal input,
 .campo.mal textarea {
-  border-color: #FF8A8A;
+  border-color: var(--contacto-error);
 }
 
 .error,
@@ -386,7 +387,7 @@
   display: block;
   min-height: 1.2em;
   margin-top: 5px;
-  color: #FF8A8A;
+  color: var(--contacto-error);
   font-family: var(--f-mono);
   font-size: 10.5px;
   letter-spacing: .06em;
@@ -405,7 +406,7 @@
   width: 18px;
   height: 18px;
   margin: 2px 0 0;
-  border: 1px solid rgba(237, 235, 229, .45);
+  border: 1px solid var(--contacto-casilla);
   border-radius: 0;
   background: transparent center / 12px no-repeat;
   cursor: pointer;
@@ -414,30 +415,30 @@
 }
 
 .casilla input:checked {
-  border-color: var(--panel-blue);
-  background-color: var(--panel-blue);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.2 4.8 9 10 3' fill='none' stroke='%230B0D11' stroke-width='1.8'/%3E%3C/svg%3E");
+  border-color: var(--contacto-azul);
+  background-color: var(--contacto-azul);
+  background-image: var(--contacto-marca);
 }
 
 .casilla.mal input {
-  border-color: #FF8A8A;
+  border-color: var(--contacto-error);
 }
 
 .casilla label {
-  color: var(--panel-dim);
+  color: var(--contacto-tenue);
   font-size: var(--fs-body-s);
   line-height: 1.45;
   cursor: pointer;
 }
 
 .casilla label a {
-  color: var(--panel-ink);
+  color: var(--contacto-tinta);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
 .casilla label a:hover {
-  color: var(--panel-blue);
+  color: var(--contacto-azul);
 }
 
 .casilla .error {
@@ -459,8 +460,8 @@
   gap: 14px;
   padding: 18px 30px;
   border: 0;
-  background: var(--panel-ink);
-  color: var(--panel);
+  background: var(--contacto-tinta);
+  color: var(--contacto-fondo);
   font-family: var(--f-mono);
   font-size: var(--fs-mono-l);
   letter-spacing: var(--tr-mono-wide);
@@ -471,9 +472,9 @@
 }
 
 .big-btn:hover:not([disabled]) {
-  background: var(--panel-blue);
-  box-shadow: 0 0 44px rgba(114, 144, 255, .45);
-  color: #0B0D11;
+  background: var(--contacto-azul);
+  box-shadow: 0 0 44px rgba(var(--contacto-azul-rgb), .45);
+  color: var(--contacto-sobre-azul);
 }
 
 /* El de enviar: azul y a todo el ancho; la flecha se adelanta al pasar el ratón. */
@@ -481,13 +482,13 @@
   justify-content: space-between;
   width: 100%;
   padding: 20px 24px;
-  background: var(--panel-blue);
-  color: #0B0D11;
+  background: var(--contacto-azul);
+  color: var(--contacto-sobre-azul);
   font-weight: 700;
 }
 
 .big-btn.azul:hover:not([disabled]) {
-  background: #9CB0FF;
+  background: var(--contacto-azul-2);
 }
 
 .big-btn .flecha {
@@ -505,7 +506,7 @@
 
 .form-contacto .nota {
   margin-top: 14px;
-  color: var(--panel-dim);
+  color: var(--contacto-tenue);
 }
 
 .form-contacto .peq {
@@ -516,7 +517,7 @@
 }
 
 .estado-ok {
-  color: var(--panel-blue);
+  color: var(--contacto-azul);
   font-family: var(--f-display);
   font-size: 32px;
   font-variation-settings: "wdth" 118, "wght" 800;
@@ -532,9 +533,9 @@
   margin-top: var(--sp-4);
   padding: 0;
   border: 0;
-  border-bottom: 1px solid rgba(237, 235, 229, .28);
+  border-bottom: 1px solid var(--contacto-linea-2);
   background: none;
-  color: var(--panel-dim);
+  color: var(--contacto-tenue);
   font-family: var(--f-mono);
   font-size: var(--fs-mono-s);
   letter-spacing: .12em;

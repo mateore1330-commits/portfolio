@@ -107,7 +107,7 @@ function Tarjetas({ resumen: { mensajes, contenido, ultima_publicacion: ultima }
             Conocimientos <small>{contenido.conocimientos} en la web</small>
           </li>
           <li>
-            Última publicación <small>{ultima ? diaYHora(ultima) : 'nunca'}</small>
+            Último despliegue <small>{ultima ? diaYHora(ultima) : 'nunca'}</small>
           </li>
         </ul>
       </section>
