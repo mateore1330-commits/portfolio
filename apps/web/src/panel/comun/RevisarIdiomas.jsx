@@ -5,10 +5,22 @@ const plural = (n) => (n === 1 ? '1 campo' : `${n} campos`)
 const OTRO = { español: 'inglés', inglés: 'español' }
 const CODIGO = { español: 'es', inglés: 'en' }
 
+// El primer campo por revisar que se ve (el de la pestaña recién elegida): a la vista y con
+// el cursor dentro. Espera a que React pinte la pestaña nueva y a que el diálogo, al
+// cerrarse, devuelva el foco al botón Guardar (si no, se lo quitaría al campo).
+function irAlCampo() {
+  setTimeout(() => {
+    const campo = [...document.querySelectorAll('.por-revisar')].find((c) => c.offsetParent !== null)
+    if (!campo) return
+    campo.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    campo.querySelector('input, textarea')?.focus({ preventScroll: true })
+  }, 120)
+}
+
 // Antes de guardar, si hay campos cambiados en un idioma y no en el otro (#185), pregunta:
-// "Revisar" lleva a la pestaña que falta (alRevisar recibe su idioma y la primera clave) y
-// "Guardar igual" guarda (una errata se corrige en un solo idioma). Sin campos así, guarda
-// directamente.
+// "Revisar" lleva a la pestaña que falta (alRevisar recibe su idioma y la primera clave),
+// baja hasta el primer campo marcado en azul y deja el cursor en él; "Guardar igual" guarda
+// (una errata se corrige en un solo idioma). Sin campos así, guarda directamente.
 //   const { comprobar, dialogo } = useRevisarIdiomas(form, setIdioma)
 //   <button onClick={comprobar(guardar)}>Guardar</button> … {dialogo}
 export function useRevisarIdiomas(form, alRevisar) {
@@ -31,6 +43,7 @@ export function useRevisarIdiomas(form, alRevisar) {
     const [primera] = pendiente.claves
     cerrar()
     alRevisar?.(CODIGO[OTRO[form.revisar(primera)]], primera)
+    irAlCampo()
   }
   const guardarIgual = () => {
     const { guardar } = pendiente

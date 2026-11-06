@@ -39,8 +39,8 @@ function Pantalla({ id }) {
   const avisar = useAvisar()
   const { cargarResumen } = useOutletContext()
   const form = useFormulario()
-  // Los dos idiomas se ven a la vez: "Revisar" lleva el cursor al primer texto por revisar (#185).
-  const revision = useRevisarIdiomas(form, (lang, clave) => document.getElementById(`alt-${clave.split('.')[0]}-${lang}`)?.focus())
+  // Los dos idiomas se ven a la vez: sin pestañas que cambiar, "Revisar" solo baja al campo (#185).
+  const revision = useRevisarIdiomas(form)
   const { valores, cuantos } = form
   const [datos, setDatos] = useState(null) // { imagenes, nombre, publicado, nube }
   const [carga, setCarga] = useState('cargando')
