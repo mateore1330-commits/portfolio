@@ -6,9 +6,8 @@ import { useEffect, useRef } from 'react'
 // reducido, se pinta quieto. Es decorativo.
 const GAP = 26 // separación entre puntos
 const REACH = 165 // radio de influencia del cursor
-// El panel es negro en los dos temas: los colores son fijos (los de --panel-blue y --panel-dim).
-const AZUL = '114,144,255'
-const REPOSO = 'rgba(132,140,162,0.34)'
+// Los colores salen del tema (--contacto-azul-rgb y --contacto-punto, #185): se leen al
+// empezar y otra vez cuando cambia el tema.
 
 export default function CampoPuntos() {
   const lienzo = useRef(null)
@@ -27,6 +26,13 @@ export default function CampoPuntos() {
     let my = -9999
     let cerca = false
     let fotograma = 0
+    let azul = ''
+    let reposo = ''
+    const leerColores = () => {
+      const estilo = getComputedStyle(sec)
+      azul = estilo.getPropertyValue('--contacto-azul-rgb').trim()
+      reposo = estilo.getPropertyValue('--contacto-punto').trim()
+    }
 
     const construir = () => {
       const r = cv.getBoundingClientRect()
@@ -86,7 +92,7 @@ export default function CampoPuntos() {
         }
 
         deriva = Math.max(deriva, Math.abs(d.x - d.bx) + Math.abs(d.y - d.by))
-        ctx.fillStyle = prox > 0.02 ? `rgba(${AZUL},${(0.3 + prox * 0.7).toFixed(3)})` : REPOSO
+        ctx.fillStyle = prox > 0.02 ? `rgba(${azul},${(0.3 + prox * 0.7).toFixed(3)})` : reposo
         ctx.beginPath()
         ctx.arc(d.x, d.y, 1.05 + prox * 2.5, 0, Math.PI * 2)
         ctx.fill()
@@ -94,7 +100,7 @@ export default function CampoPuntos() {
       // El anillo tenue de cada onda.
       for (let k = ondas.length - 1; k >= 0; k--) {
         const o = ondas[k]
-        ctx.strokeStyle = `rgba(${AZUL},${(o.vida * 0.22).toFixed(3)})`
+        ctx.strokeStyle = `rgba(${azul},${(o.vida * 0.22).toFixed(3)})`
         ctx.lineWidth = 1
         ctx.beginPath()
         ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2)
@@ -151,6 +157,17 @@ export default function CampoPuntos() {
       }, 160)
     }
 
+    // El tema se elige a mano (data-theme en <html>) o lo da el sistema.
+    const alCambiarTema = () => {
+      leerColores()
+      pintar()
+    }
+    const temaElegido = new MutationObserver(alCambiarTema)
+    temaElegido.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+    const temaSistema = window.matchMedia('(prefers-color-scheme: dark)')
+    temaSistema.addEventListener('change', alCambiarTema)
+
+    leerColores()
     construir()
     pintar() // en reposo, visible sin interactuar
     const vigia = new ResizeObserver(alCambiarTamano)
@@ -164,6 +181,8 @@ export default function CampoPuntos() {
       cancelAnimationFrame(fotograma)
       clearTimeout(espera)
       vigia.disconnect()
+      temaElegido.disconnect()
+      temaSistema.removeEventListener('change', alCambiarTema)
       sec.removeEventListener('pointermove', alMover)
       sec.removeEventListener('pointerleave', alSalir)
       sec.removeEventListener('pointerdown', alPulsar)

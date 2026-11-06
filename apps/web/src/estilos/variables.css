@@ -33,12 +33,33 @@
   --tint-op: .70;
   --grain-op: .045;
 
-  /* Panel del contacto: oscuro en los DOS temas, por eso no se redefine */
+  /* Los colores fijos de lo oscuro sobre foto (el pie del retrato): no cambian con el tema. */
   --panel: #0B0D11;
   --panel-2: #141821;
   --panel-ink: #EDEBE5;
   --panel-dim: #8A8E99;
   --panel-blue: #7290FF;
+
+  /* El contacto, el cierre de la web: sigue el tema (#185; maqueta contacto-claro.html).
+     En claro, el fondo va un tono por debajo del papel; contrastes AA comprobados. */
+  --contacto-fondo: #D6D3CB;
+  --contacto-tinta: #14161C;
+  --contacto-tenue: #474A54;
+  --contacto-azul: #1E3FB0;
+  --contacto-azul-rgb: 30, 63, 176;
+  --contacto-azul-2: #3E60D8;
+  --contacto-sobre-azul: #FFFFFF;
+  --contacto-linea: rgba(20, 22, 28, .14);
+  --contacto-linea-2: rgba(20, 22, 28, .30);
+  --contacto-casilla: rgba(20, 22, 28, .45);
+  --contacto-caja: rgba(240, 238, 233, .62);
+  --contacto-caja-borde: rgba(20, 22, 28, .10);
+  --contacto-sombra: rgba(20, 22, 28, .10);
+  --contacto-pista: rgba(85, 88, 98, .75);
+  --contacto-error: #9F1F18;
+  --contacto-halo: .10;
+  --contacto-punto: rgba(20, 22, 28, .20);
+  --contacto-marca: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.2 4.8 9 10 3' fill='none' stroke='%23FFFFFF' stroke-width='1.8'/%3E%3C/svg%3E");
 
   /* Rampa del gráfico de contribuciones, derivada del acento */
   --lv0: var(--paper-3);
@@ -123,6 +144,24 @@
     --shadow: 0 1px 0 rgba(230, 228, 222, .08);
     --tint-op: .58;
     --grain-op: .07;
+    --contacto-fondo: #0B0D11;
+    --contacto-tinta: #EDEBE5;
+    --contacto-tenue: #8A8E99;
+    --contacto-azul: #7290FF;
+    --contacto-azul-rgb: 114, 144, 255;
+    --contacto-azul-2: #9CB0FF;
+    --contacto-sobre-azul: #0B0D11;
+    --contacto-linea: rgba(237, 235, 229, .14);
+    --contacto-linea-2: rgba(237, 235, 229, .28);
+    --contacto-casilla: rgba(237, 235, 229, .45);
+    --contacto-caja: rgba(11, 13, 17, .5);
+    --contacto-caja-borde: rgba(237, 235, 229, .12);
+    --contacto-sombra: rgba(0, 0, 0, .35);
+    --contacto-pista: rgba(138, 142, 153, .6);
+    --contacto-error: #FF8A8A;
+    --contacto-halo: .16;
+    --contacto-punto: rgba(132, 140, 162, .34);
+    --contacto-marca: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.2 4.8 9 10 3' fill='none' stroke='%230B0D11' stroke-width='1.8'/%3E%3C/svg%3E");
   }
 }
 
@@ -144,4 +183,22 @@
   --shadow: 0 1px 0 rgba(230, 228, 222, .08);
   --tint-op: .58;
   --grain-op: .07;
+  --contacto-fondo: #0B0D11;
+  --contacto-tinta: #EDEBE5;
+  --contacto-tenue: #8A8E99;
+  --contacto-azul: #7290FF;
+  --contacto-azul-rgb: 114, 144, 255;
+  --contacto-azul-2: #9CB0FF;
+  --contacto-sobre-azul: #0B0D11;
+  --contacto-linea: rgba(237, 235, 229, .14);
+  --contacto-linea-2: rgba(237, 235, 229, .28);
+  --contacto-casilla: rgba(237, 235, 229, .45);
+  --contacto-caja: rgba(11, 13, 17, .5);
+  --contacto-caja-borde: rgba(237, 235, 229, .12);
+  --contacto-sombra: rgba(0, 0, 0, .35);
+  --contacto-pista: rgba(138, 142, 153, .6);
+  --contacto-error: #FF8A8A;
+  --contacto-halo: .16;
+  --contacto-punto: rgba(132, 140, 162, .34);
+  --contacto-marca: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.2 4.8 9 10 3' fill='none' stroke='%230B0D11' stroke-width='1.8'/%3E%3C/svg%3E");
 }
