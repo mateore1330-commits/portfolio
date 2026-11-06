@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef } from 'react'
 import AreaTexto from '@/panel/comun/AreaTexto.jsx'
-import { MarcaCambio } from '@/panel/comun/Campo.jsx'
+import { MarcaCambio, MarcaRevisar } from '@/panel/comun/Campo.jsx'
 import { permutar, useClaves } from '@/panel/comun/orden.js'
 import ListaOrdenable, { Asa, Ordenable } from '@/panel/comun/Ordenable.jsx'
 import { parrafosCambiados } from '@/panel/comun/useFormulario.js'
@@ -13,6 +13,7 @@ import { parrafosCambiados } from '@/panel/comun/useFormulario.js'
 // - pares: [{ clave, etiqueta }] → cada elemento es un objeto con esos campos, en fila
 //   (la ficha de la portada: dato · valor).
 // errores: { índice: 'texto del error' }.
+// revisar: el idioma cambiado si esta lista se cambió en el otro y aquí no (#185).
 export default function ListaParrafos({
   etiqueta,
   valor,
@@ -23,6 +24,7 @@ export default function ListaParrafos({
   pares = null,
   ayuda,
   anadir = '+ Añadir',
+  revisar = null,
 }) {
   const base = useId()
   const cambiados = parrafosCambiados(valor, original)
@@ -66,8 +68,11 @@ export default function ListaParrafos({
   const quitados = cambiados.length - valor.length
 
   return (
-    <div className="campo-panel">
-      <p className="etiqueta">{etiqueta}</p>
+    <div className={`campo-panel${revisar ? ' por-revisar' : ''}`}>
+      <p className="etiqueta">
+        {etiqueta}
+        {revisar && <MarcaRevisar idioma={revisar} />}
+      </p>
       <div className="lista-editable">
         <ListaOrdenable ids={claves} nombre={nombreDe} alMover={mover}>
           {valor.map((elemento, i) => {

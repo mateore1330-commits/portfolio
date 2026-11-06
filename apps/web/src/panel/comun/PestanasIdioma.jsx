@@ -6,10 +6,11 @@ const IDIOMAS = [
 ]
 
 // Las pestañas Español / English de los formularios. Cada pestaña lleva un punto ámbar si
-// tiene cambios y "falta" si tiene algo que revisar. Con las flechas se pasa de una a otra.
+// tiene cambios, "falta" si tiene algo que revisar y "revisar" si hay campos cambiados solo
+// en el otro idioma (#185). Con las flechas se pasa de una a otra.
 // Los dos idiomas están siempre en la página (el oculto, con hidden): así lo escrito en uno
 // no se pierde al cambiar al otro.
-export default function PestanasIdioma({ actual, alCambiar, conCambios = {}, conErrores = {}, children }) {
+export default function PestanasIdioma({ actual, alCambiar, conCambios = {}, conErrores = {}, conRevisar = {}, children }) {
   const base = useId()
 
   const teclas = (e) => {
@@ -37,6 +38,7 @@ export default function PestanasIdioma({ actual, alCambiar, conCambios = {}, con
           >
             {nombre}
             {conErrores[lang] && <span className="chip aviso">falta</span>}
+            {!conErrores[lang] && conRevisar[lang] && <span className="chip revisar">revisar</span>}
           </button>
         ))}
       </div>

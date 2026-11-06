@@ -11,15 +11,16 @@ const fecha = (iso) => `${FECHA.format(new Date(iso))} · ${HORA.format(new Date
 const kb = (bytes) => (bytes == null ? '—' : `${(bytes / 1024).toLocaleString('es-ES', { maximumFractionDigits: 1 })} KB`)
 
 const ESTADOS = {
-  deployed: ['pub', 'Desplegada'],
+  deployed: ['pub', 'Desplegado'],
   failed: ['mal', 'Falló el despliegue'],
   not_configured: ['bor', 'Sin Vercel todavía'],
   pending: ['bor', 'Sin desplegar'],
 }
 
-// 3 · Publicaciones (aprobada en ADM-00): cada vez que se publica queda una foto. La web
-// enseña siempre la última. Si su despliegue en Vercel falló, se puede reintentar aquí.
-export default function Publicaciones() {
+// 3 · Despliegues (aprobada en ADM-00 como Publicaciones; renombrada en #185): cada vez que
+// se publica queda una foto y se despliega la web, que enseña siempre la última. Si el
+// despliegue en Vercel falló, se puede reintentar aquí.
+export default function Despliegues() {
   const avisar = useAvisar()
   const { publicar, cargarResumen } = useOutletContext()
   const [lista, setLista] = useState(null)
@@ -28,7 +29,7 @@ export default function Publicaciones() {
   const [reintentando, setReintentando] = useState(false)
 
   useEffect(() => {
-    ponerTitulo('Publicaciones · Panel')
+    ponerTitulo('Despliegues · Panel')
   }, [])
 
   // Se vuelve a pedir cuando cambia la última publicación (al publicar desde la barra).
@@ -61,7 +62,7 @@ export default function Publicaciones() {
   }
 
   const cabecera = (
-    <Cabecera titulo="Publicaciones" texto="Cada vez que publicas se guarda una foto del contenido. La web siempre muestra la última." />
+    <Cabecera titulo="Despliegues" texto="Cada vez que publicas se guarda una foto del contenido y se despliega la web. La web siempre muestra la última." />
   )
 
   if (error) {
@@ -86,7 +87,7 @@ export default function Publicaciones() {
     return (
       <>
         {cabecera}
-        <div className="filas-cargando" aria-busy="true" aria-label="Cargando las publicaciones">
+        <div className="filas-cargando" aria-busy="true" aria-label="Cargando los despliegues">
           {Array.from({ length: 5 }, (_, i) => (
             <span className="hueco" key={i} />
           ))}
@@ -119,8 +120,8 @@ export default function Publicaciones() {
             </button>
           }
         >
-          <b>La publicación nº {ultima.id} se guardó, pero el despliegue en Vercel falló</b> ({ultima.despliegue_detalle?.replace(/\.$/, '')}).
-          {anterior ? ` La copia que lleva la web dentro sigue siendo la nº ${anterior.id}.` : ''}
+          <b>El despliegue nº {ultima.id} falló en Vercel; el contenido sí se guardó</b> ({ultima.despliegue_detalle?.replace(/\.$/, '')}).
+          {anterior ? ` La copia que lleva la web dentro sigue siendo la del nº ${anterior.id}.` : ''}
         </Banda>
       )}
       <table className="tabla">
@@ -141,7 +142,7 @@ export default function Publicaciones() {
                 <td className="fecha">#{p.id}</td>
                 <td className="fecha">{fecha(p.fecha)}</td>
                 <td>
-                  {p.cambios.length > 0 ? p.cambios.join(' · ') : <span className="gris">Publicada con el comando</span>}
+                  {p.cambios.length > 0 ? p.cambios.join(' · ') : <span className="gris">Publicado con el comando</span>}
                   {p.cv === 'failed' && <p className="nota-celda">El CV no pasó la prueba ATS: se quedó el anterior.</p>}
                 </td>
                 <td className="fecha ocultar-movil">{kb(p.tamano)}</td>

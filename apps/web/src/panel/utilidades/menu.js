@@ -6,7 +6,7 @@ export const GRUPOS = [
     titulo: 'General',
     secciones: [
       { ruta: '', n: '00', nombre: 'Inicio' },
-      { ruta: 'publicaciones', n: '··', nombre: 'Publicaciones' },
+      { ruta: 'despliegues', n: '··', nombre: 'Despliegues' },
     ],
   },
   {
