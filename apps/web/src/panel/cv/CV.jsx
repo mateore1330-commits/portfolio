@@ -11,8 +11,9 @@ import FichasLibres from '@/panel/comun/FichasLibres.jsx'
 import ListaBloques from '@/panel/comun/ListaBloques.jsx'
 import ListaParrafos from '@/panel/comun/ListaParrafos.jsx'
 import PestanasIdioma from '@/panel/comun/PestanasIdioma.jsx'
+import { useRevisarIdiomas } from '@/panel/comun/RevisarIdiomas.jsx'
 import SelectorTecnologias from '@/panel/comun/SelectorTecnologias.jsx'
-import { conError, parrafosCambiados, useFormulario } from '@/panel/comun/useFormulario.js'
+import { conError, gemelo, nombreIdioma, parrafosCambiados, useFormulario } from '@/panel/comun/useFormulario.js'
 import { cuandoSeGuardo, elDiaALas } from '@/panel/utilidades/fechas.js'
 import { erroresDeLista, mensaje } from '@/panel/textos/textos.js'
 import { ponerTitulo } from '@/idioma/documento.js'
@@ -66,6 +67,7 @@ export default function CV() {
   const [carga, setCarga] = useState('cargando')
   const [intento, setIntento] = useState(0)
   const [idioma, setIdioma] = useState('es')
+  const revision = useRevisarIdiomas(porCampo(valores, original), setIdioma)
   const [errores, setErrores] = useState({})
   const [fallo, setFallo] = useState(null)
   const [guardando, setGuardando] = useState(false)
@@ -299,7 +301,15 @@ export default function CV() {
       etiqueta
     )
     return (
-      <Campo key={clave} etiqueta={nombre} id={id} error={error} cambiado={form.cambiado(clave)} alDeshacer={() => ponerTexto(clave, original[clave])}>
+      <Campo
+        key={clave}
+        etiqueta={nombre}
+        id={id}
+        error={error}
+        cambiado={form.cambiado(clave)}
+        alDeshacer={() => ponerTexto(clave, original[clave])}
+        revisar={revisar(clave)}
+      >
         <Control id={id} type={largo ? undefined : 'text'} value={valores[clave]} onChange={(e) => ponerTexto(clave, e.target.value)} {...conError(id, error)} />
       </Campo>
     )
@@ -316,7 +326,15 @@ export default function CV() {
     const poner = (v) => (compartido ? ponerCompartido(bloque, i, campo, v) : ponerEn(lang, bloque, i, campo, v))
     const Control = largo ? AreaTexto : 'input'
     return (
-      <Campo key={campo} etiqueta={etiqueta} id={id} error={error} cambiado={cambiado} alDeshacer={() => poner(antes)}>
+      <Campo
+        key={campo}
+        etiqueta={etiqueta}
+        id={id}
+        error={error}
+        cambiado={cambiado}
+        alDeshacer={() => poner(antes)}
+        revisar={compartido ? null : revisar(`${lang}.${bloque}.${i}.${campo}`)}
+      >
         {control ? (
           control({ id, valor: actual, poner, error })
         ) : (
@@ -334,6 +352,7 @@ export default function CV() {
       errores={erroresDeLista(errores, `${lang}.${bloque}.${i}.puntos`)}
       alCambiar={(v) => ponerEn(lang, bloque, i, 'puntos', v)}
       ayuda="Lo que va entre **asteriscos** sale en negrita."
+      revisar={revisar(`${lang}.${bloque}.${i}.puntos`)}
     />
   )
 
@@ -362,6 +381,8 @@ export default function CV() {
   )
 
   const erroresEn = (lang) => Object.keys(errores).some((k) => k.startsWith(`${lang}.`))
+  const { revisar, porRevisar: pendientes } = porCampo(valores, original)
+  const porRevisar = pendientes().length
 
   return (
     <>
@@ -376,13 +397,14 @@ export default function CV() {
               <button className="boton suave pequeno" type="button" onClick={descartar}>
                 Descartar
               </button>
-              <button className="boton azul pequeno" type="button" onClick={guardar} disabled={guardando}>
+              <button className="boton azul pequeno" type="button" onClick={revision.comprobar(guardar)} disabled={guardando}>
                 Guardar
               </button>
             </>
           }
         >
           <b>Tienes {cambios(total)} sin guardar</b>. Están marcados en ámbar; guarda antes de generar el PDF.
+          {porRevisar > 0 && ` En azul, ${porRevisar === 1 ? 'el campo' : `los ${porRevisar} campos`} que cambiaste solo en un idioma.`}
         </Banda>
       )}
       {numErrores > 0 && (
@@ -405,6 +427,7 @@ export default function CV() {
           alCambiar={setIdioma}
           conCambios={{ es: form.cuantos((k) => k.startsWith('es.')) > 0, en: form.cuantos((k) => k.startsWith('en.')) > 0 }}
           conErrores={{ es: erroresEn('es'), en: erroresEn('en') }}
+          conRevisar={{ es: pendientes((r) => r.startsWith('es.')).length > 0, en: pendientes((r) => r.startsWith('en.')).length > 0 }}
         >
           {(lang) => (
             <>
@@ -552,13 +575,39 @@ export default function CV() {
           <p>{actualizado ? `Guardado ${cuandoSeGuardo(actualizado)}` : ''}</p>
         )}
         <div className="acciones">
-          <button className="boton azul" type="button" onClick={guardar} disabled={guardando || total === 0}>
+          <button className="boton azul" type="button" onClick={revision.comprobar(guardar)} disabled={guardando || total === 0}>
             {guardando ? 'Guardando…' : 'Guardar'}
           </button>
         </div>
       </div>
 
       <AvisoSalir cuantos={total} />
+      {revision.dialogo}
     </>
   )
+}
+
+// El aviso de idiomas (#185) campo a campo, también dentro de los bloques: la ruta
+// 'en.experiencia.0.puesto'. Un bloque es una lista, y compararlo entero diría que el inglés
+// ya se tocó aunque el campo que falta no se haya tocado. Lo compartido (enganches, fechas)
+// cambia en los dos idiomas a la vez, así que nunca queda por revisar.
+function porCampo(valores, original) {
+  const leer = (fuente, ruta) => {
+    const [lang, campo, ...resto] = ruta.split('.')
+    return resto.reduce((v, parte) => v?.[parte], fuente?.[`${lang}.${campo}`])
+  }
+  const cambiado = (ruta) => {
+    const antes = leer(original, ruta)
+    return antes !== undefined && JSON.stringify(leer(valores, ruta)) !== JSON.stringify(antes)
+  }
+  const revisar = (ruta) => {
+    const otra = gemelo(ruta)
+    return otra && !cambiado(ruta) && cambiado(otra) ? nombreIdioma(otra) : null
+  }
+  const rutas = () =>
+    Object.entries(valores ?? {}).flatMap(([clave, v]) =>
+      BLOQUES.includes(clave.slice(3)) ? v.flatMap((fila, i) => Object.keys(fila).map((c) => `${clave}.${i}.${c}`)) : [clave],
+    )
+  const porRevisar = (filtro = () => true) => rutas().filter((r) => filtro(r) && revisar(r))
+  return { revisar, porRevisar }
 }

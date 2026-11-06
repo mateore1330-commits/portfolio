@@ -53,7 +53,37 @@ export function useFormulario(porElementos = []) {
     [porClave],
   )
 
-  return { valores, original, cargar, poner, deshacer, descartar, fijar, cambiado, cuantos }
+  // Cambiado en un idioma y no en el otro (#185): el del otro idioma queda por revisar. Da el
+  // idioma que se cambió ('español' / 'inglés'), o null. Es un aviso: se puede guardar igual.
+  const revisar = useCallback(
+    (clave) => {
+      const otra = gemelo(clave)
+      if (!otra || !valores || !(otra in valores) || porClave[clave] || !porClave[otra]) return null
+      return nombreIdioma(otra)
+    },
+    [porClave, valores],
+  )
+  const porRevisar = useCallback(
+    (filtro = () => true) => Object.keys(valores ?? {}).filter((k) => filtro(k) && revisar(k)),
+    [valores, revisar],
+  )
+
+  return { valores, original, cargar, poner, deshacer, descartar, fijar, cambiado, cuantos, revisar, porRevisar }
+}
+
+const NOMBRES = { es: 'español', en: 'inglés' }
+const esIdioma = (parte) => parte === 'es' || parte === 'en'
+// 'name.en' → 'inglés'.
+export const nombreIdioma = (clave) => NOMBRES[clave.split('.').find(esIdioma)]
+
+// El mismo campo en el otro idioma: 'name.es' → 'name.en', 'es.perfil' → 'en.perfil'. Null
+// si la clave no lleva idioma (lo que no se traduce).
+export function gemelo(clave) {
+  const partes = clave.split('.')
+  const i = partes.findIndex(esIdioma)
+  if (i === -1) return null
+  partes[i] = partes[i] === 'es' ? 'en' : 'es'
+  return partes.join('.')
 }
 
 // Lo que necesita el control para que el lector de pantalla lea también el error (Campo.jsx).

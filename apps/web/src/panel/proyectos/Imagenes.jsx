@@ -6,6 +6,7 @@ import { useAvisar } from '@/panel/comun/avisos.js'
 import Campo from '@/panel/comun/Campo.jsx'
 import Dialogo from '@/panel/comun/Dialogo.jsx'
 import { Banda, Cabecera, Vacio } from '@/panel/comun/Estados.jsx'
+import { useRevisarIdiomas } from '@/panel/comun/RevisarIdiomas.jsx'
 import { ordenarPor, useGuardarOrden } from '@/panel/comun/orden.js'
 import ListaOrdenable, { Asa, Ordenable } from '@/panel/comun/Ordenable.jsx'
 import SubirImagenes from '@/panel/comun/SubirImagenes.jsx'
@@ -38,6 +39,8 @@ function Pantalla({ id }) {
   const avisar = useAvisar()
   const { cargarResumen } = useOutletContext()
   const form = useFormulario()
+  // Los dos idiomas se ven a la vez: "Revisar" lleva el cursor al primer texto por revisar (#185).
+  const revision = useRevisarIdiomas(form, (lang, clave) => document.getElementById(`alt-${clave.split('.')[0]}-${lang}`)?.focus())
   const { valores, cuantos } = form
   const [datos, setDatos] = useState(null) // { imagenes, nombre, publicado, nube }
   const [carga, setCarga] = useState('cargando')
@@ -251,6 +254,7 @@ function Pantalla({ id }) {
                           error={error}
                           cambiado={form.cambiado(clave)}
                           alDeshacer={() => form.deshacer(clave)}
+                          revisar={form.revisar(clave)}
                         >
                           <input
                             id={idCampo}
@@ -293,13 +297,14 @@ function Pantalla({ id }) {
           <p>Textos alternativos guardados</p>
         )}
         <div className="acciones">
-          <button className="boton azul" type="button" onClick={guardar} disabled={guardando || total === 0}>
+          <button className="boton azul" type="button" onClick={revision.comprobar(guardar)} disabled={guardando || total === 0}>
             {guardando ? 'Guardando…' : 'Guardar'}
           </button>
         </div>
       </div>
 
       <AvisoSalir cuantos={total} />
+      {revision.dialogo}
       <Dialogo abierto={Boolean(aBorrar)} titulo="Borrar la imagen" alCerrar={() => setABorrar(null)}>
         <p>
           Se quita del proyecto y de Cloudinary. Si ya sale en la web, se borra de Cloudinary <b>al publicar</b>, para que la web
