@@ -1,6 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "ignoreCommand": "bash scripts/saltar-construccion.sh",
   "trailingSlash": false,
   "rewrites": [
     { "source": "/en/(.*)", "destination": "/en/index.html" },

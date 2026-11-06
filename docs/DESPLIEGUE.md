@@ -84,7 +84,7 @@ La web no pasa por el servidor: **Vercel** la construye desde `apps/web` (proyec
 `apps/web`, plan Hobby) y la sirve en `mateorodriguez.solutions` (`www` redirige a ella).
 
 ```
-push a main (cambia apps/web) ──► Vercel: npm run build ──► producción
+push a main ──► Vercel: npm run build ──► producción
 "Publicar" en el panel ──► API ──► gancho de Vercel ──► Vercel: npm run build ──► producción
 PR ──► vista previa (protegida: solo con sesión de Vercel)
 ```
@@ -95,12 +95,10 @@ PR ──► vista previa (protegida: solo con sesión de Vercel)
   `Cross-Origin-Opener-Policy`; la CSP llega en GO-04), caché larga para `/assets/` (llevan huella en el nombre),
   y que cualquier dirección que no sea un archivo abra la web (el panel y el "no encontrado" los monta React; la
   ruta del panel no se puede escribir ahí, el repo es público).
-- **Solo se construye si cambia `apps/web`** (`ignoreCommand` → `apps/web/scripts/saltar-construccion.sh`):
-  compara el commit con el de lo último desplegado. Si es el mismo commit (el gancho o un *Redeploy* sin commits
-  nuevos), la primera vez de una rama o no se puede comparar, se construye. Vercel solo admite 0 (saltar) o 1
-  (construir): cualquier otra salida la toma como fallo del despliegue.
-  Pendiente de comprobar en GO-02: el gancho justo después de un commit que solo toque la API (si lo frena, se
-  quita el filtro: "Publicar" manda).
+- **Se construye con cada push a `main`, aunque solo cambie la API** (un minuto, gratis). Hubo un filtro para
+  saltarse esas construcciones (*Ignored Build Step*) y se quitó: Vercel no distingue un push del gancho, y
+  después de un commit que no tocaba `apps/web` se saltaba también la construcción de "Publicar" (probado en
+  GO-02). El contenido no está en git, así que el filtro no puede saber que cambió. **"Publicar" manda.**
 - **Variables** (en Vercel, Production): `VITE_API_URL`, `CONTENT_API_URL`, `VITE_UMAMI_URL`,
   `VITE_UMAMI_WEBSITE_ID` y `VITE_ADMIN_PATH`. Las `VITE_` acaban en el código que descarga el navegador: no
   pueden ser secretos.
