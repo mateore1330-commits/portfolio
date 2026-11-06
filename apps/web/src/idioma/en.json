@@ -6,6 +6,8 @@
   "error.volver": "Back to home",
   "fallo.titulo": "Something didn't load",
   "fallo.texto": "The site may have been updated while you had it open. Reload the page to get the latest version.",
+  "fallo.otro_titulo": "Something went wrong",
+  "fallo.otro_texto": "It's not your fault. Reload the page; if it happens again, try again a little later.",
   "fallo.recargar": "Reload",
   "seccion.sobre": "About me",
   "seccion.proyectos": "Projects",
