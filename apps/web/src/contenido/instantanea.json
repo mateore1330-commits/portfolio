@@ -1,5 +1,5 @@
 {
-  "etag": "\"a195e34767ff51d47b3624865c7f5500e770b9472af853019da75b6eb72dc921\"",
+  "etag": "\"6abf0937dee1086a1c280462bbed415b02831be985c8fb574fa0f65d5d5a6de8\"",
   "education": [
     {
       "certificate_file": null,
@@ -280,7 +280,18 @@
           "Esa disciplina es lo que más me llevo. Es fácil escribir código solo; ponerse de acuerdo cuatro personas sobre el mismo código, no."
         ]
       },
-      "media": [],
+      "media": [
+        {
+          "alt": {
+            "en": "CleanFlow home page: a bright living room with the headline \"Tu casa en calma. Tu mente en paz.\" and the booking buttons",
+            "es": "Portada de CleanFlow: un salón luminoso con el titular «Tu casa en calma. Tu mente en paz.» y los botones para reservar"
+          },
+          "is_cover": false,
+          "sort_order": 0,
+          "type": "image",
+          "url": "https://res.cloudinary.com/d5baf4i9/image/upload/f_auto,q_auto,c_limit,w_1600/v1794060051/portfolio/proyectos/cleanflow/cleanflow_a72d9a.jpg"
+        }
+      ],
       "my_role": {
         "en": [
           "I worked on authentication (sign-up, Google login via OAuth and JWT handling), on the role system that decides what each user sees in their dashboard, on the navbar and several sections of the landing page, and on a good part of the application logic: worker availability and service availability.",
@@ -351,7 +362,18 @@
           "Cuando lo tuve funcionando le hice una **auditoría de seguridad siguiendo OWASP**. Encontré 18 problemas y los corregí todos: límite de intentos en el login, defensa contra CSRF, revocación de sesiones, sesión única y caducidad por inactividad. Los riesgos que decidí asumir están escritos y explicados, no escondidos."
         ]
       },
-      "media": [],
+      "media": [
+        {
+          "alt": {
+            "en": "MIR Llamado calendar for June 2026, showing the MIR exams and the self-assessments by specialty for each day",
+            "es": "Calendario de MIR Llamado de junio de 2026, con los exámenes MIR y las autoevaluaciones por especialidad de cada día"
+          },
+          "is_cover": false,
+          "sort_order": 0,
+          "type": "image",
+          "url": "https://res.cloudinary.com/d5baf4i9/image/upload/f_auto,q_auto,c_limit,w_1600/v1794060160/portfolio/proyectos/mir-llamado/mir-llamado_ri2w95.jpg"
+        }
+      ],
       "my_role": null,
       "name": {
         "en": "MIR Llamado",
@@ -411,7 +433,18 @@
           "El diseño tampoco es el de Bootstrap por defecto. Monté una identidad de cartel de periódico japonés —papel envejecido, tinta, rojo de sello, sombras duras— con las variables centralizadas en CSS."
         ]
       },
-      "media": [],
+      "media": [
+        {
+          "alt": {
+            "en": "Dragon Ball Blog home page: a Japanese newspaper-style illustration of Goku, Vegeta, Piccolo, Gohan and Frieza",
+            "es": "Portada del Blog Dragon Ball: ilustración en estilo periódico japonés con Goku, Vegeta, Piccolo, Gohan y Freezer"
+          },
+          "is_cover": false,
+          "sort_order": 0,
+          "type": "image",
+          "url": "https://res.cloudinary.com/d5baf4i9/image/upload/f_auto,q_auto,c_limit,w_1600/v1794060118/portfolio/proyectos/blog-dragon-ball/blog-dragon-ball_qrvzzm.jpg"
+        }
+      ],
       "my_role": null,
       "name": {
         "en": "Blog Dragon Ball",
@@ -503,11 +536,11 @@
     },
     "contacto.texto": {
       "en": [
-        "I can **join your team** or **take on your project** as a freelancer.",
+        "I can join your team or take on your project as a freelancer.",
         "I work **remotely or hybrid** and I'm **available right away**. Tell me what you're working on and I'll get back to you with a proposal."
       ],
       "es": [
-        "Puedo **sumarme a tu equipo** o **encargarme de tu proyecto** como freelance.",
+        "Puedo sumarme a tu equipo o encargarme de tu proyecto como freelance.",
         "Trabajo en **remoto o híbrido** y tengo **disponibilidad inmediata**. Cuéntame qué tienes entre manos y te respondo con una propuesta."
       ]
     },
@@ -516,25 +549,17 @@
       "es": "¿Construimos algo juntos? **Hablemos.**"
     },
     "hero.entradilla": {
-      "en": "My background in sales, graphic design and running my own company gives me a view that goes beyond code. I don't just build interfaces: I build products that solve real problems for the people who use them.",
-      "es": "Mi trayectoria previa como comercial, diseñador gráfico y fundador de mi propia empresa me aporta una visión global más allá del código. No desarrollo simples interfaces, sino productos estratégicos pensados para solucionar necesidades reales de los usuarios."
+      "en": "Versatile and dynamic Full Stack developer, with extensive knowledge in AI-assisted coding to optimize workflows. Mastery of frontend (React, Next.js), backend and databases (Python, Node.js, SQL). I stand out for my high learning capacity, adaptability to new technologies and collaboration in environments oriented to technical excellence.",
+      "es": "Desarrollador Full Stack versátil y dinámico, con amplios conocimientos en el desarrollo asistido por IA (AI-assisted coding) para optimizar flujos de trabajo. Dominio del frontend (React, Next.js), backend y bases de datos (Python, Node.js, SQL). Destaco por mi alta capacidad de aprendizaje, adaptabilidad a nuevas tecnologías y colaboración en entornos orientados a la excelencia técnica."
     },
     "hero.etiquetas": {
       "en": [
-        "Available to start immediately",
-        "Tenerife",
-        "Hybrid or remote",
-        "React",
-        "Python",
-        "Flask"
+        "Available for work",
+        "Hybrid or remote"
       ],
       "es": [
-        "Disponible para incorporación inmediata",
-        "Tenerife",
-        "Híbrido o remoto",
-        "React",
-        "Python",
-        "Flask"
+        "Disponible para trabajar.",
+        "Híbrido o remoto"
       ]
     },
     "hero.ficha": {
@@ -557,11 +582,11 @@
         },
         {
           "clave": "Languages",
-          "valor": "Spanish (native) · English (B1)"
+          "valor": "Spanish (native)"
         },
         {
           "clave": "Location",
-          "valor": "Tenerife, Canary Islands"
+          "valor": "Tenerife, Spain"
         }
       ],
       "es": [
@@ -583,11 +608,11 @@
         },
         {
           "clave": "Idiomas",
-          "valor": "Español nativo · Inglés B1"
+          "valor": "Español nativo"
         },
         {
           "clave": "Ubicación",
-          "valor": "Tenerife, Canarias"
+          "valor": "Tenerife, España"
         }
       ]
     },
@@ -596,8 +621,8 @@
       "es": "Mateo Rodríguez"
     },
     "legal.actualizado": {
-      "en": "31 October 2026",
-      "es": "31 de octubre de 2026"
+      "en": "2 November 2026",
+      "es": "2 de noviembre de 2026"
     },
     "legal.aviso": {
       "en": {
@@ -705,7 +730,15 @@
           },
           {
             "texto": [
-              "This website does not use tracking cookies or third-party analytics. It only stores in your browser the theme (light or dark) and the language you choose, to remember them."
+              "To know how many people visit the website, where they come from and what they are interested in, I use **Umami**, installed on the same server as the API: the data is not sent to any other company.",
+              "It counts which pages are viewed, which website you come from (for example, LinkedIn), the country, the type of device, the browser and some actions, such as downloading the CV or opening a project demo. **No cookies are used and nothing is stored on your device**, nor is your IP address: Umami groups visits with an anonymous identifier that is renewed periodically and does not reveal who you are.",
+              "These are anonymous statistics: they are used to improve the website and for nothing else. The legal basis is my legitimate interest in knowing how it is used. If your browser blocks the measurement, the website works just the same."
+            ],
+            "titulo": "Visit statistics"
+          },
+          {
+            "texto": [
+              "This website does not use cookies, and the visit statistics do not store anything in your browser either. The only things stored in it are the theme (light or dark) and the language you choose, to remember them."
             ],
             "titulo": "Cookies"
           }
@@ -753,7 +786,15 @@
           },
           {
             "texto": [
-              "Esta web no usa cookies de seguimiento ni analítica de terceros. Solo guarda en tu navegador el tema (claro u oscuro) y el idioma que eliges, para recordarlos."
+              "Para saber cuántas personas visitan la web, de dónde llegan y qué les interesa, uso **Umami**, instalado en el mismo servidor que la API: los datos no se envían a ninguna otra empresa.",
+              "Se cuenta qué páginas se ven, desde qué web llegas (por ejemplo, LinkedIn), el país, el tipo de dispositivo, el navegador y algunas acciones, como descargar el CV o abrir la demo de un proyecto. **No se usan cookies ni se guarda nada en tu dispositivo**, y tampoco tu dirección IP: Umami agrupa las visitas con un identificador anónimo que se renueva periódicamente y no permite saber quién eres.",
+              "Son estadísticas anónimas: sirven para mejorar la web y no se usan para nada más. La base legal es mi interés legítimo en saber cómo se usa. Si tu navegador bloquea la medición, la web funciona igual."
+            ],
+            "titulo": "Medición de visitas"
+          },
+          {
+            "texto": [
+              "Esta web no usa cookies, y la medición de visitas tampoco guarda nada en tu navegador. Lo único que se guarda en él es el tema (claro u oscuro) y el idioma que eliges, para recordarlos."
             ],
             "titulo": "Cookies"
           }
@@ -810,28 +851,22 @@
       ]
     },
     "sobre.cita": {
-      "en": "What I like most about development is the part where it doesn't work yet.",
-      "es": "Lo que más me gusta del desarrollo es la parte en la que todavía no funciona."
+      "en": "A good product doesn't start with the code, but with the person who is going to use it.",
+      "es": "Un buen producto no empieza en el código, sino en la persona que lo va a usar."
     },
     "sobre.cuerpo": {
       "en": [
-        "I don't come from IT. I come from selling, looking after customers and getting things off the ground.",
-        "I started in sales at a video production company, handling clients from start to finish: from first contact to final delivery. In 2018 I set up my own tour company in Tenerife and ran it for two years, with two people on my team, its POS, its intranet and its customers. After that I sold property at Century 21, and from there I moved to the group's design department, laying out campaigns and preparing files for print.",
-        "In every one of those jobs the work was the same: understand what someone needs when they can't quite explain it, and deliver it working. It turns out programming is pretty similar.",
-        "In May 2026 I joined the 4Geeks Full Stack bootcamp. Since then I've built interfaces in React, APIs in Flask, data models with SQLAlchemy, and quite a few things that broke and I had to fix. I'm especially interested in what happens underneath: the database, the deployment, why something goes down on a Tuesday at eight.",
-        "I'm looking for my first job as a developer. I don't bring years of technical experience. I bring the habit of owning what I deliver and asking when I don't know something."
+        "My background as a salesperson, graphic designer and founder of my own company taught me to ask the right questions and showed me that a tool is only worth something if the team uses it every day. That experience gives me a global vision that goes beyond the code.",
+        "That's why I first understand the client and their problem, and then decide what to build: not simple interfaces, but strategic products designed to solve users' real needs."
       ],
       "es": [
-        "No vengo de la informática. Vengo de vender, de atender y de montar cosas.",
-        "Empecé como comercial en una productora audiovisual, llevando clientes de principio a fin: del primer contacto hasta la entrega. En 2018 monté mi propia empresa de excursiones en Tenerife y la llevé dos años, con dos personas a mi cargo, su TPV, su intranet y sus clientes. Después vendí inmuebles en Century 21, y de ahí pasé al departamento de diseño del grupo, maquetando campañas y preparando archivos para imprenta.",
-        "En todos esos sitios el trabajo era el mismo: entender qué necesita alguien que no sabe explicarlo del todo, y entregárselo funcionando. Resulta que programar se parece bastante.",
-        "En mayo de 2026 entré en el bootcamp Full Stack de 4Geeks. Desde entonces he construido interfaces en React, APIs en Flask, modelos de datos con SQLAlchemy, y unas cuantas cosas que se rompieron y tuve que arreglar. Me interesa especialmente lo que pasa por debajo: la base de datos, el despliegue, por qué algo se cae un martes a las ocho.",
-        "Busco mi primer puesto como desarrollador. No traigo años de experiencia técnica. Traigo la costumbre de responder por lo que entrego y de preguntar cuando no sé algo."
+        "Mi trayectoria como comercial, diseñador gráfico y fundador de mi propia empresa me enseñó a hacer las preguntas adecuadas y me demostró que una herramienta solo sirve si el equipo la usa cada día. Esa experiencia me da una visión global que va más allá del código.",
+        "Por eso, primero entiendo al cliente y su problema, y después decido qué construir: no simples interfaces, sino productos estratégicos pensados para resolver necesidades reales de los usuarios."
       ]
     },
     "sobre.titular": {
-      "en": "**Eight years** understanding what people need. Now **I can build it**.",
-      "es": "**Ocho años** entendiendo lo que necesita la gente. Ahora **sé construirlo**."
+      "en": "Before I learned to **code**, I learned to **listen**.",
+      "es": "Antes de **programar**, aprendí a **escuchar**."
     }
   },
   "technologies": [

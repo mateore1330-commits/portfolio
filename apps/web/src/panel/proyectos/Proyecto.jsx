@@ -443,9 +443,9 @@ function Formulario({ id }) {
           n="03"
           titulo="Enlaces"
           cambios={cuantos(BLOQUES.enlaces)}
-          texto="La demo y el código. Si uno queda vacío, su botón no sale en la web."
+          texto="La web del proyecto y el código. Si uno queda vacío, su botón no sale en la web."
         >
-          {campoTexto('demo_url', { etiqueta: 'Demo', tipo: 'url', placeholder: 'https://…', spellCheck: false })}
+          {campoTexto('demo_url', { etiqueta: 'Web', tipo: 'url', placeholder: 'https://…', spellCheck: false })}
           {campoTexto('repo_url', { etiqueta: 'Repositorio', tipo: 'url', placeholder: 'https://github.com/…', spellCheck: false })}
         </Bloque>
 

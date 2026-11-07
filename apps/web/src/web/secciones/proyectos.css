@@ -89,13 +89,45 @@
   gap: 10px;
 }
 
+/* --- La imagen: en gris, y en color al acercarse (maqueta efecto-imagen-proyecto.html) ---
+   Se enciende con toda la tarjeta (ratón encima o foco en uno de sus enlaces), no solo con la
+   foto. Sin foto (el hueco de la cámara) no hay nada que encender. */
+.proj-shot {
+  position: relative;
+  display: block;
+  align-self: start;
+}
+
+.proj-shot img {
+  filter: grayscale(1) contrast(1.05);
+  transition: filter .7s var(--ease-out), transform .9s var(--ease-out);
+}
+
+.proj:is(:hover, :focus-within) .proj-shot img {
+  filter: none;
+  transform: scale(1.03);
+}
+
+/* Sin ratón (móvil, tableta) nadie puede "acercarse": la foto, siempre en color. */
+@media (hover: none) {
+  .proj-shot img {
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proj:is(:hover, :focus-within) .proj-shot img {
+    transform: none;
+  }
+}
+
 /* Móvil y tableta: una columna, la imagen arriba y sin pila. */
 @media (max-width: 900px) {
   .proj {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .proj .shot {
+  .proj .proj-shot {
     order: -1;
   }
 }

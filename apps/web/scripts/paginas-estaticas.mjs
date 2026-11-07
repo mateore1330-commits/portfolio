@@ -64,7 +64,7 @@ function paginas() {
         lang,
         resto,
         titulo: titulo(pagina.titulo),
-        descripcion: recortar(pagina.bloques[0].texto.join(' ')),
+        descripcion: interfaz[lang][`legal.descripcion_${clave}`],
         imagen: `/compartir/portada-${lang}.jpg`,
         tipo: 'website',
       })

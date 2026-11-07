@@ -48,7 +48,7 @@
   "proyectos.tecnologias": "Technologies",
   "proyectos.equipo": "Team of {n} · {pct} of the commits",
   "proyectos.equipo_solo": "Team of {n}",
-  "proyectos.demo": "View demo",
+  "proyectos.demo": "View site",
   "proyectos.repo": "Repository",
   "proyectos.sin_imagen": "No image yet",
   "enlace.nueva_pestana": "(opens in a new tab)",
@@ -119,5 +119,7 @@
   "cursor.abrir": "Open",
   "cursor.enviar": "Send",
   "cursor.escribir": "Write",
-  "legal.actualizado": "Updated"
+  "legal.actualizado": "Updated",
+  "legal.descripcion_aviso": "Legal notice for Mateo Rodríguez's website: who is behind it, what it is for, the use of its content and the applicable law.",
+  "legal.descripcion_privacidad": "Privacy on Mateo Rodríguez's website: what the contact form collects, how visits are measured without cookies and your rights."
 }
