@@ -23,7 +23,7 @@ de intentos y el antispam funcionan en producción.
 | El panel en Google | `sitemap.xml`, `robots.txt` y la cabecera de sus páginas | No está en el sitemap ni en `robots.txt` (nombrarlo sería señalar la puerta); sus páginas llevan `noindex` |
 | Correo del dominio | `dig` a los dos DNS de Hostinger | SPF y DKIM de Hostinger; **DMARC `p=quarantine`** (antes `p=none`), con informes a `info@` |
 | Librerías con fallos conocidos | `npm audit` (web) y los avisos de Dependabot (web y API) | pypdf y pillow (API), con arreglo: ver "Librerías". ESLint: ver "Riesgos aceptados" |
-| Cabeceras | securityheaders.com y el observatorio de Mozilla, con la CSP ya en producción | Ver abajo |
+| Cabeceras | Observatorio de Mozilla, con la CSP ya en producción (securityheaders.com no deja consultarlo desde un programa: 403) | La web, **A+ (125)**, 0 pruebas fallidas. La API no se puede analizar así (su raíz da 404 a propósito): sus cabeceras, comprobadas con `curl -I` |
 
 ## Las cabeceras
 
@@ -43,6 +43,10 @@ de intentos y el antispam funcionan en producción.
 Probada con la web construida, servida con las cabeceras de `vercel.json` y un `report-uri` solo en local: ningún
 bloqueo en la portada (es y en, los dos temas), los proyectos, las legales ni la página de error. Un bloqueo
 provocado a propósito sí llegó (la prueba de que el informe funcionaba).
+
+**En producción** (07/11/2026): ninguna página bloqueada. La API, Umami y Cloudinary pasan y una petición a otro
+sitio se bloquea. Mateo recorrió el panel entero con la consola abierta (cada pantalla, la vista previa de textos y
+subir una imagen): ningún error de la CSP. Lo único que sale es un aviso amarillo de rendimiento (ver abajo).
 
 **La API** (Caddy, `infra/Caddyfile`): HSTS, `X-Content-Type-Options`, `X-Frame-Options` y `Referrer-Policy`; sin
 `Server` ni `Via`. CORS, solo para los orígenes de `CORS_ORIGINS`.
@@ -69,6 +73,13 @@ provocado a propósito sí llegó (la prueba de que el informe funcionaba).
 | El panel está en una dirección "escondida" | Esconderla quita ruido de robots; la seguridad de verdad es el login (bcrypt, bloqueo por IP, cookie `httpOnly`, CSRF) | Las rutas, probadas sin sesión |
 | HSTS sin `includeSubDomains` ni *preload* | Obligaría a todos los subdominios, también los del correo de Hostinger | — |
 | DMARC en `quarantine` y no en `reject` | Primero se ve en los informes que nada legítimo falla | Los informes diarios en `info@`. Siguiente paso: `p=reject` |
+
+## Visto de paso (no es de seguridad)
+
+- **El aviso "preloaded but not used" del retrato** en el panel, en la vista previa de textos y en la página de
+  error: Vercel sirve el HTML de la portada a toda ruta que no tiene el suyo, y ese HTML pide descargar el retrato
+  por adelantado. Se descarga una imagen de más donde no se usa. Arreglo, en GO-05: un HTML aparte, sin esa
+  precarga, para las rutas que no son la portada.
 
 ## Cómo repetirlo
 
