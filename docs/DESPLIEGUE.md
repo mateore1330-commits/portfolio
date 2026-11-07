@@ -91,6 +91,10 @@ PR ──► vista previa (protegida: solo con sesión de Vercel)
 
 - **`npm run build`** congela el contenido publicado (`CONTENT_API_URL`), construye y genera una página por URL.
   Si la API no contesta, usa la copia del repo: la web se construye igual.
+- **La copia del repo** (`apps/web/src/contenido/`, y los CV de `public/cv/`) es la rueda de repuesto: en Vercel se
+  trae nueva en cada construcción, pero en git se queda como estaba. **Después de cambios grandes en el panel,
+  refrescarla** en un PR (no es urgente): `CONTENT_API_URL=https://api.mateorodriguez.solutions node
+  apps/web/scripts/congelar-contenido.mjs`. Última vez: GO-03, 07/11/2026.
 - **`apps/web/vercel.json`**: cabeceras de seguridad (las mismas que la API, más `Permissions-Policy` y
   `Cross-Origin-Opener-Policy`; la CSP llega en GO-04), caché larga para `/assets/` (llevan huella en el nombre),
   y que cualquier dirección que no sea un archivo abra la web (el panel y el "no encontrado" los monta React; la

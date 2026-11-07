@@ -306,10 +306,15 @@ Dominio: **mateorodriguez.solutions**, registrado en Hostinger.
 | `www` | Vercel (CNAME al que da Vercel, TTL 1 h; redirige con 308 al de sin `www`) |
 | `api.mateorodriguez.solutions` | IP del VPS (registro A, TTL 1 h; INFRA-04) |
 | `visitas.mateorodriguez.solutions` | IP del VPS (registro A, TTL 1 h; INFRA-04) |
+| `mateorodriguez.solutions` (TXT `google-site-verification=…`) | Demuestra a Google Search Console que el dominio es de Mateo (GO-03). Va **aparte** del TXT del SPF: no se juntan. Si se borra, Search Console deja de mostrar datos |
 
 Los DNS se gestionan desde Hostinger. No hace falta mover el dominio de registrador, ni pasar los DNS a Vercel:
 el correo (MX, SPF, DKIM, DMARC, `autodiscover`, `autoconfig`) sigue en Hostinger y no se toca. El certificado
 de la web lo pide y lo renueva Vercel (Let's Encrypt).
+
+**Google Search Console** (GO-03, 07/11/2026): propiedad de tipo *Dominio* (cubre `www` y sin `www`), con la
+cuenta de Gmail de Mateo, y el mapa `https://mateorodriguez.solutions/sitemap.xml` enviado (12 páginas). Ahí se ve
+si Google encuentra la web, qué páginas tiene y con qué búsquedas llega la gente. No añade nada a la web.
 
 ### Vigilancia
 
