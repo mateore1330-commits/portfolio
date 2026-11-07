@@ -119,5 +119,7 @@
   "cursor.abrir": "Abrir",
   "cursor.enviar": "Enviar",
   "cursor.escribir": "Escribir",
-  "legal.actualizado": "Actualizado el"
+  "legal.actualizado": "Actualizado el",
+  "legal.descripcion_aviso": "Aviso legal de la web de Mateo Rodríguez: quién está detrás, para qué sirve, el uso de sus contenidos y la ley que se aplica.",
+  "legal.descripcion_privacidad": "Privacidad en la web de Mateo Rodríguez: qué datos recoge el formulario de contacto, cómo se miden las visitas sin cookies y tus derechos."
 }
