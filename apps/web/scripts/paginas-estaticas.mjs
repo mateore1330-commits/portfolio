@@ -9,6 +9,7 @@
 //
 // Uso: lo lanza `npm run build` (apps/web). Sin dependencias.
 
+import { createHash } from 'node:crypto'
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -119,11 +120,25 @@ async function precargaRetrato() {
 const INICIO = '<!-- cabecera:inicio -->'
 const FIN = '<!-- cabecera:fin -->'
 
+// La CSP de vercel.json solo deja correr los scripts en línea por su huella (GO-04). Si el de
+// index.html cambia y la huella no, el navegador lo bloquearía sin avisar: mejor que falle el build.
+async function comprobarHuellas(html) {
+  const vercel = JSON.parse(await readFile(join(WEB, 'vercel.json'), 'utf8'))
+  const csp = vercel.headers.flatMap((h) => h.headers).find((h) => h.key === 'Content-Security-Policy').value
+  for (const [, codigo] of html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)) {
+    const huella = `'sha256-${createHash('sha256').update(codigo).digest('base64')}'`
+    if (!csp.includes(huella)) {
+      throw new Error(`Un script en línea de index.html no está en la CSP de vercel.json. Su huella es ${huella}.`)
+    }
+  }
+}
+
 async function main() {
   const plantilla = await readFile(join(DIST, 'index.html'), 'utf8')
   if (!plantilla.includes(INICIO) || !plantilla.includes(FIN)) {
     throw new Error(`index.html no tiene las marcas ${INICIO} y ${FIN}.`)
   }
+  await comprobarHuellas(plantilla)
   const lista = paginas()
   const retrato = await precargaRetrato()
 

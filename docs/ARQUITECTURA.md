@@ -312,6 +312,11 @@ Los DNS se gestionan desde Hostinger. No hace falta mover el dominio de registra
 el correo (MX, SPF, DKIM, DMARC, `autodiscover`, `autoconfig`) sigue en Hostinger y no se toca. El certificado
 de la web lo pide y lo renueva Vercel (Let's Encrypt).
 
+**DMARC** (GO-04, 07/11/2026): `v=DMARC1; p=quarantine; rua=mailto:info@mateorodriguez.solutions`. Un correo que
+diga ser del dominio sin pasar SPF ni DKIM va a spam. Todo el correo de verdad sale por Hostinger (también los
+avisos del formulario), así que no le afecta. Los informes diarios llegan a `info@`; el siguiente paso, cuando
+se vea que nada legítimo falla, es `p=reject`. El repaso entero, en `docs/SEGURIDAD.md`.
+
 **Google Search Console** (GO-03, 07/11/2026): propiedad de tipo *Dominio* (cubre `www` y sin `www`), con la
 cuenta de Gmail de Mateo, y el mapa `https://mateorodriguez.solutions/sitemap.xml` enviado (12 páginas). Ahí se ve
 si Google encuentra la web, qué páginas tiene y con qué búsquedas llega la gente. No añade nada a la web.

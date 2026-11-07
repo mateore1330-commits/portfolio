@@ -29,6 +29,11 @@ def test_entrar_bien_da_la_cookie_protegida(cliente, admin):
         assert atributo in cookie, f"a la cookie le falta {atributo}"
 
 
+def test_la_cookie_caduca_con_el_pase(cliente, admin):
+    # 8 h, como el pase: no el año que pone la librería por defecto (GO-04).
+    assert f"Max-Age={8 * 3600}" in cookie_de(entrar(cliente))
+
+
 def test_con_la_cookie_hay_sesion(cliente, admin):
     entrar(cliente)
     respuesta = cliente.get(f"{RUTA}/sesion")

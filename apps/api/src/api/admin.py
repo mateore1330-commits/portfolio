@@ -157,9 +157,10 @@ def login():
     pase = create_access_token(
         identity=str(admin_user.admin_id), additional_claims={"v": admin_user.token_version}
     )
-    caduca = datetime.now(UTC) + current_app.config["JWT_ACCESS_TOKEN_EXPIRES"]
-    respuesta = jsonify(_datos_de_sesion(pase, caduca))
-    set_access_cookies(respuesta, pase)
+    duracion = current_app.config["JWT_ACCESS_TOKEN_EXPIRES"]
+    respuesta = jsonify(_datos_de_sesion(pase, datetime.now(UTC) + duracion))
+    # La cookie caduca con el pase (8 h), no al año que pone la librería por defecto (GO-04).
+    set_access_cookies(respuesta, pase, max_age=int(duracion.total_seconds()))
     return respuesta
 
 
