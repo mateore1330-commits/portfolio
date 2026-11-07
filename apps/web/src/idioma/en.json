@@ -48,7 +48,7 @@
   "proyectos.tecnologias": "Technologies",
   "proyectos.equipo": "Team of {n} · {pct} of the commits",
   "proyectos.equipo_solo": "Team of {n}",
-  "proyectos.demo": "View demo",
+  "proyectos.demo": "View site",
   "proyectos.repo": "Repository",
   "proyectos.sin_imagen": "No image yet",
   "enlace.nueva_pestana": "(opens in a new tab)",
