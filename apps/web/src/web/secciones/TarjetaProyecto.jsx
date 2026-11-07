@@ -63,7 +63,11 @@ export default function TarjetaProyecto({ proyecto, numero }) {
           </Link>
         </div>
       </div>
-      <ImagenProyecto imagen={portadaDe(proyecto)} nombre={nombre} />
+      {/* La imagen también lleva al proyecto, pero solo para el ratón: con teclado o lector de
+          pantalla ya está "Ver proyecto completo", y el mismo enlace dos veces seguidas estorba. */}
+      <Link className="proj-shot" to={rutaProyecto(lang, proyecto.slug)} tabIndex={-1} aria-hidden="true">
+        <ImagenProyecto imagen={portadaDe(proyecto)} nombre={nombre} />
+      </Link>
     </article>
   )
 }

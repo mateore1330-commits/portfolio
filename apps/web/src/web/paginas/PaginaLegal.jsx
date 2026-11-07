@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Link } from 'react-router'
 import Marcado from '@/compartido/componentes/Marcado.jsx'
 import { useContenido } from '@/contenido/useContenido.js'
-import { ponerTitulo } from '@/idioma/documento.js'
+import { ponerDescripcion, ponerTitulo } from '@/idioma/documento.js'
 import { rutaEn } from '@/idioma/idiomas.js'
 import { useIdioma, useElegir, useT } from '@/idioma/useIdioma.js'
 import '@/web/secciones/proyectos.css'
@@ -21,7 +21,8 @@ export default function PaginaLegal({ clave }) {
 
   useEffect(() => {
     if (titulo) ponerTitulo(t('proyecto.titulo').replace('{nombre}', titulo))
-  }, [titulo, t])
+    ponerDescripcion(t(`legal.descripcion_${clave}`))
+  }, [titulo, t, clave])
 
   if (!pagina) return null
 
