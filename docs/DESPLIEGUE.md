@@ -96,10 +96,12 @@ PR ──► vista previa (protegida: solo con sesión de Vercel)
   refrescarla** en un PR (no es urgente): `CONTENT_API_URL=https://api.mateorodriguez.solutions node
   apps/web/scripts/congelar-contenido.mjs`. Última vez: GO-03, 07/11/2026.
 - **`apps/web/vercel.json`**: cabeceras de seguridad (las mismas que la API, más `Permissions-Policy` y
-  `Cross-Origin-Opener-Policy`; la CSP llega en GO-04), caché larga para `/assets/` (llevan huella en el nombre),
+  `Cross-Origin-Opener-Policy`, y la CSP de GO-04), caché larga para `/assets/` (llevan huella en el nombre),
   y que cualquier dirección que no sea un archivo abra la web (el panel y el "no encontrado" los monta React; la
-  ruta del panel no se puede escribir ahí, el repo es público). **Menos `/assets/`**: una pieza que no existe da
-  404, no la portada (que además se guardaría un año con la caché de `/assets/`).
+  ruta del panel no se puede escribir ahí, el repo es público). Esas direcciones reciben `_app.html` (y
+  `en/_app.html`): la cabecera de la portada sin la precarga del retrato, que ahí no se usa (GO-05). **Menos
+  `/assets/`**: una pieza que no existe da 404, no la portada (que además se guardaría un año con la caché de
+  `/assets/`).
 - **Una pestaña abierta de antes de publicar** pide piezas con el nombre viejo, que ya no existen. La pantalla de
   error de las rutas (`ErrorRuta`) recarga sola una vez en la dirección a la que ibas; si vuelve a fallar en
   menos de un minuto, enseña "Algo no ha cargado · Recargar" (#185).

@@ -78,8 +78,8 @@ subir una imagen): ningún error de la CSP. Lo único que sale es un aviso amari
 
 - **El aviso "preloaded but not used" del retrato** en el panel, en la vista previa de textos y en la página de
   error: Vercel sirve el HTML de la portada a toda ruta que no tiene el suyo, y ese HTML pide descargar el retrato
-  por adelantado. Se descarga una imagen de más donde no se usa. Arreglo, en GO-05: un HTML aparte, sin esa
-  precarga, para las rutas que no son la portada.
+  por adelantado. Se descargaba una imagen de más donde no se usa. **Arreglado en GO-05:** esas rutas reciben
+  `_app.html`, la misma cabecera sin esa precarga.
 
 ## Cómo repetirlo
 
