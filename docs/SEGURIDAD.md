@@ -22,7 +22,7 @@ de intentos y el antispam funcionan en producción.
 | Archivos de secretos del servidor | `sudo stat -c "%a %U:%G %n"` | Los cuatro (`infra/.env`, `infra/api.env` y los dos de `/etc/portfolio-copias/`), **600 root:root** |
 | El panel en Google | `sitemap.xml`, `robots.txt` y la cabecera de sus páginas | No está en el sitemap ni en `robots.txt` (nombrarlo sería señalar la puerta); sus páginas llevan `noindex` |
 | Correo del dominio | `dig` a los dos DNS de Hostinger | SPF y DKIM de Hostinger; **DMARC `p=quarantine`** (antes `p=none`), con informes a `info@` |
-| Librerías con fallos conocidos | `npm audit` (web) y los avisos de Dependabot (web y API) | pypdf y pillow (API), con arreglo: ver "Librerías". ESLint: ver "Riesgos aceptados" |
+| Librerías con fallos conocidos | `npm audit` (web) y los avisos de Dependabot (web y API) | pypdf y pillow (API), actualizadas en GO-05: ver "Librerías". ESLint: ver "Riesgos aceptados" |
 | Cabeceras | Observatorio de Mozilla, con la CSP ya en producción (securityheaders.com no deja consultarlo desde un programa: 403) | La web, **A+ (125)**, 0 pruebas fallidas. La API no se puede analizar así (su raíz da 404 a propósito): sus cabeceras, comprobadas con `curl -I` |
 
 ## Las cabeceras
@@ -60,9 +60,13 @@ subir una imagen): ningún error de la CSP. Lo único que sale es un aviso amari
 - **Dependabot solo avisa** (decidido el 07/11/2026): avisos en la pestaña *Security* del repositorio y por
   correo, **sin PR automáticos** (ni de seguridad ni semanales). Cada aviso se arregla a mano, con el flujo de
   siempre: rama, comprobar que todo sigue igual y PR.
-- **Avisos abiertos** (07/11/2026): `pypdf` 6.21.0 (7 fallos graves, arreglados en 6.21.4) y `pillow` 12.3.0
-  (1 crítico y 1 moderado, arreglados en 13.0.0). Las dos solo procesan archivos propios (la foto y el PDF del
-  CV), así que el riesgo hoy es bajo; quedan para arreglar a mano.
+- **Antigüedad mínima de 7 días** (decidido el 07/11/2026, GO-05): no se instala una versión publicada hace menos
+  de 7 días, que es lo que suelen tardar en descubrirse y retirarse los paquetes envenenados. En la web lo hace
+  npm solo (`min-release-age=7` en `apps/web/.npmrc`: pedir una más nueva da `ETARGET`, y `@latest` elige la más
+  nueva que ya cumple). Pipenv no tiene ese ajuste: antes de actualizar algo de la API se mira su fecha en PyPI.
+- **Avisos de Dependabot cerrados** (GO-05): `pypdf` 6.21.0 → **6.21.4** (7 fallos graves) y `pillow` 12.3.0 →
+  **13.0.0** (1 crítico y 1 moderado), con 10 y 22 días publicadas. El CV generado antes y después, comparado:
+  misma página, mismo texto, la foto idéntica byte a byte y la prueba ATS superada en los dos idiomas.
 
 ## Riesgos aceptados
 
