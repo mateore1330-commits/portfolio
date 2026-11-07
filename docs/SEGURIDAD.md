@@ -18,7 +18,7 @@ de intentos y el antispam funcionan en producción.
 | Rutas del panel (`/api/admin/*`) sin sesión | La lista sale de la propia API (`flask routes`, 66 rutas); cada una, con su método, contra producción y sin cookie | Las 65 que no son `login` → **401** |
 | Límite de intentos al entrar | 6 intentos con un correo y una contraseña falsos, en producción | 5 × 401 y después **429** (bloqueo de 15 min por IP). Mismo tiempo de respuesta (~0,2 s) exista o no el correo |
 | Antispam del formulario | En producción: con el campo trampa relleno, enviado en 1 s y 4 mensajes normales seguidos | Trampa y rapidez → 201 sin guardar ni avisar (al bot no se le dan pistas); 3 × 201 y el 4.º → **429** |
-| Cookie de sesión | Configuración (`config.py`) y la respuesta de `login` en producción | `httpOnly`, `Secure`, `SameSite=Lax`, solo para `/api/admin`, con protección CSRF |
+| Cookie de sesión | Configuración (`config.py`) y la respuesta de `login` en producción (DevTools → Network → `login` → Cookies) | `httpOnly`, `Secure`, `SameSite=Lax`, solo para `/api/admin`, con protección CSRF. **Arreglado:** la cookie se guardaba un año (lo que pone la librería por defecto) aunque el pase de dentro caduca a las 8 h; ahora caduca con él (`Max-Age` de 8 h, con su test) |
 | Archivos de secretos del servidor | `sudo stat -c "%a %U:%G %n"` | Los cuatro (`infra/.env`, `infra/api.env` y los dos de `/etc/portfolio-copias/`), **600 root:root** |
 | El panel en Google | `sitemap.xml`, `robots.txt` y la cabecera de sus páginas | No está en el sitemap ni en `robots.txt` (nombrarlo sería señalar la puerta); sus páginas llevan `noindex` |
 | Correo del dominio | `dig` a los dos DNS de Hostinger | SPF y DKIM de Hostinger; **DMARC `p=quarantine`** (antes `p=none`), con informes a `info@` |
