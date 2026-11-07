@@ -22,7 +22,7 @@ de intentos y el antispam funcionan en producción.
 | Archivos de secretos del servidor | `sudo stat -c "%a %U:%G %n"` | Los cuatro (`infra/.env`, `infra/api.env` y los dos de `/etc/portfolio-copias/`), **600 root:root** |
 | El panel en Google | `sitemap.xml`, `robots.txt` y la cabecera de sus páginas | No está en el sitemap ni en `robots.txt` (nombrarlo sería señalar la puerta); sus páginas llevan `noindex` |
 | Correo del dominio | `dig` a los dos DNS de Hostinger | SPF y DKIM de Hostinger; **DMARC `p=quarantine`** (antes `p=none`), con informes a `info@` |
-| Librerías con fallos conocidos | `npm audit` (web) y Dependabot (web, API y acciones del CI) | Ver "Riesgos aceptados" |
+| Librerías con fallos conocidos | `npm audit` (web) y los avisos de Dependabot (web y API) | pypdf y pillow (API), con arreglo: ver "Librerías". ESLint: ver "Riesgos aceptados" |
 | Cabeceras | securityheaders.com y el observatorio de Mozilla, con la CSP ya en producción | Ver abajo |
 
 ## Las cabeceras
@@ -47,12 +47,25 @@ provocado a propósito sí llegó (la prueba de que el informe funcionaba).
 **La API** (Caddy, `infra/Caddyfile`): HSTS, `X-Content-Type-Options`, `X-Frame-Options` y `Referrer-Policy`; sin
 `Server` ni `Via`. CORS, solo para los orígenes de `CORS_ORIGINS`.
 
+## Librerías
+
+- **Versiones exactas** (SETUP-02 y SETUP-03): sin `^` en la web (`.npmrc` con `save-exact=true` y
+  `package-lock.json`) y con `==` en la API (`Pipfile.lock`). Nada sube de versión solo. Es lo que dejó la web
+  fuera del gusano "ChainDrop" (agosto de 2026, `keyv`, `cacheable`, `flat-cache`…): las versiones del
+  `package-lock.json` eran anteriores a las infectadas (comprobado el 07/11/2026, sin rastros en `node_modules`).
+- **Dependabot solo avisa** (decidido el 07/11/2026): avisos en la pestaña *Security* del repositorio y por
+  correo, **sin PR automáticos** (ni de seguridad ni semanales). Cada aviso se arregla a mano, con el flujo de
+  siempre: rama, comprobar que todo sigue igual y PR.
+- **Avisos abiertos** (07/11/2026): `pypdf` 6.21.0 (7 fallos graves, arreglados en 6.21.4) y `pillow` 12.3.0
+  (1 crítico y 1 moderado, arreglados en 13.0.0). Las dos solo procesan archivos propios (la foto y el PDF del
+  CV), así que el riesgo hoy es bajo; quedan para arreglar a mano.
+
 ## Riesgos aceptados
 
 | Riesgo | Por qué se acepta | Qué lo vigila |
 |---|---|---|
 | Un 404 de `/assets/` se guarda un año (`immutable`) | Vercel pone las cabeceras también a los 404 y no deja elegirlas por el código de respuesta. Solo molesta si se vuelve a una versión anterior (*Instant Rollback*) y un visitante ya había pedido justo ese archivo; se arregla recargando a fondo. Bajar la caché haría la web más lenta para todos | Nada: está escrito aquí |
-| ESLint 10 depende de `minimatch` 10, con un fallo moderado (denegación de servicio con patrones de archivos hechos a propósito) | El arreglo está en `minimatch` 11 y ESLint 10 aún no lo admite; bajar a ESLint 9 sería peor. Solo corre en el ordenador y en el CI con patrones que escribimos nosotros: no llega al navegador | Dependabot |
+| ESLint 10 depende de `minimatch` 10, con un fallo moderado (denegación de servicio con patrones de archivos hechos a propósito) | El arreglo está en `minimatch` 11 y ESLint 10 aún no lo admite; bajar a ESLint 9 sería peor. Solo corre en el ordenador y en el CI con patrones que escribimos nosotros: no llega al navegador | Los avisos de Dependabot |
 | El panel está en una dirección "escondida" | Esconderla quita ruido de robots; la seguridad de verdad es el login (bcrypt, bloqueo por IP, cookie `httpOnly`, CSRF) | Las rutas, probadas sin sesión |
 | HSTS sin `includeSubDomains` ni *preload* | Obligaría a todos los subdominios, también los del correo de Hostinger | — |
 | DMARC en `quarantine` y no en `reject` | Primero se ve en los informes que nada legítimo falla | Los informes diarios en `info@`. Siguiente paso: `p=reject` |

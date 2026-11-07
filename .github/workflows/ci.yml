@@ -118,9 +118,8 @@ jobs:
 
   pr:
     name: PR enlazado a su issue
-    # Los PR a main agrupan muchas issues: no cierran una concreta. Los de Dependabot
-    # (librerías al día, GO-04) tampoco tienen issue.
-    if: github.base_ref == 'develop' && github.event.pull_request.user.login != 'dependabot[bot]'
+    # Los PR a main agrupan muchas issues: no cierran una concreta.
+    if: github.base_ref == 'develop'
     runs-on: ubuntu-latest
     steps:
       - env:
