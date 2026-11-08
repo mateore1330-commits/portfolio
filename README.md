@@ -28,7 +28,7 @@ apps/web      La web y el panel: React 18 · Vite · React Router          → V
   scripts/          los del build (congelar el contenido, páginas estáticas) y para preparar imágenes y fuentes
 apps/api      La API: Flask · SQLAlchemy · PostgreSQL · Gunicorn         → VPS propio (Docker)
 infra/        El servidor: Docker Compose, Caddy, copias y despliegue (cómo montarlo: infra/README.md)
-docs/         Arquitectura, modelo de datos, backlog, despliegue y restaurar copias
+docs/         Arquitectura, modelo de datos, backlog, despliegue, seguridad y restaurar copias
 scripts/      Lo que usan las dos aplicaciones: comprobar que los dos idiomas cuadran
 ```
 
@@ -90,15 +90,18 @@ está en el repo: nunca falla por eso. Para que la nueva quede como respaldo, se
 | [Modelo de datos](docs/MODELO_DATOS.dbml) | El esquema en DBML (se pega en dbdiagram.io) |
 | [Backlog](docs/BACKLOG.md) | Las épicas y su reparto entre v1 y v2 |
 | [El servidor](infra/README.md) | Qué hay en `infra/` y cómo montar un servidor desde cero |
-| [Despliegue](docs/DESPLIEGUE.md) | Cómo llega la API al servidor al fusionar en `main` |
+| [Despliegue](docs/DESPLIEGUE.md) | Cómo llegan la API al servidor y la web a Vercel al fusionar en `main` |
+| [Seguridad](docs/SEGURIDAD.md) | El repaso de seguridad: qué se comprobó, cómo repetirlo y los riesgos aceptados |
 | [Restaurar copias](docs/RESTAURAR.md) | Dónde están las copias de la base y cómo recuperarlas |
 
 ## Cómo se trabaja
 
 Cada cambio es una issue del tablero, una rama desde `develop` y un PR con el CI en verde.
-`main` es lo publicado: se llega a ella con un PR desde `develop`, y entonces la API se
-despliega sola.
+`main` es lo publicado: se llega a ella con un PR desde `develop`, y entonces la API y la web
+se despliegan solas. El contenido se cambia desde el panel, y su botón "Publicar" vuelve a
+construir la web.
 
 ## Estado
 
-En construcción. El avance se sigue en los issues.
+Publicada en [mateorodriguez.solutions](https://mateorodriguez.solutions). Lo que viene
+después se sigue en los issues.

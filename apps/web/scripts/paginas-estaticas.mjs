@@ -142,16 +142,22 @@ async function main() {
   const lista = paginas()
   const retrato = await precargaRetrato()
 
-  for (const p of lista) {
-    const html = plantilla
+  const pagina = (p, extra = '') =>
+    plantilla
       .replace(/<html lang="[^"]*">/, `<html lang="${p.lang}">`)
-      .replace(
-        new RegExp(`${INICIO}[\\s\\S]*?${FIN}`),
-        `${INICIO}\n    ${cabecera(p)}${p.resto === '/' ? `\n    ${retrato}` : ''}\n    ${FIN}`,
-      )
+      .replace(new RegExp(`${INICIO}[\\s\\S]*?${FIN}`), `${INICIO}\n    ${cabecera(p)}${extra}\n    ${FIN}`)
+
+  for (const p of lista) {
     const destino = join(DIST, ruta(p.lang, p.resto), 'index.html')
     await mkdir(dirname(destino), { recursive: true })
-    await writeFile(destino, html)
+    await writeFile(destino, pagina(p, p.resto === '/' ? `\n    ${retrato}` : ''))
+  }
+
+  // Lo que sirve Vercel a las rutas sin página propia (el panel, la página de error…): la
+  // cabecera de la portada, pero sin pedir el retrato por adelantado, que ahí no se usa
+  // (el aviso "preloaded but not used", GO-05). Ver las reescrituras de vercel.json.
+  for (const p of lista.filter((q) => q.resto === '/')) {
+    await writeFile(join(DIST, ruta(p.lang, '/'), '_app.html'), pagina(p))
   }
 
   // sitemap.xml: cada página con su versión en el otro idioma.

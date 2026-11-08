@@ -14,8 +14,8 @@ gunicorn = "==26.2.0"
 bcrypt = "==5.0.0"
 flask-jwt-extended = "==4.7.4"
 # El CV en PDF (api/cv/generar.py): desde ADM-05 lo genera la API al publicar.
-pypdf = "==6.21.0"
-pillow = "==12.3.0"
+pypdf = "==6.21.4"
+pillow = "==13.0.0"
 fonttools = "==4.67.0"
 brotli = "==1.2.0"
 # Las imágenes de los proyectos y los certificados (ADM-08).
