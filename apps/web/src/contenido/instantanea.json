@@ -1,5 +1,5 @@
 {
-  "etag": "\"6abf0937dee1086a1c280462bbed415b02831be985c8fb574fa0f65d5d5a6de8\"",
+  "etag": "\"a404cbf8fd407dc26862516ac995eb90302c6535a7afc8024fa8a5a954c36f8a\"",
   "education": [
     {
       "certificate_file": null,
@@ -54,10 +54,7 @@
   ],
   "jobs": [
     {
-      "achievements": {
-        "en": [],
-        "es": []
-      },
+      "achievements": null,
       "company": "WeTaxi Madrid",
       "description": {
         "en": [
@@ -81,7 +78,7 @@
     {
       "achievements": {
         "en": [
-          "Edited the photo shoots of every listed property",
+          "Edited the photoshoots of every property listed.",
           "Designed and laid out print merchandise for the sales team and for campaigns",
           "Negotiated and coordinated with print suppliers"
         ],
@@ -95,7 +92,7 @@
       "description": {
         "en": [
           "Marketing department of a group with an architecture studio and a real estate agency.",
-          "A year working with Photoshop, Illustrator, InDesign and Lightroom. It's why my projects don't look like templates."
+          "A year working with Photoshop, Illustrator, InDesign and Lightroom. That is the reason why my projects don't look like templates."
         ],
         "es": [
           "Departamento de marketing de un grupo con estudio de arquitectura e inmobiliaria.",
@@ -130,11 +127,11 @@
       "description": {
         "en": [
           "Listing and selling residential property.",
-          "Part of the same group where I later moved to the design department."
+          "later on, I moved to the design department."
         ],
         "es": [
           "Captación y venta de vivienda residencial.",
-          "Del mismo grupo donde después pasé al departamento de diseño."
+          "Donde después pasé al departamento de diseño."
         ]
       },
       "end_date": "2020-07-01",
@@ -151,7 +148,7 @@
     {
       "achievements": {
         "en": [
-          "**Led a team of 2**",
+          "**Team lead in a group of two**",
           "Managed the POS, B2B intranet and CRM",
           "Customer acquisition, pricing, suppliers and day-to-day operations"
         ],
@@ -165,7 +162,7 @@
       "description": {
         "en": [
           "Founded and ran a tour company, end to end.",
-          "Running a small company teaches you that software nobody uses is worthless, however well built it is."
+          "Running a small company teaches you that a software nobody uses is worthless, even if it is built alright."
         ],
         "es": [
           "Creación y gestión integral de una empresa de excursiones turísticas.",
@@ -248,58 +245,64 @@
   ],
   "projects": [
     {
-      "commits_share": 87,
-      "demo_url": "https://sample-service-name-vf40.onrender.com/",
+      "commits_share": 89,
+      "demo_url": "https://cleanflow-lac.vercel.app",
       "description": {
         "en": [
           "CleanFlow isn't a booking website: it's the system the whole company would run on.",
-          "The **customer** books by choosing a service, a date and an address, tracks their bookings, cancels or reschedules them, and leaves a review with photos. The **worker** sees their assigned jobs, clocks in and out each day, closes tasks by uploading before-and-after photos, and reports incidents when something doesn't go as planned. The **manager** runs everything: bookings, customers, shifts, absences, incidents, the service catalog and job applications.",
-          "Under the hood there are 16 tables, 83 endpoints and around 31,000 lines of Python and JavaScript."
+          "The **customer** books by choosing a service, a date and an address, tracks their bookings, cancels them and leaves a rating. The **worker** sees their working day, closes each job's tasks with before-and-after photos, and reports when something doesn't go as planned. The **manager** runs everything: bookings, customers, the team, shifts, absences, incidents, the service catalog and job applications.",
+          "After the bootcamp I rebuilt it on my own: a new design from top to bottom, a new database on Neon, deployment on Vercel and a round of security fixes. That took 26 more pull requests, each with its issue, its plan and a green CI.",
+          "**To try it**, sign up as a customer and book a cleaning: the company is made up and nobody will turn up at your door. The worker and manager dashboards are shown in the repository's screenshots.",
+          "Under the hood there are 16 tables and 83 endpoints."
         ],
         "es": [
           "CleanFlow no es una web de reservas: es el sistema con el que funcionaría la empresa entera.",
-          "El **cliente** reserva eligiendo servicio, fecha y dirección, sigue sus reservas, las cancela o las reprograma, y deja reseña con fotos. El **trabajador** ve sus servicios asignados, marca el inicio y el final de cada día, cierra tareas subiendo fotos del antes y el después, y abre incidencias cuando algo no sale como debía. El **encargado** lo gobierna todo: reservas, clientes, turnos, bajas, incidencias, catálogo y solicitudes de empleo.",
-          "Por debajo son 16 tablas, 83 endpoints y unas 31.000 líneas entre Python y JavaScript."
+          "El **cliente** reserva eligiendo servicio, fecha y dirección, sigue sus reservas, las cancela y deja su valoración. El **trabajador** ve su jornada, cierra las tareas de cada servicio con fotos del antes y el después, y avisa cuando algo no sale como debía. El **encargado** lo gobierna todo: reservas, clientes, equipo, turnos, ausencias, incidencias, catálogo y candidaturas.",
+          "Después del bootcamp lo rehice por mi cuenta: un diseño nuevo de arriba abajo, una base de datos nueva en Neon, la publicación en Vercel y una tanda de arreglos de seguridad. Fueron 26 pull requests más, cada una con su issue, su plan y el CI en verde.",
+          "**Para probarlo**, regístrate como cliente y reserva una limpieza: la empresa es inventada y no va nadie a tu casa. Los paneles del trabajador y del encargado se ven en las capturas del repositorio.",
+          "Por debajo son 16 tablas y 83 endpoints."
         ]
       },
       "is_featured": true,
       "is_team_project": true,
       "label": {
-        "en": "Bootcamp final project · Team of 4",
-        "es": "Proyecto final del bootcamp · En equipo de 4"
+        "en": "Bootcamp final project · Team of 3",
+        "es": "Proyecto final del bootcamp · En equipo de 3"
       },
       "learning": {
         "en": [
           "**We worked vertically, not horizontally.** Instead of one person doing the frontend and another the backend, each of us took a whole feature: the screen, the endpoint and whatever tables it needed. It takes longer to get going, and you understand what you're doing far better.",
-          "The workflow was: you assign yourself the issue, create a branch, open the pull request, **at least two people review it**, and it goes into `develop`. `main` was only touched to deploy.",
-          "That discipline is what I value most. Writing code on your own is easy; getting four people to agree on the same code isn't."
+          "The workflow was: you assign yourself the issue, create a branch, open the pull request, **at least two people review it**, and it goes into `develop`. `main` was only touched to deploy. That discipline is what I value most, and I kept it in the redesign even though I was working alone.",
+          "**Deploying is part of the design too.** To run it on Vercel, the website sits on its network and the API runs as a Python function in Frankfurt, next to the database. And since Vercel rejects requests over 4.5 MB, phone photos are shrunk in the browser before they are uploaded."
         ],
         "es": [
           "**Trabajamos en vertical, no en horizontal.** En vez de que uno hiciera el frontend y otro el backend, cada uno cogía una funcionalidad entera: la pantalla, el endpoint y las tablas que hicieran falta. Se tarda más en arrancar y se entiende muchísimo mejor lo que estás haciendo.",
-          "El flujo era: te asignas la issue, creas una rama, abres el pull request, **lo revisan al menos dos personas** y entra en `develop`. `main` solo se tocaba al desplegar.",
-          "Esa disciplina es lo que más me llevo. Es fácil escribir código solo; ponerse de acuerdo cuatro personas sobre el mismo código, no."
+          "El flujo era: te asignas la issue, creas una rama, abres el pull request, **lo revisan al menos dos personas** y entra en `develop`. `main` solo se tocaba al desplegar. Esa disciplina es lo que más me llevo, y la mantuve en el rediseño aunque ya trabajaba solo.",
+          "**Publicar también es diseñar.** Para llevarlo a Vercel, la web va en su red y la API como una función de Python en Frankfurt, junto a la base de datos. Y como Vercel corta los envíos de más de 4,5 MB, las fotos del móvil se reducen en el navegador antes de subirlas."
         ]
       },
       "media": [
         {
           "alt": {
-            "en": "CleanFlow home page: a bright living room with the headline \"Tu casa en calma. Tu mente en paz.\" and the booking buttons",
-            "es": "Portada de CleanFlow: un salón luminoso con el titular «Tu casa en calma. Tu mente en paz.» y los botones para reservar"
+            "en": "CleanFlow home page: the headline \"Tu casa limpia, sin preocuparte de nada\" over a living room, with the booking buttons and a 4.5 rating from 37 reviews",
+            "es": "Portada de CleanFlow: el titular «Tu casa limpia, sin preocuparte de nada» sobre un salón, con los botones para reservar y la nota de 4,5 de 37 opiniones"
           },
-          "is_cover": false,
+          "is_cover": true,
           "sort_order": 0,
           "type": "image",
-          "url": "https://res.cloudinary.com/d5baf4i9/image/upload/f_auto,q_auto,c_limit,w_1600/v1794060051/portfolio/proyectos/cleanflow/cleanflow_a72d9a.jpg"
+          "url": "https://res.cloudinary.com/d5baf4i9/image/upload/f_auto,q_auto,c_limit,w_1600/v1794452479/portfolio/proyectos/cleanflow/cleanflow_cfkg4i.jpg"
         }
       ],
       "my_role": {
         "en": [
           "I worked on authentication (sign-up, Google login via OAuth and JWT handling), on the role system that decides what each user sees in their dashboard, on the navbar and several sections of the landing page, and on a good part of the application logic: worker availability and service availability.",
-          "There were four of us and we split the tasks evenly. Two weeks in, one teammate left the bootcamp and her work had to be redone; the other two had less time available for personal reasons. Once I'd finished my part I kept picking up tasks so the project wouldn't stall. I ended up authoring 441 of the 509 commits."
+          "There were four of us at the start and we split the tasks evenly. Two weeks in, one teammate left the bootcamp and her work had to be redone; the other two had less time available for personal reasons. Once I'd finished my part I kept picking up tasks so the project wouldn't stall. I ended up authoring 441 of the 509 commits.",
+          "The redesign and the deployment came later, on my own: the brand guide and the mockups, the public website, the three dashboards, the new database with its demo data, and the deployment."
         ],
         "es": [
           "Trabajé en el inicio de sesión —registro, login con Google mediante OAuth y la gestión del token JWT—, en el sistema de roles que decide qué ve cada usuario en su panel, en el navbar y varias secciones de la landing, y en buena parte de la lógica de la aplicación: la disponibilidad de los trabajadores y la de los servicios.",
-          "Éramos cuatro y repartimos las tareas a partes iguales. A las dos semanas una compañera dejó el bootcamp y hubo que rehacer su trabajo; los otros dos tuvieron menos disponibilidad por motivos personales. Cuando terminé lo mío seguí cogiendo tareas para que el proyecto no se parara. Acabé firmando 441 de los 509 commits."
+          "Empezamos cuatro y repartimos las tareas a partes iguales. A las dos semanas una compañera dejó el bootcamp y hubo que rehacer su trabajo; los otros dos tuvieron menos disponibilidad por motivos personales. Cuando terminé lo mío seguí cogiendo tareas para que el proyecto no se parara. Acabé firmando 441 de los 509 commits.",
+          "El rediseño y la publicación los hice después, por mi cuenta: el manual de marca y las maquetas, la web pública, los tres paneles, la base de datos nueva con sus datos de demostración y el despliegue."
         ]
       },
       "name": {
@@ -307,17 +310,17 @@
         "es": "CleanFlow"
       },
       "period": {
-        "en": "September – October 2026",
-        "es": "septiembre – octubre 2026"
+        "en": "September – November 2026",
+        "es": "septiembre – noviembre 2026"
       },
       "repo_url": "https://github.com/mateore1330-commits/CleanFlow",
       "slug": "cleanflow",
       "sort_order": 0,
       "summary": {
-        "en": "Booking platform for a cleaning company, with three roles working on the same data: customer, worker and manager. Bootcamp final project, built by a team of four. 509 commits, 85 pull requests, and 441 of those commits are mine.",
-        "es": "Plataforma de reservas para una empresa de limpieza, con tres roles trabajando sobre los mismos datos: cliente, trabajador y encargado. Proyecto final del bootcamp, hecho entre cuatro. 509 commits, 85 pull requests, y 441 de esos commits son míos."
+        "en": "Booking platform for a cleaning company, with three dashboards on the same data: customer, worker and manager. A bootcamp final project that I later redesigned and deployed on my own. You can try it by signing up as a customer.",
+        "es": "Plataforma de reservas para una empresa de limpieza, con tres paneles sobre los mismos datos: cliente, trabajador y encargado. Proyecto final del bootcamp que después rediseñé y publiqué por mi cuenta. Se puede probar registrándose como cliente."
       },
-      "team_size": 4,
+      "team_size": 3,
       "technologies": [
         "Flask",
         "SQLAlchemy",
@@ -326,7 +329,8 @@
         "JWT",
         "Google OAuth",
         "Cloudinary",
-        "Render"
+        "Vercel",
+        "Neon"
       ]
     },
     {
@@ -404,7 +408,7 @@
     },
     {
       "commits_share": null,
-      "demo_url": null,
+      "demo_url": "https://dragonballz-api.vercel.app",
       "description": {
         "en": [
           "Character and planet carousels, search with autocomplete, favorites, and cross navigation: from a character you can jump to their home planet, and from the planet to any of its inhabitants.",
@@ -458,7 +462,7 @@
       "slug": "blog-dragon-ball",
       "sort_order": 2,
       "summary": {
-        "en": "React client for the Dragon Ball API, with keyboard search, favorites that survive a reload and cross-linked profiles for characters and planets. Its visual identity is a Japanese newspaper poster, with hand-written CSS.",
+        "en": "React client for the Dragon Ball API, with keyboard search, favorites that survive a reload and cross-linked profiles for characters and planets.The visual identity is a Japanese newspaper poster, with hand-written CSS.",
         "es": "Cliente en React sobre la Dragon Ball API, con buscador por teclado, favoritos que sobreviven a recargar y fichas enlazadas entre personajes y planetas. Identidad visual de cartel de periódico japonés, con el CSS escrito a mano."
       },
       "team_size": null,
@@ -856,8 +860,8 @@
     },
     "sobre.cuerpo": {
       "en": [
-        "My background as a salesperson, graphic designer and founder of my own company taught me to ask the right questions and showed me that a tool is only worth something if the team uses it every day. That experience gives me a global vision that goes beyond the code.",
-        "That's why I first understand the client and their problem, and then decide what to build: not simple interfaces, but strategic products designed to solve users' real needs."
+        "My background as a salesperson, graphic designer and founder of my own company taught me to ask the right questions and showed me that a tool is only worthy if the team uses it every day. That experience gives me a global vision that goes beyond the code.",
+        "That is why I first try to understand the client and their problem, and then decide what to build: not simple interfaces, but strategic products designed to solve users' real needs."
       ],
       "es": [
         "Mi trayectoria como comercial, diseñador gráfico y fundador de mi propia empresa me enseñó a hacer las preguntas adecuadas y me demostró que una herramienta solo sirve si el equipo la usa cada día. Esa experiencia me da una visión global que va más allá del código.",
@@ -1145,6 +1149,15 @@
       },
       "name": "Modelado relacional",
       "sort_order": 3
+    },
+    {
+      "category": "data",
+      "display_name": null,
+      "is_skill": false,
+      "level": null,
+      "level_label": null,
+      "name": "Neon",
+      "sort_order": 4
     },
     {
       "category": "tools",
